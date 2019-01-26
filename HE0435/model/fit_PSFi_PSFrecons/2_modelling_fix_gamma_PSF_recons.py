@@ -244,21 +244,27 @@ chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc = fitting_seq.fit_se
 kwargs_data, kwargs_psf_updated, kwargs_numerics = fitting_seq.multi_band_list[0]
 import lenstronomy.Plots.output_plots as out_plot
 f, axes = out_plot.psf_iteration_compare(kwargs_psf_updated); f.show()
-plt.savefig('fig_PSF{0}_PSFrecons_gammafix_comp.pdf'.format(psfno))
+#plt.savefig('fig_PSF{0}_PSFrecons_gammafix_comp.pdf'.format(psfno))
 plt.show()
 
-#If to save the fitting reuslt as the pickle:
-filename='fit_result_PSF{0}_PSFrecons_gammafix_subg2'.format(psfno)
-fit_result = [lens_result, source_result, lens_light_result, ps_result, cosmo_result,chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc, kwargs_psf_updated]
-pickle.dump(fit_result, open(filename, 'wb'))
-
-##If to load the fitting reuslt by the pickle:
+##If to save the fitting reuslt as the pickle:
+#filename='fit_result_PSF{0}_PSFrecons_gammafix_subg2'.format(psfno)
+#fit_result = [lens_result, source_result, lens_light_result, ps_result, cosmo_result,chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc, kwargs_psf_updated]
+#pickle.dump(fit_result, open(filename, 'wb'))
+#If to load the fitting reuslt by the pickle:
 #lens_result, source_result, lens_light_result, ps_result, cosmo_result,\
-#chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc = pickle.load(open('fit_result_PSFave_mask_gammafix','rb'))
+#chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc, kwargs_psf_updated = pickle.load(open(filename,'rb'))
+
+##Update the PSF:
+psf_class = PSF(kwargs_psf_updated)
+#Update the imageModel with the new PSF.
+imageModel = ImageModel(data_class, psf_class, lens_model_class, source_model_class,
+                                lens_light_model_class,
+                                point_source_class, kwargs_numerics=kwargs_numerics)
 
 from lenstronomy.Plots.output_plots import LensModelPlot
 
-lensPlot = LensModelPlot(kwargs_data, kwargs_psf, kwargs_numerics, kwargs_model, lens_result, source_result,
+lensPlot = LensModelPlot(kwargs_data, kwargs_psf_updated, kwargs_numerics, kwargs_model, lens_result, source_result,
                              lens_light_result, ps_result, arrow_size=0.02, cmap_string="gist_heat")
     
 f, axes = plt.subplots(2, 3, figsize=(16, 8), sharex=False, sharey=False)
@@ -290,6 +296,7 @@ print(lens_result, source_result, lens_light_result, ps_result)
 print("number of non-linear parameters in the MCMC process: ", len(param_mcmc))
 print("parameters in order: ", param_mcmc)
 print("number of evaluations in the MCMC process: ", np.shape(samples_mcmc)[0])
+
 import corner
 n, num_param = np.shape(samples_mcmc)
 #plot = corner.corner(samples_mcmc[:,:8], labels=param_mcmc[:8], show_titles=True)
@@ -329,3 +336,11 @@ for i in range(len(samples_mcmc)):
 fig = corner.corner(mcmc_new_list, labels=labels_new, show_titles=True)
 fig.savefig('fig_PSF{0}_PSFrecons_gammafix_subg2_corner.pdf'.format(psfno))
 plt.show()
+
+picklename='result_PSF{0}_PSFrecons_gammafix_subg2'.format(psfno)
+fit_result = [lens_result, source_result, lens_light_result, ps_result, cosmo_result,chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc]
+trans_result = [mcmc_new_list, labels_new]
+pickle.dump([fit_result, trans_result, kwargs_psf_updated], open(picklename, 'wb'))
+
+import os
+os.system('say "your program of PSF{0} has finished"'.format(psfno))

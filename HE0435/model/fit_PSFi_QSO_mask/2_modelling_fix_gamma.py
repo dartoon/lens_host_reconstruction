@@ -144,7 +144,7 @@ point_source_class = PointSource(point_source_type_list=point_source_list, fixed
 #if psf_std is not None:
 #    kwargs_psf['psf_error_map'] = psf_std
 
-kwargs_numerics = {'subgrid_res': 3, 'psf_subgrid': False}
+kwargs_numerics = {'subgrid_res': 2, 'psf_subgrid': False}
 
 psf_class = PSF(kwargs_psf)
     
@@ -241,16 +241,16 @@ fitting_kwargs_list = [
         {'fitting_routine': 'MCMC', 'n_burn': 20, 'n_run': 20, 'walkerRatio': 10, 'mpi': False,
          'sigma_scale': .1}]
 
-lens_result, source_result, lens_light_result, ps_result, cosmo_result,\
-chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc = fitting_seq.fit_sequence(fitting_kwargs_list)
-#If to save the fitting reuslt as the pickle:
-filename='fit_result_PSF{0}_QSOmask_gammafix_subg3'.format(psfno)
-fit_result = [lens_result, source_result, lens_light_result, ps_result, cosmo_result,chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc]
-pickle.dump(fit_result, open(filename, 'wb'))
-
-##If to load the fitting reuslt by the pickle:
 #lens_result, source_result, lens_light_result, ps_result, cosmo_result,\
-#chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc = pickle.load(open('fit_result_PSFave_mask_gammafix','rb'))
+#chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc = fitting_seq.fit_sequence(fitting_kwargs_list)
+##If to save the fitting reuslt as the pickle:
+#filename='fit_result_PSF{0}_QSOmask_gammafix_subg2'.format(psfno)
+#fit_result = [lens_result, source_result, lens_light_result, ps_result, cosmo_result,chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc]
+#pickle.dump(fit_result, open(filename, 'wb'))
+
+#If to load the fitting reuslt by the pickle:
+lens_result, source_result, lens_light_result, ps_result, cosmo_result,\
+chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc = pickle.load(open('fit_result_PSF{0}_QSOmask_gammafix_subg2'.format(psfno),'rb'))
 
 from lenstronomy.Plots.output_plots import LensModelPlot
 
@@ -267,7 +267,7 @@ lensPlot.convergence_plot(ax=axes[1, 1], v_max=1)
 lensPlot.magnification_plot(ax=axes[1, 2])
 f.tight_layout()
 f.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0., hspace=0.05)
-plt.savefig('fig_PSF{0}_QSOmask_gammafix_subg3_img0.pdf'.format(psfno))
+#plt.savefig('fig_PSF{0}_QSOmask_gammafix_subg2_img0.pdf'.format(psfno))
 plt.show()
 
 f, axes = plt.subplots(2, 3, figsize=(16, 8), sharex=False, sharey=False)
@@ -280,7 +280,7 @@ lensPlot.decomposition_plot(ax=axes[0,2], text='All components', source_add=True
 lensPlot.decomposition_plot(ax=axes[1,2], text='All components convolved', source_add=True, lens_light_add=True, point_source_add=True)
 f.tight_layout()
 f.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0., hspace=0.05)
-plt.savefig('fig_PSF{0}_QSOmask_gammafix_subg3_img1.pdf'.format(psfno))
+#plt.savefig('fig_PSF{0}_QSOmask_gammafix_subg2_img1.pdf'.format(psfno))
 plt.show()
 print(lens_result, source_result, lens_light_result, ps_result)
 print("number of non-linear parameters in the MCMC process: ", len(param_mcmc))
@@ -323,5 +323,13 @@ for i in range(len(samples_mcmc)):
         print "finished translate:", i
 
 fig = corner.corner(mcmc_new_list, labels=labels_new, show_titles=True)
-fig.savefig('fig_PSF{0}_QSOmask_gammafix_subg3_corner.pdf'.format(psfno))
+#fig.savefig('fig_PSF{0}_QSOmask_gammafix_subg2_corner.pdf'.format(psfno))
 plt.show()
+
+picklename='result_PSF{0}_QSOmask_gammafix_subg2'.format(psfno)
+fit_result = [lens_result, source_result, lens_light_result, ps_result, cosmo_result,chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc]
+trans_result = [mcmc_new_list, labels_new]
+pickle.dump([fit_result, trans_result], open(picklename, 'wb'))
+
+import os
+os.system('say "your program of PSF{0} has finished"'.format(psfno))
