@@ -142,7 +142,7 @@ point_source_class = PointSource(point_source_type_list=point_source_list, fixed
 #                           'point_amp': np.abs(mag)*100}]  # quasar point source position in the source plane and intrinsic brightness
 if psf_std is not None:
     kwargs_psf['psf_error_map'] = psf_std
-subg = 2
+subg = 3
 
 kwargs_numerics = {'subgrid_res': subg, 'psf_subgrid': False}
 
