@@ -69,8 +69,6 @@ plt.show()
 #stdd = 0.01245   #!!!!Need to be change
 stdd = 0.005
 print "stdd:",stdd
-#filename = '{0}_cutout.fits'.format(ID)
-#image = pyfits.open(filename)
 lens_exp_map =  cut_image(exp_map, center_QSO, 100)
 lens_rms =(lens_image_sub/lens_exp_map+stdd**2)**0.5
 plt.imshow(lens_rms, norm=LogNorm(),origin='low')
@@ -106,7 +104,7 @@ for i in range(len(psfs_pos)):
 center_match = (np.sum(abs(np.asarray(PSF_gauss_centers)-np.asarray(PSF_bright_centers)<0.7),axis = 1) == 2)
 psf_pos_list = [PSF_gauss_centers[i] for i in range(len(PSFs_)) if center_match[i]==True]
 PSFs = [PSFs_[i] for i in range(len(PSFs_)) if center_match[i]==True]
-save_loc_png(img_sub,center_QSO,psf_pos_list, ID=ID, label='PSF-' ,reg_ty = None)
+save_loc_png(img_sub,center_QSO,psf_pos_list, ID=ID, label='PSF' ,reg_ty = None)
 PSF_list = [PSFs[i][0] for i in range(len(PSFs))]
 PSF_masks = [PSFs[i][2] for i in range(len(PSFs))]
 PSF_rms_list = [PSFs[i][3] for i in range(len(PSFs))]
@@ -130,7 +128,7 @@ for i in range(len(PSF_list)):
 ##    PSFs
 ##==============================================================================
 #pyfits.PrimaryHDU(lens_image_sub).writeto('../model/LensID_cutout.fits',overwrite=True) 
-#pyfits.PrimaryHDU(lens_rms).writeto('../model/LensID_noisemap.fits',overwrite=True) 
+#pyfits.PrimaryHDU(lens_rms).writeto('../model/LensID_stdd.fits',overwrite=True) 
 #for i in range(len(PSFs)):
 #    pyfits.PrimaryHDU(PSF_list[i]).writeto('../model/PSF{0}.fits'.format(i),overwrite=True) 
 #    pyfits.PrimaryHDU(PSF_rms_list[i]).writeto('../model/PSF{0}_rms.fits'.format(i),overwrite=True) 

@@ -18,7 +18,7 @@ import copy
 
 from fit_qso import fit_qso
 lens_image = pyfits.getdata('xxx_cutout.fits')
-lens_rms = pyfits.getdata('xxx_noisemap.fits')
+lens_rms = pyfits.getdata('xxx_stdd.fits')
 psf = pyfits.getdata('PSF0.fits')
 objs, psf_index = detect_obj(psf,snr=2.0,pltshow=0, exp_sz=1.7)
 _, psf_mask = mask_obj(img=psf,snr=2.0,exp_sz=1.7)
@@ -31,16 +31,17 @@ if len(psf_mask) > 0:
     elif len(psf_mask) == 1:
         psf_mask = psf_mask[0]
     psf_mask = (1 - (psf_mask != 0)*1.)
-    plt.imshow(psf_mask, origin = 'low')
-    plt.show()
-    psf_clear = copy.deepcopy(psf)
-    for i in range(len(psf)):
-        for j in range(len(psf)):
-            if psf_mask[i, j] == 0:
-                psf_clear[i, j] = (psf[-i-1, -j-1]*psf_mask[-i-1, -j-1])
-    plt.imshow(psf_clear, origin = 'low', norm=LogNorm())
-    plt.show()
-    psf = psf_clear
+    if 0 in psf_mask:
+        plt.imshow(psf_mask, origin = 'low')
+        plt.show()
+        psf_clear = copy.deepcopy(psf)
+        for i in range(len(psf)):
+            for j in range(len(psf)):
+                if psf_mask[i, j] == 0:
+                    psf_clear[i, j] = (psf[-i-1, -j-1]*psf_mask[-i-1, -j-1])
+        plt.imshow(psf_clear, origin = 'low', norm=LogNorm())
+        plt.show()
+        psf = psf_clear
 psf /= psf.sum()
     
 fit_frame_size = 101
@@ -49,10 +50,12 @@ ct = (len(lens_image[2])-fit_frame_size)/2     # If want to cut to 61, QSO_im[ct
 lens_image = lens_image[ct:-ct,ct:-ct]
 lens_rms = lens_rms[ct:-ct,ct:-ct]
 plt.imshow(lens_image, norm = LogNorm(), origin='lower')
-plt.show()
-
 from mask_objects import find_loc_max
 x_s, y_s = find_loc_max(lens_image)
+for i in range(len(x_s)):
+    plt.plot(x_s[i], y_s[i], 'or')
+plt.show()
+
 coor_mid = len(lens_image)/2
 arr_x_s = - (np.asarray(x_s)-coor_mid) * pixsc
 arr_y_s = (np.asarray(y_s)-coor_mid) * pixsc
@@ -224,6 +227,7 @@ lensEquationSolver = LensEquationSolver(lens_model_class)
 x_image, y_image = lensEquationSolver.findBrightImage(ra_source, dec_source, kwargs_lens, numImages=4,
                                                       min_distance=deltaPix, search_window=numPix * deltaPix)
 mag = lens_model_class.magnification(x_image, y_image, kwargs=kwargs_lens)
+print "The mag_macro of this image:", mag
 kwargs_ps = [{'ra_image': x_image, 'dec_image': y_image,
                            'point_amp': np.abs(mag)*1}]  # quasar point source position in the source plane and intrinsic brightness
 point_source_list = ['LENSED_POSITION']
@@ -244,6 +248,7 @@ plt.show()
 # Print the well fitted parameter for the fitting in the next step.
 # =============================================================================
 print "lensed x, y position:", x_image, y_image
+print "The mag_macro of this iamge:", mag
 print "fitted lens light:", kwargs_sersic
 print "Source position, ra_source, dec_source:", ra_source, dec_source
 print "Lensing mass: SPEMD {0}, Shear {1}".format(kwargs_spemd, kwargs_shear)

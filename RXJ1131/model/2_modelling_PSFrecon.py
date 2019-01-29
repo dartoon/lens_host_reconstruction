@@ -5,9 +5,7 @@ Created on Mon Jan 14 17:30:19 2019
 
 @author: Dartoon
 
-Modelling the xxx
-
-Trying to recover the H0LiCOW_IV's host flux ~47.
+Modelling the RXJ1131
 
 In this script, fix gamma as Ken's results. Use, psf mask.
 Use PSF reconstruction.

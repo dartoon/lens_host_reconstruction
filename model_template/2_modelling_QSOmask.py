@@ -5,7 +5,7 @@ Created on Mon Jan 14 17:30:19 2019
 
 @author: Dartoon
 
-Modelling the xxx
+Modelling the RXJ1131
 
 The QSO center noise level is boost to inf.
 psf_error_map not taken.
@@ -33,41 +33,38 @@ from lenstronomy.Sampling.parameters import Param
 from lenstronomy.Data.imaging_data import Data
 from lenstronomy.Data.psf import PSF
 
-ct = 30
-lens_image = pyfits.getdata('../xxx_cutout.fits')
-lens_rms = pyfits.getdata('../xxx_stdd.fits')
-lens_mask_0 = cr_mask(lens_image, '../circle_mask.reg')
+ct = 20
+lens_image = pyfits.getdata('../xxx_cutout.fits')   #!!!need to change
+lens_rms = pyfits.getdata('../xxx_stdd.fits')    #!!!need to change
 lens_image = lens_image[ct:-ct,ct:-ct]
 lens_rms = lens_rms[ct:-ct,ct:-ct]
-lens_mask_0 = lens_mask_0[ct:-ct,ct:-ct]
-
 _,lens_obj_mask  = mask_obj(img=lens_image, exp_sz=1, pltshow=0)
-lens_mask = (1-lens_obj_mask[0])*(1-lens_obj_mask[1]) * (1 - lens_mask_0)
 
-# New cut
-ct = 25
-lens_image = lens_image[ct:-ct,ct:-ct]
-lens_mask = lens_mask[ct:-ct,ct:-ct]
-lens_rms = lens_rms[ct:-ct,ct:-ct]
 
-objs, c_index =  detect_obj(img=lens_image, exp_sz=0.4)
-QSO_pos = np.asarray([objs[i][0] for i in [1,3,4,5]]) + len(lens_image)/2
-QSO_masks = np.zeros_like(lens_image)
-xy_index = np.indices((len(lens_image),len(lens_image)))
-for i in range(len(QSO_pos)):
+sigma_bkg = 0.007   # inference from 0_cutout  #!!!need to change
+exp_time = 1980  # exposure time (arbitrary units, flux per pixel is in units #photons/exp_time unit)
+numPix = len(lens_image)  # cutout pixel size
+deltaPix = 0.05  # pixel size in arcsec (area per pixel = deltaPix**2)  #!!!need to change
+fwhm = 0.16  # full width half max of PSF
+
+x_QSO = -np.array([ 2.03396567,  2.09962691,  1.38811153, -1.11232423])/deltaPix + numPix/2
+y_QSO = np.array([-0.62337339,  0.43178866, -1.76462804,  0.25808031])/deltaPix + numPix/2
+
+xy_index = np.indices((numPix,numPix))
+for i in range(len(x_QSO)):
     if i == 0:
-        areas = (np.sqrt((QSO_pos[i][1]-xy_index[0])**2+(QSO_pos[i][0]-xy_index[1])**2) <3 )  # five piexls
+        areas = (np.sqrt((y_QSO[i]-xy_index[0])**2+(x_QSO[i]-xy_index[1])**2) <3 )  # 3 piexls
     else:
-        areas += (np.sqrt((QSO_pos[i][1]-xy_index[0])**2+(QSO_pos[i][0]-xy_index[1])**2) <3 )  # five piexls
+        areas += (np.sqrt((y_QSO[i]-xy_index[0])**2+(x_QSO[i]-xy_index[1])**2) <3 )  # 3 piexls
 plt.imshow(areas, origin='low')
 plt.show()
 lens_rms = lens_rms * (areas == 0) + 10**6 * (areas != 0)
 
-print "plot fitting image:"
-plt.imshow(lens_image*lens_mask, origin='low', norm=LogNorm())
-plt.show()
+#print "plot fitting image:"
+#plt.imshow(lens_image*lens_mask, origin='low', norm=LogNorm())
+#plt.show()
 
-psfname_list = ['../PSF{0}.fits'.format(i) for i in range(5)]
+psfname_list = ['../PSF{0}.fits'.format(i) for i in range(4)]
 psfs = []
 for i in range(len(psfname_list)):
     psf_i = pyfits.getdata(psfname_list[i])
@@ -89,15 +86,15 @@ for i in range(len(psfname_list)):
         psf_i = psf_clear
     psfs.append(psf_i)
 
-psfno = 4
+# =============================================================================
+# Few things to set:
+# =============================================================================
+psfno = 0
+#fix_gamma = 2.
+subg = 2
+
 psf = psfs[psfno]
 psf = psf/psf.sum()
-
-sigma_bkg = 0.005   # inference from 0_cutout
-exp_time = 10*4  # exposure time (arbitrary units, flux per pixel is in units #photons/exp_time unit)
-numPix = len(lens_image)  # cutout pixel size
-deltaPix = 0.08  # pixel size in arcsec (area per pixel = deltaPix**2)
-fwhm = 0.16  # full width half max of PSF
 
 SimAPI = Simulation()
 kwargs_data = SimAPI.data_configure(numPix, deltaPix, exp_time, sigma_bkg)
@@ -109,7 +106,6 @@ data_class = Data(kwargs_data)
 # =============================================================================
 # Setting up the fitting list, and guess parameter to set up the fitting parameter.
 # =============================================================================
-fix_gamma = 1.93
 lens_model_list = ['SPEMD', 'SHEAR']
 lens_model_class = LensModel(lens_model_list=lens_model_list)
 lens_light_model_list = ['SERSIC_ELLIPSE','SERSIC_ELLIPSE']
@@ -141,11 +137,11 @@ point_source_class = PointSource(point_source_type_list=point_source_list, fixed
 #if psf_std is not None:
 #    kwargs_psf['psf_error_map'] = psf_std
 
-kwargs_numerics = {'subgrid_res': 2, 'psf_subgrid': False}
+kwargs_numerics = {'subgrid_res': subg, 'psf_subgrid': False}
 
 psf_class = PSF(kwargs_psf)
     
-kwargs_numerics['mask'] = lens_mask    #Input the lens mask
+#kwargs_numerics['mask'] = lens_mask    #Input the lens mask
 
 imageModel = ImageModel(data_class, psf_class, lens_model_class, source_model_class,
                                 lens_light_model_class,
@@ -238,16 +234,16 @@ fitting_kwargs_list = [
         {'fitting_routine': 'MCMC', 'n_burn': 20, 'n_run': 20, 'walkerRatio': 10, 'mpi': False,
          'sigma_scale': .1}]
 
-#lens_result, source_result, lens_light_result, ps_result, cosmo_result,\
-#chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc = fitting_seq.fit_sequence(fitting_kwargs_list)
-##If to save the fitting reuslt as the pickle:
-#filename='fit_result_PSF{0}_QSOmask_gammafix_subg2'.format(psfno)
-#fit_result = [lens_result, source_result, lens_light_result, ps_result, cosmo_result,chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc]
-#pickle.dump(fit_result, open(filename, 'wb'))
-
-#If to load the fitting reuslt by the pickle:
 lens_result, source_result, lens_light_result, ps_result, cosmo_result,\
-chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc = pickle.load(open('fit_result_PSF{0}_QSOmask_gammafix_subg2'.format(psfno),'rb'))
+chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc = fitting_seq.fit_sequence(fitting_kwargs_list)
+#If to save the fitting reuslt as the pickle:
+filename='fit_result_PSF{0}_QSOmask_gammafix_subg{1}'.format(psfno, subg)
+fit_result = [lens_result, source_result, lens_light_result, ps_result, cosmo_result,chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc]
+pickle.dump(fit_result, open(filename, 'wb'))
+
+##If to load the fitting reuslt by the pickle:
+#lens_result, source_result, lens_light_result, ps_result, cosmo_result,\
+#chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc = pickle.load(open('fit_result_PSF{0}_QSOmask_gammafix_subg{1}'.format(psfno,subg),'rb'))
 
 from lenstronomy.Plots.output_plots import LensModelPlot
 
@@ -264,7 +260,7 @@ lensPlot.convergence_plot(ax=axes[1, 1], v_max=1)
 lensPlot.magnification_plot(ax=axes[1, 2])
 f.tight_layout()
 f.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0., hspace=0.05)
-#plt.savefig('fig_PSF{0}_QSOmask_gammafix_subg2_img0.pdf'.format(psfno))
+#plt.savefig('fig_PSF{0}_QSOmask_gammafix_subg{1}_img0.pdf'.format(psfno,subg))
 plt.show()
 
 f, axes = plt.subplots(2, 3, figsize=(16, 8), sharex=False, sharey=False)
@@ -277,7 +273,7 @@ lensPlot.decomposition_plot(ax=axes[0,2], text='All components', source_add=True
 lensPlot.decomposition_plot(ax=axes[1,2], text='All components convolved', source_add=True, lens_light_add=True, point_source_add=True)
 f.tight_layout()
 f.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0., hspace=0.05)
-#plt.savefig('fig_PSF{0}_QSOmask_gammafix_subg2_img1.pdf'.format(psfno))
+#plt.savefig('fig_PSF{0}_QSOmask_gammafix_subg{1}_img1.pdf'.format(psfno,subg))
 plt.show()
 print(lens_result, source_result, lens_light_result, ps_result)
 print("number of non-linear parameters in the MCMC process: ", len(param_mcmc))
@@ -320,10 +316,10 @@ for i in range(len(samples_mcmc)):
         print "finished translate:", i
 
 fig = corner.corner(mcmc_new_list, labels=labels_new, show_titles=True)
-#fig.savefig('fig_PSF{0}_QSOmask_gammafix_subg2_corner.pdf'.format(psfno))
+#fig.savefig('fig_PSF{0}_QSOmask_gammafix_subg{1}_corner.pdf'.format(psfno,subg))
 plt.show()
 
-picklename='result_PSF{0}_QSOmask_gammafix_subg2'.format(psfno)
+picklename='result_PSF{0}_QSOmask_gammafix_subg{1}'.format(psfno,subg)
 fit_result = [lens_result, source_result, lens_light_result, ps_result, cosmo_result,chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc]
 trans_result = [mcmc_new_list, labels_new]
 pickle.dump([fit_result, trans_result], open(picklename, 'wb'))
