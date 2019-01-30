@@ -7,8 +7,8 @@ Created on Mon Jan 14 17:30:19 2019
 
 Modelling the RXJ1131
 
-The QSO center noise level is boost to inf.
-psf_error_map not taken.
+In this script, fix gamma as Ken's results. Use, psf mask.
+Use PSF reconstruction.
 """
 import numpy as np
 import astropy.io.fits as pyfits
@@ -44,19 +44,6 @@ exp_time = 1980  # exposure time (arbitrary units, flux per pixel is in units #p
 numPix = len(lens_image)  # cutout pixel size
 deltaPix = 0.05  # pixel size in arcsec (area per pixel = deltaPix**2)  #!!!need to change
 fwhm = 0.16  # full width half max of PSF
-
-x_QSO = -np.array([ 2.03396567,  2.09962691,  1.38811153, -1.11232423])/deltaPix + numPix/2
-y_QSO = np.array([-0.62337339,  0.43178866, -1.76462804,  0.25808031])/deltaPix + numPix/2
-
-xy_index = np.indices((numPix,numPix))
-for i in range(len(x_QSO)):
-    if i == 0:
-        areas = (np.sqrt((y_QSO[i]-xy_index[0])**2+(x_QSO[i]-xy_index[1])**2) <3 )  # 3 piexls
-    else:
-        areas += (np.sqrt((y_QSO[i]-xy_index[0])**2+(x_QSO[i]-xy_index[1])**2) <3 )  # 3 piexls
-plt.imshow(areas, origin='low')
-plt.show()
-lens_rms = lens_rms * (areas == 0) + 10**6 * (areas != 0)
 
 #print "plot fitting image:"
 #plt.imshow(lens_image*lens_mask, origin='low', norm=LogNorm())
@@ -219,28 +206,52 @@ kwargs_params = {'lens_model': lens_params,
 from lenstronomy.Workflow.fitting_sequence import FittingSequence
 fitting_seq = FittingSequence(multi_band_list, kwargs_model, kwargs_constraints, kwargs_likelihood, kwargs_params)
 
-fitting_kwargs_list = [
+fitting_kwargs_list_0 = [
         {'fitting_routine': 'PSO', 'mpi': False, 'sigma_scale': 1., 'n_particles': 200,
-         'n_iterations': 200},
-        {'fitting_routine': 'MCMC', 'n_burn': 20, 'n_run': 20, 'walkerRatio': 10, 'mpi': False,
-         'sigma_scale': .1}]
+         'n_iterations': 200}]  #first do the PSO
+fitting_seq.fit_sequence(fitting_kwargs_list_0)
 
+kwargs_psf_iter = {'stacking_method': 'median', 
+                   'keep_error_map': True, 
+                   'psf_symmetry': 1, 
+                   'block_center_neighbour': 0.05}
+fitting_kwargs_list_1 = [
+        {'fitting_routine': 'psf_iteration', 'psf_iter_num': 100, 'psf_iter_factor': 0.2, 'kwargs_psf_iter': kwargs_psf_iter},
+        {'fitting_routine': 'PSO', 'mpi': False, 'sigma_scale': 1., 'n_particles': 100, 'n_iterations': 100},
+        {'fitting_routine': 'psf_iteration', 'psf_iter_num': 100, 'psf_iter_factor': 0.2, 'kwargs_psf_iter': kwargs_psf_iter},
+        {'fitting_routine': 'PSO', 'mpi': False, 'sigma_scale': 1., 'n_particles': 100, 'n_iterations': 100},
+        {'fitting_routine': 'MCMC', 'n_burn': 20, 'n_run': 20, 'walkerRatio': 10, 'mpi': False,
+         'sigma_scale': .1},
+    ]
 lens_result, source_result, lens_light_result, ps_result, cosmo_result,\
-chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc = fitting_seq.fit_sequence(fitting_kwargs_list)
+chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc = fitting_seq.fit_sequence(fitting_kwargs_list_1)
+
+kwargs_data, kwargs_psf_updated, kwargs_numerics = fitting_seq.multi_band_list[0]
+import lenstronomy.Plots.output_plots as out_plot
+f, axes = out_plot.psf_iteration_compare(kwargs_psf_updated); f.show()
+#plt.savefig('fig_PSF{0}_PSFrecons_gammafix_comp.pdf'.format(psfno))
+plt.show()
 
 ##If to save the fitting reuslt as the pickle:
-#filename='fit_result_PSF{0}_{2}{1}'.format(psfno, subg, fname) 
-#fit_result = [lens_result, source_result, lens_light_result, ps_result, cosmo_result,chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc]
+#filename='fit_result_PSF{0}_PSFrecons_gammafix_subg2'.format(psfno)
+#fit_result = [lens_result, source_result, lens_light_result, ps_result, cosmo_result,chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc, kwargs_psf_updated]
 #pickle.dump(fit_result, open(filename, 'wb'))
-##If to load the fitting reuslt by the pickle:
+#If to load the fitting reuslt by the pickle:
 #lens_result, source_result, lens_light_result, ps_result, cosmo_result,\
-#chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc = pickle.load(open('fit_result_PSF{0}_doublehost_doublelens_subg{1}'.format(psfno,subg),'rb'))
+#chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc, kwargs_psf_updated = pickle.load(open(filename,'rb'))
+
+##Update the PSF:
+psf_class = PSF(kwargs_psf_updated)
+#Update the imageModel with the new PSF.
+imageModel = ImageModel(data_class, psf_class, lens_model_class, source_model_class,
+                                lens_light_model_class,
+                                point_source_class, kwargs_numerics=kwargs_numerics)
 
 from lenstronomy.Plots.output_plots import LensModelPlot
 
-lensPlot = LensModelPlot(kwargs_data, kwargs_psf, kwargs_numerics, kwargs_model, lens_result, source_result,
+lensPlot = LensModelPlot(kwargs_data, kwargs_psf_updated, kwargs_numerics, kwargs_model, lens_result, source_result,
                              lens_light_result, ps_result, arrow_size=0.02, cmap_string="gist_heat")
-    
+
 f, axes = plt.subplots(2, 3, figsize=(16, 8), sharex=False, sharey=False)
 
 lensPlot.data_plot(ax=axes[0,0])
@@ -323,7 +334,7 @@ plt.show()
 picklename='result_PSF{0}_{2}{1}'.format(psfno,subg,fname)
 fit_result = [lens_result, source_result, lens_light_result, ps_result, cosmo_result,chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc]
 trans_result = [mcmc_new_list, labels_new]
-pickle.dump([fit_result, trans_result], open(picklename, 'wb'))
+pickle.dump([fit_result, trans_result, kwargs_psf_updated], open(picklename, 'wb'))
 
 import os
 os.system('say "your program of PSF{0} has finished"'.format(psfno))

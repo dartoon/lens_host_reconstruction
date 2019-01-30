@@ -151,23 +151,24 @@ kwargs_likelihood = {'check_bounds': True,
 image_band = [kwargs_data, kwargs_psf, kwargs_numerics]
 multi_band_list = [image_band]
 
-# initial guess of non-linear parameters, we chose different starting parameters than the truth #
-kwargs_lens_init = [{'theta_E': 1.6430516631036574, 'center_x': 0.004,'center_y': -0.012, \
-                     'e1': 0.30015851115210762, 'gamma': fix_gamma, 'e2': -0.20051147286654569},
-                    {'theta_E': 0.2, 'center_x': -0.19,'center_y': 1.165},
-                    {'e1': 0.0, 'e2': 0.0}]
-
-kwargs_source_init = [{'R_sersic': 0.3, 'n_sersic': 4., 'e1': 0, 'e2': 0, 'center_x': 0.41951, 'center_y': -0.1618}]
-kwargs_source_init.append({'e1': 0., 'n_sersic': 1, 'center_x': 0.41951,
-                           'center_y': -0.1618, 'R_sersic': 1., 'e2': 0.})
-
-kwargs_lens_light_init = [{'e1': -0., 'n_sersic': 1.5, 'center_x': 0.,
-                           'center_y': -0.050041638258708651, 'R_sersic': 2, 'e2': 0.030283868799814307}]
-kwargs_lens_light_init.append({'e1': 0., 'n_sersic': 1, 'center_x': -0.172,
-                           'center_y': 0.6159, 'R_sersic': 0.3, 'e2': 0.})
-
-kwargs_ps_init = [{'ra_image': np.array([ 2.03396567,  2.09962691,  1.38811153, -1.11232423]),
-                   'dec_image':  np.array([-0.62337339,  0.43178866, -1.76462804,  0.25808031])}]
+## initial guess of non-linear parameters, we chose different starting parameters than the truth #
+#kwargs_lens_init = [{'theta_E': 1.6430516631036574, 'center_x': 0.004,'center_y': -0.012, \
+#                     'e1': 0.30015851115210762, 'gamma': fix_gamma, 'e2': -0.20051147286654569},
+#                    {'theta_E': 0.2, 'center_x': -0.19,'center_y': 1.165},
+#                    {'e1': 0.0, 'e2': 0.0}]
+#kwargs_source_init = [{'R_sersic': 0.3, 'n_sersic': 4., 'e1': 0, 'e2': 0, 'center_x': 0.41951, 'center_y': -0.1618}]
+#kwargs_source_init.append({'e1': 0., 'n_sersic': 1, 'center_x': 0.41951,
+#                           'center_y': -0.1618, 'R_sersic': 1., 'e2': 0.})
+#kwargs_lens_light_init = [{'e1': -0., 'n_sersic': 1.5, 'center_x': 0.,
+#                           'center_y': -0.050041638258708651, 'R_sersic': 2, 'e2': 0.030283868799814307}]
+#kwargs_lens_light_init.append({'e1': 0., 'n_sersic': 1, 'center_x': -0.172,
+#                           'center_y': 0.6159, 'R_sersic': 0.3, 'e2': 0.})
+#kwargs_ps_init = [{'ra_image': np.array([ 2.03396567,  2.09962691,  1.38811153, -1.11232423]),
+#                   'dec_image':  np.array([-0.62337339,  0.43178866, -1.76462804,  0.25808031])}]
+kwargs_lens_init = [{'theta_E': 1.703047107302041, 'center_x': -0.0020930032635308885, 'center_y': -0.090284840346804562, 'e1': 0.018362267595590853, 'gamma': 1.95, 'e2': -0.13698938942375932}, {'center_x': 0.66245339587476848, 'center_y': 1.0551098996703356, 'theta_E': 0.15074204666951352}, {'dec_0': 0, 'ra_0': 0, 'e1': -0.10124706304338868, 'e2': -0.0068303666111822741}]
+kwargs_source_init = [{'e1': 0.162966315031916, 'n_sersic': 4, 'center_x': 0.50064803203150732, 'center_y': -0.092968189282576552, 'amp': 1, 'R_sersic': 0.015880025213981203, 'e2': 0.48209632749753317}, {'e1': 0.20316875374245852, 'n_sersic': 1, 'center_x': 0.50064803203150732, 'center_y': -0.092968189282576552, 'amp': 1, 'R_sersic': 0.82191540386708906, 'e2': -0.23874883440612904}]
+kwargs_lens_light_init = [{'e1': -0.011260147527026164, 'n_sersic': 4.2547680055199235, 'center_x': 0.0079068634502437278, 'center_y': -0.020394122246180247, 'amp': 1, 'R_sersic': 1.5538089469852707, 'e2': -0.052176652797644649}, {'e1': 0.13674199082893898, 'n_sersic': 1, 'center_x': -0.055879909251532994, 'center_y': 1.3014704935439354, 'amp': 1, 'R_sersic': 0.38291418824252138, 'e2': 0.074257285962813877}]
+kwargs_ps_init = [{'point_amp': 1, 'ra_image': np.array([ 2.02466413,  2.04404806,  1.43698246, -1.09512992]), 'dec_image': np.array([-0.6240953 ,  0.50183344, -1.73674963,  0.10373598])}]
 
 # initial spread in parameter estimation #
 kwargs_lens_sigma = [{'theta_E': 0.1, 'e1': 0.2, 'e2': 0.2, 'gamma': .1, 'center_x': 0.1, 'center_y': 0.1},
@@ -219,8 +220,8 @@ from lenstronomy.Workflow.fitting_sequence import FittingSequence
 fitting_seq = FittingSequence(multi_band_list, kwargs_model, kwargs_constraints, kwargs_likelihood, kwargs_params)
 
 fitting_kwargs_list = [
-        {'fitting_routine': 'PSO', 'mpi': False, 'sigma_scale': 1., 'n_particles': 200,
-         'n_iterations': 200},
+        {'fitting_routine': 'PSO', 'mpi': False, 'sigma_scale': 1., 'n_particles': 300,
+         'n_iterations': 300},
         {'fitting_routine': 'MCMC', 'n_burn': 20, 'n_run': 20, 'walkerRatio': 10, 'mpi': False,
          'sigma_scale': .1}]
 

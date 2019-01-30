@@ -87,27 +87,23 @@ for i in range(len(x_s)):
 source_params = [kwargs_source_init, kwargs_source_sigma, fixed_source, kwargs_lower_source, kwargs_upper_source]
 
 ps_param = [kwargs_ps_init, kwargs_ps_sigma, fixed_ps, kwargs_lower_ps, kwargs_upper_ps]            
-#source_result, ps_result, image_ps, image_host, error_map=fit_qso(lens_image, psf_ave=psf, psf_std = None, ps_param = ps_param,
-#                                                                  background_rms=0.007,
-#                                                                  source_params=source_params, QSO_msk = None, fixcenter=False,
-#                                                                  pix_sz = pixsc, no_MCMC =True,
-#                                                                  QSO_std =lens_rms, tag=None, deep_seed= False, pltshow = 1)   
+source_result, ps_result, image_ps, image_host, error_map=fit_qso(lens_image, psf_ave=psf, psf_std = None, ps_param = ps_param,
+                                                                  background_rms=0.007,
+                                                                  source_params=source_params, QSO_msk = None, fixcenter=False,
+                                                                  pix_sz = pixsc, no_MCMC =True,
+                                                                  QSO_std =lens_rms, tag=None, deep_seed= False, pltshow = 1)   
 
 # =============================================================================
 # Derive the simple result
 # =============================================================================
-
-ps_result = {'dec_image': np.array([-0.61951553,  0.56870904, -1.72741187,  0.32108623]),
-  'point_amp': np.array([ 1313.17890781,  1399.45580915,   369.58361068,    -5.9161199 ]),
-  'ra_image': np.array([ 2.02538616,  2.05627471,  1.4515022 , -1.32241698])}
 import copy
 import numpy as np
 for i in range(len(ps_result)):
     if i ==0:
-        x_image, y_image = ps_result['ra_image'][i], ps_result['dec_image'][i]
+        x_image, y_image = ps_result[i]['ra_image'], ps_result[i]['dec_image']
     else:
-        x_image = np.append(x_image, ps_result['ra_image'][i])
-        y_image = np.append(y_image, ps_result['dec_image'][i])
+        x_image = np.append(x_image, ps_result[i]['ra_image'])
+        y_image = np.append(y_image, ps_result[i]['dec_image'])
 # import the lens model class 
 from lenstronomy.LensModel.lens_model import LensModel
 from lenstronomy.LensModel.lens_model_extensions import LensModelExtensions
@@ -116,10 +112,10 @@ from lenstronomy.LensModel.Solver.lens_equation_solver import LensEquationSolver
 # import lens model solver with 2 image positions constrains
 #from lenstronomy.LensModel.Solver.solver2point import Solver2Point
 from lenstronomy.LensModel.Solver.solver4point import Solver4Point
-lens_model_list_simple = ['SPEMD', 'SIS', 'SHEAR']
+lens_model_list_simple = ['SPEMD', 'SHEAR']
 lensModelSimple = LensModel(lens_model_list_simple)
 #solver2Point_simple = Solver2Point(lensModel=lensModelSimple, solver_type='ELLIPSE')
-solver4Point_simple = Solver4Point(lensModel=lensModelSimple, solver_type='PROFILE')
+solver4Point_simple = Solver4Point(lensModel=lensModelSimple, solver_type='PROFILE_SHEAR')
 
 # options for Solver2Point are:
 #    'CENTER': solves for 'center_x', 'center_y' parameters of the first lens model
@@ -128,11 +124,7 @@ solver4Point_simple = Solver4Point(lensModel=lensModelSimple, solver_type='PROFI
 #    'THETA_E_PHI: solves for Einstein radius of first lens model and shear angle of second model
 
 
-#kwargs_lens_init = [{'theta_E': 1.95, 'gamma': 2., 'e1': 0, 'e2': 0, 'center_x': 0., 'center_y': 0}, {'e1': 0.00, 'e2': -0.0}]
-kwargs_lens_init = [{'theta_E': 1.6430516631036574, 'center_x': 0.004,'center_y': -0.012, \
-                     'e1': 0.30015851115210762, 'gamma': 1.95, 'e2': -0.20051147286654569},
-                    {'theta_E': 0.2, 'center_x': -0.19,'center_y': 1.165},
-                    {'e1': 0.0, 'e2': 0.0}]
+kwargs_lens_init = [{'theta_E': 1.95, 'gamma': 2., 'e1': 0, 'e2': 0, 'center_x': 0., 'center_y': 0}, {'e1': 0.00, 'e2': -0.0}]
 kwargs_fit_simple, precision = solver4Point_simple.constraint_lensmodel(x_pos=x_image, y_pos=y_image,
                                                                         kwargs_list=kwargs_lens_init, xtol=1.49012e-10)
 print("the fitted macro-model parameters are: ", kwargs_fit_simple)

@@ -7,8 +7,8 @@ Created on Mon Jan 14 17:30:19 2019
 
 Modelling the RXJ1131
 
-The QSO center noise level is boost to inf.
-psf_error_map not taken.
+In this script, fix gamma as Ken's results. Use, psf mask.
+Use PSF reconstruction.
 """
 import numpy as np
 import astropy.io.fits as pyfits
@@ -45,19 +45,6 @@ numPix = len(lens_image)  # cutout pixel size
 deltaPix = 0.05  # pixel size in arcsec (area per pixel = deltaPix**2)  #!!!need to change
 fwhm = 0.16  # full width half max of PSF
 
-x_QSO = -np.array([ 2.03396567,  2.09962691,  1.38811153, -1.11232423])/deltaPix + numPix/2
-y_QSO = np.array([-0.62337339,  0.43178866, -1.76462804,  0.25808031])/deltaPix + numPix/2
-
-xy_index = np.indices((numPix,numPix))
-for i in range(len(x_QSO)):
-    if i == 0:
-        areas = (np.sqrt((y_QSO[i]-xy_index[0])**2+(x_QSO[i]-xy_index[1])**2) <3 )  # 3 piexls
-    else:
-        areas += (np.sqrt((y_QSO[i]-xy_index[0])**2+(x_QSO[i]-xy_index[1])**2) <3 )  # 3 piexls
-plt.imshow(areas, origin='low')
-plt.show()
-lens_rms = lens_rms * (areas == 0) + 10**6 * (areas != 0)
-
 #print "plot fitting image:"
 #plt.imshow(lens_image*lens_mask, origin='low', norm=LogNorm())
 #plt.show()
@@ -87,10 +74,10 @@ for i in range(len(psfname_list)):
 # =============================================================================
 # Few things to set:
 # =============================================================================
-#psfno = 0
-#subg = 2
+psfno = 0
 fix_gamma = 1.95
-fname = 'Dhost_Dlens_subg'
+subg = 2
+fname = 'testPSFrecons_subg'
 
 psf = psfs[psfno]
 psf = psf/psf.sum()
@@ -151,24 +138,23 @@ kwargs_likelihood = {'check_bounds': True,
 image_band = [kwargs_data, kwargs_psf, kwargs_numerics]
 multi_band_list = [image_band]
 
-## initial guess of non-linear parameters, we chose different starting parameters than the truth #
-#kwargs_lens_init = [{'theta_E': 1.6430516631036574, 'center_x': 0.004,'center_y': -0.012, \
-#                     'e1': 0.30015851115210762, 'gamma': fix_gamma, 'e2': -0.20051147286654569},
-#                    {'theta_E': 0.2, 'center_x': -0.19,'center_y': 1.165},
-#                    {'e1': 0.0, 'e2': 0.0}]
-#kwargs_source_init = [{'R_sersic': 0.3, 'n_sersic': 4., 'e1': 0, 'e2': 0, 'center_x': 0.41951, 'center_y': -0.1618}]
-#kwargs_source_init.append({'e1': 0., 'n_sersic': 1, 'center_x': 0.41951,
-#                           'center_y': -0.1618, 'R_sersic': 1., 'e2': 0.})
-#kwargs_lens_light_init = [{'e1': -0., 'n_sersic': 1.5, 'center_x': 0.,
-#                           'center_y': -0.050041638258708651, 'R_sersic': 2, 'e2': 0.030283868799814307}]
-#kwargs_lens_light_init.append({'e1': 0., 'n_sersic': 1, 'center_x': -0.172,
-#                           'center_y': 0.6159, 'R_sersic': 0.3, 'e2': 0.})
-#kwargs_ps_init = [{'ra_image': np.array([ 2.03396567,  2.09962691,  1.38811153, -1.11232423]),
-#                   'dec_image':  np.array([-0.62337339,  0.43178866, -1.76462804,  0.25808031])}]
-kwargs_lens_init = [{'theta_E': 1.703047107302041, 'center_x': -0.0020930032635308885, 'center_y': -0.090284840346804562, 'e1': 0.018362267595590853, 'gamma': 1.95, 'e2': -0.13698938942375932}, {'center_x': 0.66245339587476848, 'center_y': 1.0551098996703356, 'theta_E': 0.15074204666951352}, {'dec_0': 0, 'ra_0': 0, 'e1': -0.10124706304338868, 'e2': -0.0068303666111822741}]
-kwargs_source_init = [{'e1': 0.162966315031916, 'n_sersic': 4, 'center_x': 0.50064803203150732, 'center_y': -0.092968189282576552, 'amp': 1, 'R_sersic': 0.015880025213981203, 'e2': 0.48209632749753317}, {'e1': 0.20316875374245852, 'n_sersic': 1, 'center_x': 0.50064803203150732, 'center_y': -0.092968189282576552, 'amp': 1, 'R_sersic': 0.82191540386708906, 'e2': -0.23874883440612904}]
-kwargs_lens_light_init = [{'e1': -0.011260147527026164, 'n_sersic': 4.2547680055199235, 'center_x': 0.0079068634502437278, 'center_y': -0.020394122246180247, 'amp': 1, 'R_sersic': 1.5538089469852707, 'e2': -0.052176652797644649}, {'e1': 0.13674199082893898, 'n_sersic': 1, 'center_x': -0.055879909251532994, 'center_y': 1.3014704935439354, 'amp': 1, 'R_sersic': 0.38291418824252138, 'e2': 0.074257285962813877}]
-kwargs_ps_init = [{'point_amp': 1, 'ra_image': np.array([ 2.02466413,  2.04404806,  1.43698246, -1.09512992]), 'dec_image': np.array([-0.6240953 ,  0.50183344, -1.73674963,  0.10373598])}]
+# initial guess of non-linear parameters, we chose different starting parameters than the truth #
+kwargs_lens_init = [{'theta_E': 1.6430516631036574, 'center_x': 0.004,'center_y': -0.012, \
+                     'e1': 0.30015851115210762, 'gamma': fix_gamma, 'e2': -0.20051147286654569},
+                    {'theta_E': 0.2, 'center_x': -0.19,'center_y': 1.165},
+                    {'e1': 0.0, 'e2': 0.0}]
+
+kwargs_source_init = [{'R_sersic': 0.3, 'n_sersic': 4., 'e1': 0, 'e2': 0, 'center_x': 0.41951, 'center_y': -0.1618}]
+kwargs_source_init.append({'e1': 0., 'n_sersic': 1, 'center_x': 0.41951,
+                           'center_y': -0.1618, 'R_sersic': 1., 'e2': 0.})
+
+kwargs_lens_light_init = [{'e1': -0., 'n_sersic': 1.5, 'center_x': 0.,
+                           'center_y': -0.050041638258708651, 'R_sersic': 2, 'e2': 0.030283868799814307}]
+kwargs_lens_light_init.append({'e1': 0., 'n_sersic': 1, 'center_x': -0.172,
+                           'center_y': 0.6159, 'R_sersic': 0.3, 'e2': 0.})
+
+kwargs_ps_init = [{'ra_image': np.array([ 2.03396567,  2.09962691,  1.38811153, -1.11232423]),
+                   'dec_image':  np.array([-0.62337339,  0.43178866, -1.76462804,  0.25808031])}]
 
 # initial spread in parameter estimation #
 kwargs_lens_sigma = [{'theta_E': 0.1, 'e1': 0.2, 'e2': 0.2, 'gamma': .1, 'center_x': 0.1, 'center_y': 0.1},
@@ -219,28 +205,52 @@ kwargs_params = {'lens_model': lens_params,
 from lenstronomy.Workflow.fitting_sequence import FittingSequence
 fitting_seq = FittingSequence(multi_band_list, kwargs_model, kwargs_constraints, kwargs_likelihood, kwargs_params)
 
-fitting_kwargs_list = [
-        {'fitting_routine': 'PSO', 'mpi': False, 'sigma_scale': 1., 'n_particles': 200,
-         'n_iterations': 200},
-        {'fitting_routine': 'MCMC', 'n_burn': 20, 'n_run': 20, 'walkerRatio': 10, 'mpi': False,
-         'sigma_scale': .1}]
+fitting_kwargs_list_0 = [
+        {'fitting_routine': 'PSO', 'mpi': False, 'sigma_scale': 1., 'n_particles': 300,
+         'n_iterations': 300}]  #first do the PSO
+fitting_seq.fit_sequence(fitting_kwargs_list_0)
 
+kwargs_psf_iter = {'stacking_method': 'median', 
+                   'keep_error_map': True, 
+                   'psf_symmetry': 1, 
+                   'block_center_neighbour': 0.05}
+fitting_kwargs_list_1 = [
+        {'fitting_routine': 'psf_iteration', 'psf_iter_num': 100, 'psf_iter_factor': 0.2, 'kwargs_psf_iter': kwargs_psf_iter},
+        {'fitting_routine': 'PSO', 'mpi': False, 'sigma_scale': 1., 'n_particles': 100, 'n_iterations': 100},
+        {'fitting_routine': 'psf_iteration', 'psf_iter_num': 100, 'psf_iter_factor': 0.2, 'kwargs_psf_iter': kwargs_psf_iter},
+        {'fitting_routine': 'PSO', 'mpi': False, 'sigma_scale': 1., 'n_particles': 100, 'n_iterations': 100},
+        {'fitting_routine': 'MCMC', 'n_burn': 20, 'n_run': 20, 'walkerRatio': 10, 'mpi': False,
+         'sigma_scale': .1},
+    ]
 lens_result, source_result, lens_light_result, ps_result, cosmo_result,\
-chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc = fitting_seq.fit_sequence(fitting_kwargs_list)
+chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc = fitting_seq.fit_sequence(fitting_kwargs_list_1)
+
+kwargs_data, kwargs_psf_updated, kwargs_numerics = fitting_seq.multi_band_list[0]
+import lenstronomy.Plots.output_plots as out_plot
+f, axes = out_plot.psf_iteration_compare(kwargs_psf_updated); f.show()
+#plt.savefig('fig_PSF{0}_PSFrecons_gammafix_comp.pdf'.format(psfno))
+plt.show()
 
 ##If to save the fitting reuslt as the pickle:
-#filename='fit_result_PSF{0}_{2}{1}'.format(psfno, subg, fname) 
-#fit_result = [lens_result, source_result, lens_light_result, ps_result, cosmo_result,chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc]
+#filename='fit_result_PSF{0}_PSFrecons_gammafix_subg2'.format(psfno)
+#fit_result = [lens_result, source_result, lens_light_result, ps_result, cosmo_result,chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc, kwargs_psf_updated]
 #pickle.dump(fit_result, open(filename, 'wb'))
-##If to load the fitting reuslt by the pickle:
+#If to load the fitting reuslt by the pickle:
 #lens_result, source_result, lens_light_result, ps_result, cosmo_result,\
-#chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc = pickle.load(open('fit_result_PSF{0}_doublehost_doublelens_subg{1}'.format(psfno,subg),'rb'))
+#chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc, kwargs_psf_updated = pickle.load(open(filename,'rb'))
+
+##Update the PSF:
+psf_class = PSF(kwargs_psf_updated)
+#Update the imageModel with the new PSF.
+imageModel = ImageModel(data_class, psf_class, lens_model_class, source_model_class,
+                                lens_light_model_class,
+                                point_source_class, kwargs_numerics=kwargs_numerics)
 
 from lenstronomy.Plots.output_plots import LensModelPlot
 
-lensPlot = LensModelPlot(kwargs_data, kwargs_psf, kwargs_numerics, kwargs_model, lens_result, source_result,
+lensPlot = LensModelPlot(kwargs_data, kwargs_psf_updated, kwargs_numerics, kwargs_model, lens_result, source_result,
                              lens_light_result, ps_result, arrow_size=0.02, cmap_string="gist_heat")
-    
+
 f, axes = plt.subplots(2, 3, figsize=(16, 8), sharex=False, sharey=False)
 
 lensPlot.data_plot(ax=axes[0,0])
@@ -323,7 +333,7 @@ plt.show()
 picklename='result_PSF{0}_{2}{1}'.format(psfno,subg,fname)
 fit_result = [lens_result, source_result, lens_light_result, ps_result, cosmo_result,chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc]
 trans_result = [mcmc_new_list, labels_new]
-pickle.dump([fit_result, trans_result], open(picklename, 'wb'))
+pickle.dump([fit_result, trans_result, kwargs_psf_updated], open(picklename, 'wb'))
 
 import os
 os.system('say "your program of PSF{0} has finished"'.format(psfno))
