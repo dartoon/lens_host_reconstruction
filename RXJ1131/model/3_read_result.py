@@ -19,21 +19,25 @@ import sys
 sys.path.insert(0,'../../py_tools')
 from mask_objects import mask_obj
 #The values to pick up:
-filename = "fit_PSFi_QSO_mask/result_PSF3_Dhost_Dlens_subg3"
-psfno = 3
-subg = 2
+filename = "fit_PSFi_QSO_mask_fluxpositive/result_PSF0_Dhost_Dlens_subg2"
+names = filename.split('/')[-1]
+psfno = int(names[names.find('PSF') + len('PSF')])
+subg = int(names[names.find('subg') + len('subg')])
 
 result = pickle.load(open(filename,'rb'))
 if len(result) == 2:
     fit_result, trans_result = result
 elif len(result) ==3:
     fit_result, trans_result, kwargs_psf_updated = result
-'''
 
 lens_result, source_result, lens_light_result, ps_result, cosmo_result,\
 chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc = fit_result
 mcmc_new_list, labels_new = trans_result
 
+
+# =============================================================================
+# Set up the plot
+# =============================================================================
 ct = 20
 lens_image = pyfits.getdata('RXJ1131_cutout.fits')   #!!!need to change
 lens_rms = pyfits.getdata('RXJ1131_stdd.fits')    #!!!need to change
@@ -46,8 +50,9 @@ deltaPix = 0.05  # pixel size in arcsec (area per pixel = deltaPix**2)  #!!!need
 fwhm = 0.16  # full width half max of PSF
 SimAPI = Simulation()
 kwargs_data = SimAPI.data_configure(numPix, deltaPix, exp_time, sigma_bkg)
-
-psfname_list = ['../PSF{0}.fits'.format(i) for i in range(4)]
+kwargs_data['image_data'] = lens_image
+kwargs_data['noise_map'] = lens_rms
+psfname_list = ['PSF{0}.fits'.format(i) for i in range(4)]
 psfs = []
 for i in range(len(psfname_list)):
     psf_i = pyfits.getdata(psfname_list[i])
@@ -70,7 +75,6 @@ psf = psf/psf.sum()
 kwargs_psf = SimAPI.psf_configure(psf_type='PIXEL', fwhm=fwhm, kernelsize=len(psf), deltaPix=deltaPix,kernel=psf)
 if len(result) ==3:
    kwargs_psf = kwargs_psf_updated
-
 kwargs_numerics = {'subgrid_res': subg, 'psf_subgrid': False}
 
 lens_model_list = ['SPEMD', 'SIS', 'SHEAR']
@@ -84,6 +88,9 @@ kwargs_model = {'lens_model_list': lens_model_list,
                                'fixed_magnification_list': [False]
                              }
 
+# =============================================================================
+# To plot
+# =============================================================================
 lensPlot = LensModelPlot(kwargs_data, kwargs_psf, kwargs_numerics, kwargs_model, lens_result, source_result,
                              lens_light_result, ps_result, arrow_size=0.02, cmap_string="gist_heat")
     
@@ -117,4 +124,3 @@ print("number of evaluations in the MCMC process: ", np.shape(samples_mcmc)[0])
 mcmc_new_array = np.array(mcmc_new_list)
 fig = corner.corner(mcmc_new_array[mcmc_new_array[:,2]!=0], labels=labels_new, show_titles=True)
 plt.show()
-'''
