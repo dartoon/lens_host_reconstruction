@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import os
 path = os.getcwd()
 
-psfno = 0
+psfno = 1
 subg_list = [2,3]
 for subg in subg_list:
     print "psfno, subg:", psfno, subg

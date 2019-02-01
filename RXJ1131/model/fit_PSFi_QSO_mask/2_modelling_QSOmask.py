@@ -316,7 +316,8 @@ for i in range(len(samples_mcmc)):
     if i/1000 > (i-1)/1000 :
         print "finished translate:", i
 
-fig = corner.corner(mcmc_new_list, labels=labels_new, show_titles=True)
+mcmc_new_array = np.array(mcmc_new_list)
+fig = corner.corner(mcmc_new_array[mcmc_new_array[:,2]!=0], labels=labels_new, show_titles=True)
 fig.savefig('fig_PSF{0}_{2}{1}_corner.pdf'.format(psfno,subg,fname))
 plt.show()
 

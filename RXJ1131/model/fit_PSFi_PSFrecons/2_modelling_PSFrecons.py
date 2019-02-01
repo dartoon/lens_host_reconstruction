@@ -214,7 +214,9 @@ fitting_seq.fit_sequence(fitting_kwargs_list_0)
 kwargs_psf_iter = {'stacking_method': 'median', 
                    'keep_error_map': True, 
                    'psf_symmetry': 1, 
-                   'block_center_neighbour': 0.05}
+                   'block_center_neighbour': 0.05,
+                   'check_positive_flux': True,
+                   }
 fitting_kwargs_list_1 = [
         {'fitting_routine': 'psf_iteration', 'psf_iter_num': 100, 'psf_iter_factor': 0.2, 'kwargs_psf_iter': kwargs_psf_iter},
         {'fitting_routine': 'PSO', 'mpi': False, 'sigma_scale': 1., 'n_particles': 100, 'n_iterations': 100},
@@ -327,7 +329,8 @@ for i in range(len(samples_mcmc)):
     if i/1000 > (i-1)/1000 :
         print "finished translate:", i
 
-fig = corner.corner(mcmc_new_list, labels=labels_new, show_titles=True)
+mcmc_new_array = np.array(mcmc_new_list)
+fig = corner.corner(mcmc_new_array[mcmc_new_array[:,2]!=0], labels=labels_new, show_titles=True)
 fig.savefig('fig_PSF{0}_{2}{1}_corner.pdf'.format(psfno,subg,fname))
 plt.show()
 
