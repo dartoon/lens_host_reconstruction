@@ -155,33 +155,43 @@ multi_band_list = [image_band]
 #kwargs_ps_init = [{'ra_image': np.array([ 2.03396567,  2.09962691,  1.38811153, -1.11232423]),
 #                   'dec_image':  np.array([-0.62337339,  0.43178866, -1.76462804,  0.25808031])}]
 
-kwargs_lens_init = [{'center_x': -0.03233370664840619,
-                      'center_y': -0.11571730670337045,
-                      'e1': 0.012295217116064553,
-                      'e2': -0.10976453165703924,
-                      'gamma': 1.95,
-                      'theta_E': 1.6912066168311866},
-                     {'center_x': 0.097, 'center_y': 0.6159,
-                      'theta_E': 0.1504464330121115},
-                     {'dec_0': 0, 'e1': -0.09801359860346465, 'e2': 0.0094993039819179, 'ra_0': 0}]
-kwargs_source_init = [{'R_sersic': 0.2,
-                      'center_x': 0.43120216295569497,
-                      'center_y': -0.11997593381248266,
-                      'e1': -0.499647444502212,
-                      'e2': 0.30305548421468737,
+kwargs_lens_init = [{'center_x': -0.004997704113480516,
+                  'center_y': -0.10825462399449674,
+                  'e1': 0.11207615837709821,
+                  'e2': -0.09474832867965755,
+                  'gamma': 1.95,
+                  'theta_E': 1.6685256463341314},
+                 {'center_x': 0.06607529289162566,
+                  'center_y': 0.5663842386650706,
+                  'theta_E': 0.16138311718422146},
+                 {'dec_0': 0,
+                  'e1': -0.05560026776867117,
+                  'e2': 0.016380620546517222,
+                  'ra_0': 0}]
+kwargs_source_init = [{'R_sersic': 0.2467673668128392,
+                      'center_x': 0.4372485894459367,
+                      'center_y': -0.17407104897799075,
+                      'e1': -0.4999600130387907,
+                      'e2': 0.49986903439867864,
                       'n_sersic': 4},
-                     {'R_sersic': 0.84,
-                      'center_x': 0.43120216295569497,
-                      'center_y': -0.11997593381248266,
-                      'e1': 0.17832147716521995,
-                      'e2': -0.31362990689888276,
+                     {'R_sersic': 0.874215656135869,
+                      'center_x': 0.4372485894459367,
+                      'center_y': -0.17407104897799075,
+                      'e1': 0.0874212057581229,
+                      'e2': -0.3595759060005726,
                       'n_sersic': 1}]
-kwargs_lens_light_init = [{'e1': -0.011260147527026164, 'n_sersic': 4.2547680055199235,
-                           'center_x': 0., 'center_y': 0., 'R_sersic': 2.,
-                           'e2': -0.052176652797644649},
-                            {'n_sersic': 1, 'center_x': 0.097, 'center_y': 0.6159, 'R_sersic': 0.01}]
-kwargs_ps_init = [{'ra_image': np.array([ 2.03396567,  2.09962691,  1.38811153, -1.11232423]),
-                   'dec_image':  np.array([-0.62337339,  0.43178866, -1.76462804,  0.25808031])}]
+kwargs_lens_light_init = [{'R_sersic': 2.4520520660178127,
+                          'center_x': 0.004765106681260626,
+                          'center_y': -0.015627192126109107,
+                          'e1': 0.06117017084404603,
+                          'e2': -0.04293639405661445,
+                          'n_sersic': 4.999484134259986},
+                         {'R_sersic': 0.011391965213581464,
+                          'center_x': 0.06607529289162566,
+                          'center_y': 0.5663842386650706,
+                          'n_sersic': 1}]
+kwargs_ps_init = [{'dec_image': np.array([-0.61282171,  0.56738326, -1.72881346,  0.28730766]),
+                      'ra_image': np.array([ 2.0255986 ,  2.05805554,  1.45340261, -1.24606631])}]
 
 # initial spread in parameter estimation #
 kwargs_lens_sigma = [{'theta_E': 0.1, 'e1': 0.2, 'e2': 0.2, 'gamma': .1, 'center_x': 0.1, 'center_y': 0.1},
@@ -200,7 +210,7 @@ kwargs_lower_lens = [{'theta_E': 0, 'e1': -0.5, 'e2': -0.5, 'gamma': 1.5, 'cente
 kwargs_lower_source = [{'R_sersic': 0.001, 'n_sersic': 0.5, 'e1': -0.5, 'e2': -0.5, 'center_x': -10, 'center_y': -10}]
 kwargs_lower_source.append({'R_sersic': 0.001,'n_sersic': 0.5,  'e1': -0.5, 'e2': -0.5, 'center_x': -10, 'center_y': -10})
 kwargs_lower_lens_light = [{'R_sersic': 0.001, 'n_sersic': 0.5, 'e1': -0.5, 'e2': -0.5, 'center_x': -10, 'center_y': -10}]
-kwargs_lower_lens_light.append({'R_sersic': 0.001, 'center_x':  0.097-0.05, 'center_y': 0.6159-0.05})
+kwargs_lower_lens_light.append({'R_sersic': 0.001, 'center_x':  0.066-0.05, 'center_y': 0.566-0.05})
 kwargs_lower_ps = [{'ra_image': -10 * np.ones(4), 'dec_image': -10 * np.ones(4)}]
 
 # hard bound upper limit in parameter space #
@@ -210,7 +220,7 @@ kwargs_upper_lens = [{'theta_E': 10, 'e1': 0.5, 'e2': 0.5, 'gamma': 2.5, 'center
 kwargs_upper_source = [{'R_sersic': 10, 'n_sersic': 5., 'e1': 0.5, 'e2': 0.5, 'center_x': 10, 'center_y': 10}]
 kwargs_upper_source.append({'R_sersic': 10, 'n_sersic': 5., 'e1': 0.5, 'e2': 0.5, 'center_x': 10, 'center_y': 10})
 kwargs_upper_lens_light = [{'R_sersic': 10, 'n_sersic': 5., 'e1': 0.5, 'e2': 0.5, 'center_x': 10, 'center_y': 10}]
-kwargs_upper_lens_light.append({'R_sersic': 10, 'center_x': 0.097+0.05, 'center_y': 0.6159+0.05})
+kwargs_upper_lens_light.append({'R_sersic': 10, 'center_x': 0.066+0.05, 'center_y': 0.566+0.05})
 kwargs_upper_ps = [{'ra_image': 10 * np.ones(4), 'dec_image': 10 * np.ones(4)}]
 
 #Fix something:
