@@ -87,10 +87,10 @@ for i in range(len(psfname_list)):
 # =============================================================================
 # Few things to set:
 # =============================================================================
-#psfno = 0
-#subg = 2
+psfno = 0
+subg = 3
 fix_gamma = 1.95
-fname = 'Dhost_Dlens_subg'
+fname = 'Dhost_Dlensfix_subg'
 
 psf = psfs[psfno]
 psf = psf/psf.sum()
@@ -107,7 +107,7 @@ data_class = Data(kwargs_data)
 # =============================================================================
 lens_model_list = ['SPEMD', 'SIS', 'SHEAR']
 lens_model_class = LensModel(lens_model_list=lens_model_list)
-lens_light_model_list = ['SERSIC_ELLIPSE','SERSIC_ELLIPSE']
+lens_light_model_list = ['SERSIC_ELLIPSE','SERSIC']
 lens_light_model_class = LightModel(light_model_list=lens_light_model_list)
 source_model_list = ['SERSIC_ELLIPSE','SERSIC_ELLIPSE']
 source_model_class = LightModel(light_model_list=source_model_list)
@@ -134,12 +134,14 @@ num_source_model = len(source_model_list)
 
 kwargs_constraints = {'joint_source_with_source': [[0, 1, ['center_x', 'center_y']]],
                       'joint_source_with_point_source': [[0, 0]],
-                              'num_point_source_list': [4],
+                      'joint_lens_with_light': [[1,1,['center_x', 'center_y']]],
+                      'num_point_source_list': [4],
 #                              'solver': True,
 #                              'solver_type': 'THETA_E_PHI',  # 'PROFILE', 'PROFILE_SHEAR', 'ELLIPSE', 'CENTER'
                               }
 
 kwargs_likelihood = {'check_bounds': True,
+                   'check_positive_flux': True,
                              'force_no_add_image': False,
                              'source_marg': False,
                              'point_source_likelihood': False,
@@ -147,6 +149,7 @@ kwargs_likelihood = {'check_bounds': True,
                              'check_solver': True,
                              'solver_tolerance': 0.001
                              }
+
 
 image_band = [kwargs_data, kwargs_psf, kwargs_numerics]
 multi_band_list = [image_band]
@@ -165,10 +168,34 @@ multi_band_list = [image_band]
 #                           'center_y': 0.6159, 'R_sersic': 0.3, 'e2': 0.})
 #kwargs_ps_init = [{'ra_image': np.array([ 2.03396567,  2.09962691,  1.38811153, -1.11232423]),
 #                   'dec_image':  np.array([-0.62337339,  0.43178866, -1.76462804,  0.25808031])}]
-kwargs_lens_init = [{'theta_E': 1.703047107302041, 'center_x': -0.0020930032635308885, 'center_y': -0.090284840346804562, 'e1': 0.018362267595590853, 'gamma': 1.95, 'e2': -0.13698938942375932}, {'center_x': 0.66245339587476848, 'center_y': 1.0551098996703356, 'theta_E': 0.15074204666951352}, {'dec_0': 0, 'ra_0': 0, 'e1': -0.10124706304338868, 'e2': -0.0068303666111822741}]
-kwargs_source_init = [{'e1': 0.162966315031916, 'n_sersic': 4, 'center_x': 0.50064803203150732, 'center_y': -0.092968189282576552, 'amp': 1, 'R_sersic': 0.015880025213981203, 'e2': 0.48209632749753317}, {'e1': 0.20316875374245852, 'n_sersic': 1, 'center_x': 0.50064803203150732, 'center_y': -0.092968189282576552, 'amp': 1, 'R_sersic': 0.82191540386708906, 'e2': -0.23874883440612904}]
-kwargs_lens_light_init = [{'e1': -0.011260147527026164, 'n_sersic': 4.2547680055199235, 'center_x': 0.0079068634502437278, 'center_y': -0.020394122246180247, 'amp': 1, 'R_sersic': 1.5538089469852707, 'e2': -0.052176652797644649}, {'e1': 0.13674199082893898, 'n_sersic': 1, 'center_x': -0.055879909251532994, 'center_y': 1.3014704935439354, 'amp': 1, 'R_sersic': 0.38291418824252138, 'e2': 0.074257285962813877}]
-kwargs_ps_init = [{'point_amp': 1, 'ra_image': np.array([ 2.02466413,  2.04404806,  1.43698246, -1.09512992]), 'dec_image': np.array([-0.6240953 ,  0.50183344, -1.73674963,  0.10373598])}]
+
+kwargs_lens_init = [{'center_x': -0.03233370664840619,
+                      'center_y': -0.11571730670337045,
+                      'e1': 0.012295217116064553,
+                      'e2': -0.10976453165703924,
+                      'gamma': 1.95,
+                      'theta_E': 1.6912066168311866},
+                     {'center_x': 0.097, 'center_y': 0.6159,
+                      'theta_E': 0.1504464330121115},
+                     {'dec_0': 0, 'e1': -0.09801359860346465, 'e2': 0.0094993039819179, 'ra_0': 0}]
+kwargs_source_init = [{'R_sersic': 0.2,
+                      'center_x': 0.43120216295569497,
+                      'center_y': -0.11997593381248266,
+                      'e1': -0.499647444502212,
+                      'e2': 0.30305548421468737,
+                      'n_sersic': 4},
+                     {'R_sersic': 0.84,
+                      'center_x': 0.43120216295569497,
+                      'center_y': -0.11997593381248266,
+                      'e1': 0.17832147716521995,
+                      'e2': -0.31362990689888276,
+                      'n_sersic': 1}]
+kwargs_lens_light_init = [{'e1': -0.011260147527026164, 'n_sersic': 4.2547680055199235,
+                           'center_x': 0., 'center_y': 0., 'R_sersic': 2.,
+                           'e2': -0.052176652797644649},
+                            {'n_sersic': 1, 'center_x': 0.097, 'center_y': 0.6159, 'R_sersic': 0.01}]
+kwargs_ps_init = [{'ra_image': np.array([ 2.03396567,  2.09962691,  1.38811153, -1.11232423]),
+                   'dec_image':  np.array([-0.62337339,  0.43178866, -1.76462804,  0.25808031])}]
 
 # initial spread in parameter estimation #
 kwargs_lens_sigma = [{'theta_E': 0.1, 'e1': 0.2, 'e2': 0.2, 'gamma': .1, 'center_x': 0.1, 'center_y': 0.1},
@@ -177,7 +204,7 @@ kwargs_lens_sigma = [{'theta_E': 0.1, 'e1': 0.2, 'e2': 0.2, 'gamma': .1, 'center
 kwargs_source_sigma = [{'R_sersic': 0.2, 'n_sersic': .5, 'center_x': .1, 'center_y': 0.1, 'e1': 0.2, 'e2': 0.2}]
 kwargs_source_sigma.append({'R_sersic': 0.2, 'center_x': .1, 'n_sersic': .5, 'center_y': 0.1, 'e1': 0.2, 'e2': 0.2})
 kwargs_lens_light_sigma = [{'R_sersic': 0.2, 'center_x': .1, 'n_sersic': .5, 'center_y': 0.1, 'e1': 0.2, 'e2': 0.2}]
-kwargs_lens_light_sigma.append({'R_sersic': 0.2, 'center_x': .1, 'n_sersic': .5, 'center_y': 0.1, 'e1': 0.2, 'e2': 0.2})
+kwargs_lens_light_sigma.append({'R_sersic': 0.2, 'center_x': .1, 'center_y': 0.1})
 kwargs_ps_sigma = [{'ra_image': [0.02] * 4, 'dec_image': [0.02] * 4}]
 
 # hard bound lower limit in parameter space #
@@ -187,7 +214,7 @@ kwargs_lower_lens = [{'theta_E': 0, 'e1': -0.5, 'e2': -0.5, 'gamma': 1.5, 'cente
 kwargs_lower_source = [{'R_sersic': 0.001, 'n_sersic': 0.5, 'e1': -0.5, 'e2': -0.5, 'center_x': -10, 'center_y': -10}]
 kwargs_lower_source.append({'R_sersic': 0.001,'n_sersic': 0.5,  'e1': -0.5, 'e2': -0.5, 'center_x': -10, 'center_y': -10})
 kwargs_lower_lens_light = [{'R_sersic': 0.001, 'n_sersic': 0.5, 'e1': -0.5, 'e2': -0.5, 'center_x': -10, 'center_y': -10}]
-kwargs_lower_lens_light.append({'R_sersic': 0.001,'n_sersic': 0.5,  'e1': -0.5, 'e2': -0.5, 'center_x': -10, 'center_y': -10})
+kwargs_lower_lens_light.append({'R_sersic': 0.001, 'center_x':  0.097-0.05, 'center_y': 0.6159-0.05})
 kwargs_lower_ps = [{'ra_image': -10 * np.ones(4), 'dec_image': -10 * np.ones(4)}]
 
 # hard bound upper limit in parameter space #
@@ -197,7 +224,7 @@ kwargs_upper_lens = [{'theta_E': 10, 'e1': 0.5, 'e2': 0.5, 'gamma': 2.5, 'center
 kwargs_upper_source = [{'R_sersic': 10, 'n_sersic': 5., 'e1': 0.5, 'e2': 0.5, 'center_x': 10, 'center_y': 10}]
 kwargs_upper_source.append({'R_sersic': 10, 'n_sersic': 5., 'e1': 0.5, 'e2': 0.5, 'center_x': 10, 'center_y': 10})
 kwargs_upper_lens_light = [{'R_sersic': 10, 'n_sersic': 5., 'e1': 0.5, 'e2': 0.5, 'center_x': 10, 'center_y': 10}]
-kwargs_upper_lens_light.append({'R_sersic': 10, 'n_sersic': 5., 'e1': 0.5, 'e2': 0.5, 'center_x': 10, 'center_y': 10})
+kwargs_upper_lens_light.append({'R_sersic': 10, 'center_x': 0.097+0.05, 'center_y': 0.6159+0.05})
 kwargs_upper_ps = [{'ra_image': 10 * np.ones(4), 'dec_image': 10 * np.ones(4)}]
 
 #Fix something:
@@ -220,8 +247,8 @@ from lenstronomy.Workflow.fitting_sequence import FittingSequence
 fitting_seq = FittingSequence(multi_band_list, kwargs_model, kwargs_constraints, kwargs_likelihood, kwargs_params)
 
 fitting_kwargs_list = [
-        {'fitting_routine': 'PSO', 'mpi': False, 'sigma_scale': 1., 'n_particles': 200,
-         'n_iterations': 200},
+        {'fitting_routine': 'PSO', 'mpi': False, 'sigma_scale': 1., 'n_particles': 300,
+         'n_iterations': 300},
         {'fitting_routine': 'MCMC', 'n_burn': 20, 'n_run': 20, 'walkerRatio': 10, 'mpi': False,
          'sigma_scale': .1}]
 

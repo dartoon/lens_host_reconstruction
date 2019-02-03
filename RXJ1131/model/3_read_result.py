@@ -19,7 +19,7 @@ import sys
 sys.path.insert(0,'../../py_tools')
 from mask_objects import mask_obj
 #The values to pick up:
-filename = "fit_PSFi_QSO_mask_fluxpositive/result_PSF0_Dhost_Dlens_subg2"
+filename = "fit_PSFi_PSFrecons/result_PSF0_Dhost_Dlens_subg2"
 names = filename.split('/')[-1]
 psfno = int(names[names.find('PSF') + len('PSF')])
 subg = int(names[names.find('subg') + len('subg')])
@@ -50,8 +50,19 @@ deltaPix = 0.05  # pixel size in arcsec (area per pixel = deltaPix**2)  #!!!need
 fwhm = 0.16  # full width half max of PSF
 SimAPI = Simulation()
 kwargs_data = SimAPI.data_configure(numPix, deltaPix, exp_time, sigma_bkg)
+if "mask" in filename:
+    x_QSO = -np.array([ 2.03396567,  2.09962691,  1.38811153, -1.11232423])/deltaPix + numPix/2
+    y_QSO = np.array([-0.62337339,  0.43178866, -1.76462804,  0.25808031])/deltaPix + numPix/2
+    xy_index = np.indices((numPix,numPix))
+    for i in range(len(x_QSO)):
+        if i == 0:
+            areas = (np.sqrt((y_QSO[i]-xy_index[0])**2+(x_QSO[i]-xy_index[1])**2) <3 )  # 3 piexls
+        else:
+            areas += (np.sqrt((y_QSO[i]-xy_index[0])**2+(x_QSO[i]-xy_index[1])**2) <3 )  # 3 piexls
+    lens_rms = lens_rms * (areas == 0) + 10**6 * (areas != 0)
 kwargs_data['image_data'] = lens_image
 kwargs_data['noise_map'] = lens_rms
+
 psfname_list = ['PSF{0}.fits'.format(i) for i in range(4)]
 psfs = []
 for i in range(len(psfname_list)):
