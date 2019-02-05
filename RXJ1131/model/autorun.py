@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 import os
 path = os.getcwd()
 
-psfno = 1
-subg_list = [2,3]
+psfno = 3
+subg_list = [3]
 for subg in subg_list:
     if psfno ==0 and subg!=3:
         print "psfno, subg:", psfno, subg

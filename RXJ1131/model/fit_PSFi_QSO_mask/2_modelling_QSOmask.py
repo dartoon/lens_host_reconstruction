@@ -87,10 +87,10 @@ for i in range(len(psfname_list)):
 # =============================================================================
 # Few things to set:
 # =============================================================================
-psfno = 0
-subg = 3
+#psfno = 0
+#subg = 3
 fix_gamma = 1.95
-fname = 'Dhost_Dlensfix_subg'
+fname = 'Dhost_Dlens_subg'
 
 psf = psfs[psfno]
 psf = psf/psf.sum()
