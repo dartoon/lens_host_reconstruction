@@ -17,7 +17,7 @@ PSFno_ = [0,1,2,3]
 subg_ = [2,3]
 
 #The values to pick up:
-pick = 5
+pick = 7
 pick_names =  ['AGN flux in image plane',
  'Buldge flux image plance',
  'Disk flux image plance',
@@ -91,7 +91,7 @@ for ftype in range(4):
     plt.errorbar(x_pos+0.01*ftype, flux_source, yerr=asm_error, fmt =fmt[ftype],
                  label="{0}, {1}".format(labels[ftype].split(',')[1],labels[ftype].split(',')[2]))
 #If want to put horizontal line:
-fill_ref = False
+fill_ref = True
 if fill_ref:
     if pick == 4 or pick == 4-len(pick_names):  #
         ref_value_l,ref_value, ref_value_h = 34.7696, 44.999, 58.2371347
@@ -105,15 +105,15 @@ if fill_ref:
     ys_l = xs*0 + ref_value_l
     ys_m = xs*0 + ref_value
     ys_h = xs*0 + ref_value_h
-    plt.plot(xs,ys_l, xs, ys_m, xs,ys_h,'gray')
+    plt.plot(xs,ys_l, xs, ys_m, xs,ys_h,color = 'gray')
     plt.fill_between(xs, ys_l, ys_h, facecolor='gray', alpha = 0.2)
 
 plt.legend(numpoints=1,ncol=2,loc=2,prop={'size':18})
 plt.title('The fitting result with different PSF assumption.')
-plt.ylabel(pick_names[pick])
-plt.ylim(np.min(fit_value_l)/1.3,np.max(fit_value_h)*1.3)
+plt.ylabel(pick_names[pick],fontsize=15)
+plt.ylim(np.min(fit_value_l)/1.3,np.max(fit_value_m)*1.3)
+plt.tick_params(labelsize=15)
 plt.xticks(x_pos, bars)
 plt.show()
-
 
 

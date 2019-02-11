@@ -3,3 +3,4 @@
 *.pyc
 *_sci.fits
 *_wht.fits
+*/model/fast_model/*

@@ -77,12 +77,31 @@ for ftype in range(4):
                         [fit_value_h[i]-fit_value_m[i] for i in index]]
     plt.errorbar(x_pos, flux_source, yerr=asm_error, fmt =fmt[ftype],
                  label="{0}, {1}".format(labels[ftype].split(',')[1],labels[ftype].split(',')[2]))
+fill_ref = True
+if fill_ref:
+    if pick == 3 or pick == 3-len(pick_names):  #
+        ref_value_l,ref_value, ref_value_h = 42.317, 47.7 , 53.76
+    elif pick == 4 or pick == 4-len(pick_names):
+        ref_value_l,ref_value, ref_value_h = 3.94 -0.14, 3.94 ,3.94 + 0.14
+    elif pick == 5 or pick == 5-len(pick_names):
+        ref_value_l,ref_value, ref_value_h = 0.82 - 0.14, 0.82, 0.82 + 0.14
+    xs = np.linspace(x_pos[0], x_pos[-1])
+    ys_l = xs*0 + ref_value_l
+    ys_m = xs*0 + ref_value
+    ys_h = xs*0 + ref_value_h
+    plt.plot(xs,ys_l, xs, ys_m, xs,ys_h,color = 'gray')
+    plt.fill_between(xs, ys_l, ys_h, facecolor='gray', alpha = 0.2)
 plt.legend(numpoints=1,ncol=2,loc=2,prop={'size':18})
 plt.title('The fitting result with different PSF assumption.')
-plt.ylabel(pick_names[pick])
-plt.ylim(0,np.max(fit_value_m)*1.3)
+plt.ylabel(pick_names[pick],fontsize=15)
+plt.ylim(np.min(fit_value_m)/1.3,np.max(fit_value_m)*1.3)
+plt.tick_params(labelsize=15)
 plt.xticks(x_pos, bars)
 plt.show()
 
+
+#set_label('Sersic n',  fontsize=12)
+#plt.tick_params(labelsize=15)
+#plt.show()   
 
 
