@@ -7,6 +7,8 @@ Created on Mon Jan 14 22:34:48 2019
 
 Fit the double as two Point source + a Sersic.
 """
+
+
 import numpy as np
 import astropy.io.fits as pyfits
 import matplotlib.pyplot as plt
@@ -20,9 +22,8 @@ from fit_qso import fit_qso
 lens_image = pyfits.getdata('WFI2033_cutout.fits')
 lens_rms = pyfits.getdata('WFI2033_stdd.fits')
 psf = pyfits.getdata('PSF1.fits')
-objs, psf_index = detect_obj(psf,snr=2.0,pltshow=1, exp_sz=1.7)
-_, psf_mask = mask_obj(img=psf,snr=2.0,exp_sz=1.7, pltshow=1)
-
+objs, psf_index = detect_obj(psf,snr=2.6,pltshow=0, exp_sz=1.7)
+_, psf_mask = mask_obj(img=psf,snr=2.6,exp_sz=1.7, pltshow=0)
 pixsc = 0.08
 if len(psf_mask) > 0:
     if len(psf_mask) > 1:
@@ -43,7 +44,7 @@ if len(psf_mask) > 0:
         psf = psf_clear
 psf /= psf.sum()
 
-fit_frame_size = 100
+fit_frame_size = 90
 ct = (len(lens_image[2])-fit_frame_size)/2     # If want to cut to 61, QSO_im[ct:-ct,ct:-ct]
 
 lens_image = lens_image[ct:-ct,ct:-ct]
@@ -54,7 +55,7 @@ x_s, y_s = find_loc_max(lens_image)
 for i in range(len(x_s)):
     plt.plot(x_s[i], y_s[i], 'or')
 plt.show()
-'''
+
 coor_mid = len(lens_image)/2
 arr_x_s = - (np.asarray(x_s)-coor_mid) * pixsc
 arr_y_s = (np.asarray(y_s)-coor_mid) * pixsc
@@ -92,17 +93,16 @@ source_result, ps_result, image_ps, image_host, error_map=fit_qso(lens_image, ps
                                                                   source_params=source_params, QSO_msk = None, fixcenter=False,
                                                                   pix_sz = pixsc, no_MCMC =True,
                                                                   QSO_std =lens_rms, tag=None, deep_seed= False, pltshow = 1)   
-
 # =============================================================================
 # Derive the simple result
 # =============================================================================
 
-ps_result = {'dec_image': np.array([-0.61951553,  0.56870904, -1.72741187,  0.32108623]),
-  'point_amp': np.array([ 1313.17890781,  1399.45580915,   369.58361068,    -5.9161199 ]),
-  'ra_image': np.array([ 2.02538616,  2.05627471,  1.4515022 , -1.32241698])}
+ps_result = {'dec_image': np.array([-0.59889414,-0.32321431,0.94081951,1.0572684]),
+  'ra_image': np.array([-0.63639854, 1.47860106, -0.70573724,0.00098984])}
+
 import copy
 import numpy as np
-for i in range(len(ps_result)):
+for i in range(4):
     if i ==0:
         x_image, y_image = ps_result['ra_image'][i], ps_result['dec_image'][i]
     else:
@@ -116,10 +116,10 @@ from lenstronomy.LensModel.Solver.lens_equation_solver import LensEquationSolver
 # import lens model solver with 2 image positions constrains
 #from lenstronomy.LensModel.Solver.solver2point import Solver2Point
 from lenstronomy.LensModel.Solver.solver4point import Solver4Point
-lens_model_list_simple = ['SPEMD', 'SIS', 'SHEAR']
+lens_model_list_simple = ['SPEMD', 'SHEAR']
 lensModelSimple = LensModel(lens_model_list_simple)
 #solver2Point_simple = Solver2Point(lensModel=lensModelSimple, solver_type='ELLIPSE')
-solver4Point_simple = Solver4Point(lensModel=lensModelSimple, solver_type='PROFILE')
+solver4Point_simple = Solver4Point(lensModel=lensModelSimple, solver_type='PROFILE_SHEAR')
 
 # options for Solver2Point are:
 #    'CENTER': solves for 'center_x', 'center_y' parameters of the first lens model
@@ -128,11 +128,8 @@ solver4Point_simple = Solver4Point(lensModel=lensModelSimple, solver_type='PROFI
 #    'THETA_E_PHI: solves for Einstein radius of first lens model and shear angle of second model
 
 
-#kwargs_lens_init = [{'theta_E': 1.95, 'gamma': 2., 'e1': 0, 'e2': 0, 'center_x': 0., 'center_y': 0}, {'e1': 0.00, 'e2': -0.0}]
-kwargs_lens_init = [{'theta_E': 1.6430516631036574, 'center_x': 0.004,'center_y': -0.012, \
-                     'e1': 0.30015851115210762, 'gamma': 1.95, 'e2': -0.20051147286654569},
-                    {'theta_E': 0.2, 'center_x': -0.19,'center_y': 1.165},
-                    {'e1': 0.0, 'e2': 0.0}]
+kwargs_lens_init = [{'theta_E': 1.2323383754023733, 'center_x': -0.11277622806829063,
+                     'center_y': 0.015837748423393687, 'e1': -0.27289484939773223, 'gamma': 2.0, 'e2': 0.3337932715539048}, {'e1': -0.0, 'e2': -0.0}]
 kwargs_fit_simple, precision = solver4Point_simple.constraint_lensmodel(x_pos=x_image, y_pos=y_image,
                                                                         kwargs_list=kwargs_lens_init, xtol=1.49012e-10)
 print("the fitted macro-model parameters are: ", kwargs_fit_simple)
@@ -179,9 +176,9 @@ from lenstronomy.Sampling.parameters import Param
 # Setting up the fitting list, and guess parameter to set up the fitting parameter.
 # =============================================================================
 sigma_bkg = 0.007   # inference from 0_cutout
-exp_time = 2000  # exposure time (arbitrary units, flux per pixel is in units #photons/exp_time unit)
+exp_time = 20000  # exposure time (arbitrary units, flux per pixel is in units #photons/exp_time unit)
 numPix = len(lens_image)  # cutout pixel size
-deltaPix = 0.05  # pixel size in arcsec (area per pixel = deltaPix**2)
+deltaPix = 0.08  # pixel size in arcsec (area per pixel = deltaPix**2)
 fwhm = 0.16  # full width half max of PSF
 
 SimAPI = Simulation()
@@ -239,4 +236,3 @@ print "The mag_macro of this iamge:", mag
 print "fitted lens light:", kwargs_sersic
 print "Source position, ra_source, dec_source:", ra_source, dec_source
 print "Lensing mass: SPEMD {0}, Shear {1}".format(kwargs_spemd, kwargs_shear)
-'''
