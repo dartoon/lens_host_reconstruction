@@ -14,7 +14,7 @@ path = os.getcwd()
 #psfnos = [0, 2]
 #psfnos = [5, 6]
 #psfnos = [7]
-psfnos = [1, 2, 5, 6, 7]
+#psfnos = [1, 2, 5, 6, 7]
 subg_list = [2, 3]
 for psfno in psfnos:
     for subg in subg_list:

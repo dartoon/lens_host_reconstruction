@@ -328,9 +328,9 @@ print "PSF:", psfno
 print "host flux source plane:", host_flux_total
 
 #If to save the fitting reuslt as the pickle:
-filename='fit_result_PSF{0}_{2}{1}'.format(psfno,subg, fname)
-fit_result = [lens_result, source_result, lens_light_result, ps_result, kwargs_psf_updated, host_flux_total]
-pickle.dump(fit_result, open(filename, 'wb'))
+#filename='fit_result_PSF{0}_{2}{1}'.format(psfno,subg, fname)
+#fit_result = [lens_result, source_result, lens_light_result, ps_result, kwargs_psf_updated, host_flux_total]
+#pickle.dump(fit_result, open(filename, 'wb'))
 
 import corner
 n, num_param = np.shape(samples_mcmc)

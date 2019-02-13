@@ -14,14 +14,13 @@ path = os.getcwd()
 #psfnos = [0, 2]
 #psfnos = [5, 6]
 #psfnos = [7]
-psfnos = ['ave', 'ave_std']
-subg_list = [2, 3]
+psfnos = ['ave']
+subg_list = [3]
 for psfno in psfnos:
     for subg in subg_list:
         print "psfno, subg:", psfno, subg
-        if psfno != 'ave' and subg!=2:
-            runfile(path+'/fit_PSFave_PSFrecons/2_modelling_PSFrecons.py',
-                    wdir=path + '/fit_PSFave_PSFrecons')
-        print "run PSF mask"
-        runfile(path+'/fit_PSFave_QSOmask/2_modelling_QSOmask.py', 
-                wdir=path+'/fit_PSFave_QSOmask')
+        runfile(path+'/fit_PSFave_PSFrecons/2_modelling_PSFrecons.py',
+                wdir=path + '/fit_PSFave_PSFrecons')
+#        print "run PSF mask"
+#        runfile(path+'/fit_PSFave_QSOmask/2_modelling_QSOmask.py', 
+#                wdir=path+'/fit_PSFave_QSOmask')
