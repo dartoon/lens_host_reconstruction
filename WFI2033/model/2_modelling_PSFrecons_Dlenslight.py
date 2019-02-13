@@ -84,7 +84,7 @@ for i in range(len(x_QSO)):
 fix_gamma = 2.
 #psfno =  1#0, 1, 2, 5, 6, 7
 #subg = 2
-fname = 'Shost_Dlens_nomask1_subg'
+fname = 'Shost_Dlenslight_nomask1_subg'
 
 psfname_list = ['PSF{0}.fits'.format(i) for i in [psfno]]
 psfs = []
