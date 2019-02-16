@@ -17,7 +17,7 @@ PSFno_ = [0, 1, 2, 5, 6, 7]
 subg_ = [2,3]
 
 #The values to pick up:
-pick = 0
+pick = -1
 pick_names =  ["AGN flux in image plane", "Host flux image plance",
                "AGN flux in souce plane", "Host flux souce plane", 
                "Host Sersic", "Sersic Reff"] 
