@@ -11,16 +11,14 @@ import matplotlib.pyplot as plt
 import os
 path = os.getcwd()
 
-#psfnos = [0, 2]
-#psfnos = [5, 6]
-#psfnos = [7]
-psfnos = ['ave']
-subg_list = [3]
+psfnos = ['ave','avestd']
+subg_list = [2,3]
 for psfno in psfnos:
     for subg in subg_list:
         print "psfno, subg:", psfno, subg
+        print "run PSF ave"
         runfile(path+'/fit_PSFave_PSFrecons/2_modelling_PSFrecons.py',
                 wdir=path + '/fit_PSFave_PSFrecons')
-#        print "run PSF mask"
-#        runfile(path+'/fit_PSFave_QSOmask/2_modelling_QSOmask.py', 
-#                wdir=path+'/fit_PSFave_QSOmask')
+        print "run PSF mask"
+        runfile(path+'/fit_PSFave_QSOmask/2_modelling_QSOmask.py', 
+                wdir=path+'/fit_PSFave_QSOmask')

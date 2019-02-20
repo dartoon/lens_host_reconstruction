@@ -14,7 +14,7 @@ import corner
 def fit_qso(QSO_im, psf_ave, psf_std=None, source_params=None,ps_param=None, background_rms=0.04, pix_sz = 0.168,
             exp_time = 300., fix_n=None, image_plot = True, corner_plot=True,
             flux_ratio_plot=True, deep_seed = False, fixcenter = False, QSO_msk=None, QSO_std=None,
-            tag = None, no_MCMC= False, pltshow = 1):
+            tag = None, no_MCMC= False, pltshow = 1, return_Chisq = False):
     '''
     A quick fit for the QSO image with (so far) single sersice + one PSF. The input psf noise is optional.
     
@@ -200,7 +200,7 @@ def fit_qso(QSO_im, psf_ave, psf_std=None, source_params=None,ps_param=None, bac
     from lenstronomy.Plots.output_plots import LensModelPlot
     lensPlot = LensModelPlot(kwargs_data, kwargs_psf, kwargs_numerics, kwargs_model, lens_result, source_result,
                              lens_light_result, ps_result, arrow_size=0.02, cmap_string="gist_heat")
-    
+    reduced_Chisq =  lensPlot._reduced_x2
     if image_plot:
         f, axes = plt.subplots(3, 3, figsize=(16, 16), sharex=False, sharey=False)
         lensPlot.data_plot(ax=axes[0,0], text="Data")
@@ -267,9 +267,27 @@ def fit_qso(QSO_im, psf_ave, psf_std=None, source_params=None,ps_param=None, bac
         else:
             plt.show()
     if QSO_std is None:
-        return source_result, ps_result, image_ps, image_host, np.sqrt(data_class.C_D+np.abs(error_map))
+        if return_Chisq == False:
+            return source_result, ps_result, image_ps, image_host, np.sqrt(data_class.C_D+np.abs(error_map))
+        elif return_Chisq == True:
+            return source_result, ps_result, image_ps, image_host, np.sqrt(data_class.C_D+np.abs(error_map)), reduced_Chisq
     else:
-        return source_result, ps_result, image_ps, image_host, np.sqrt(QSO_std**2+np.abs(error_map)) #error_map=0
+        if return_Chisq == False:
+            return source_result, ps_result, image_ps, image_host, np.sqrt(QSO_std**2+np.abs(error_map))
+        elif return_Chisq == True:
+            return source_result, ps_result, image_ps, image_host, np.sqrt(QSO_std**2+np.abs(error_map)), reduced_Chisq #error_map=0
+    
+    if QSO_std is None:
+        if return_Chisq == False:
+            return source_result, image_host, np.sqrt(data_class.C_D+np.abs(error_map))
+        elif return_Chisq == True:
+            return source_result, image_host, np.sqrt(data_class.C_D+np.abs(error_map)), reduced_Chisq
+    else:
+        if return_Chisq == False:
+            return source_result, image_host, np.sqrt(galaxy_std**2+np.abs(error_map)) #error_map=0
+        elif return_Chisq == True:
+            return source_result, image_host, np.sqrt(galaxy_std**2+np.abs(error_map)), reduced_Chisq #error_map=0
+    
 
 
 
@@ -570,7 +588,7 @@ def fit_qso_multiband(QSO_im_list, psf_ave_list, psf_std_list=None, source_param
 def fit_galaxy(galaxy_im, psf_ave, psf_std=None, source_params=None, background_rms=0.04, pix_sz = 0.168,
             exp_time = 300., fix_n=None, image_plot = True, corner_plot=True,
             deep_seed = False, galaxy_msk=None, galaxy_std=None,
-            tag = None, no_MCMC= False, pltshow = 1):
+            tag = None, no_MCMC= False, pltshow = 1, return_Chisq = False):
     '''
     A quick fit for the QSO image with (so far) single sersice + one PSF. The input psf noise is optional.
     
@@ -616,7 +634,6 @@ def fit_galaxy(galaxy_im, psf_ave, psf_std=None, source_params=None, background_
         kwargs_source_sigma = []
         kwargs_lower_source = []
         kwargs_upper_source = []
-        
         # Disk component, as modelled by an elliptical Sersic profile
         if fix_n == None:
             fixed_source.append({})  # we fix the Sersic index to n=1 (exponential)
@@ -690,8 +707,16 @@ def fit_galaxy(galaxy_im, psf_ave, psf_std=None, source_params=None, background_
             ]
     elif deep_seed == True:
          fitting_kwargs_list = [
-            {'fitting_routine': 'PSO', 'mpi': False, 'sigma_scale': 1., 'n_particles': 80,
-             'n_iterations': 60},
+            {'fitting_routine': 'PSO', 'mpi': False, 'sigma_scale': 1., 'n_particles': 100,
+             'n_iterations': 80},
+            {'fitting_routine': 'MCMC', 'n_burn': 20, 'n_run': 20, 'walkerRatio': 100, 'mpi': False,   ##Inputs  to CosmoHammer:
+               #n_particles - particleCount; n_burn - burninIterations; n_run: sampleIterations (n_burn and n_run usually the same.); walkerRatio: walkersRatio.
+            'sigma_scale': .1}
+            ]
+    elif deep_seed == 'very_deep':
+         fitting_kwargs_list = [
+            {'fitting_routine': 'PSO', 'mpi': False, 'sigma_scale': 1., 'n_particles': 150,
+             'n_iterations': 150},
             {'fitting_routine': 'MCMC', 'n_burn': 20, 'n_run': 20, 'walkerRatio': 100, 'mpi': False,   ##Inputs  to CosmoHammer:
                #n_particles - particleCount; n_burn - burninIterations; n_run: sampleIterations (n_burn and n_run usually the same.); walkerRatio: walkersRatio.
             'sigma_scale': .1}
@@ -708,6 +733,7 @@ def fit_galaxy(galaxy_im, psf_ave, psf_std=None, source_params=None, background_
     print('============ CONGRATULATION, YOUR JOB WAS SUCCESSFUL ================ ')
     # this is the linear inversion. The kwargs will be updated afterwards
     image_reconstructed, error_map, _, _ = imageModel.image_linear_solve(kwargs_source=source_result, kwargs_ps=ps_result)
+    image_ps = imageModel.point_source(ps_result)
     image_host = []
     for i in range(len(source_result)):
         image_host.append(imageModel.source_surface_brightness(source_result, k=i))
@@ -715,7 +741,7 @@ def fit_galaxy(galaxy_im, psf_ave, psf_std=None, source_params=None, background_
     from lenstronomy.Plots.output_plots import LensModelPlot
     lensPlot = LensModelPlot(kwargs_data, kwargs_psf, kwargs_numerics, kwargs_model, lens_result, source_result,
                              lens_light_result, ps_result, arrow_size=0.02, cmap_string="gist_heat")
-    
+    reduced_Chisq =  lensPlot._reduced_x2
     if image_plot:
         f, axes = plt.subplots(1, 3, figsize=(16, 16), sharex=False, sharey=False)
         lensPlot.data_plot(ax=axes[0])
@@ -742,8 +768,13 @@ def fit_galaxy(galaxy_im, psf_ave, psf_std=None, source_params=None, background_
            else:
                plt.show()
     if galaxy_std is None:
-        return source_result, image_host, np.sqrt(data_class.C_D+np.abs(error_map))
+        if return_Chisq == False:
+            return source_result, image_host, np.sqrt(data_class.C_D+np.abs(error_map))
+        elif return_Chisq == True:
+            return source_result, image_host, np.sqrt(data_class.C_D+np.abs(error_map)), reduced_Chisq
     else:
-        return source_result, image_host, np.sqrt(galaxy_std**2+np.abs(error_map)) #error_map=0
-
+        if return_Chisq == False:
+            return source_result, image_host, np.sqrt(galaxy_std**2+np.abs(error_map)) #error_map=0
+        elif return_Chisq == True:
+            return source_result, image_host, np.sqrt(galaxy_std**2+np.abs(error_map)), reduced_Chisq #error_map=0
     

@@ -63,7 +63,7 @@ y_QSO = -np.array([-0.63639854, 1.47860106, -0.70573724,0.00098984])/deltaPix + 
 # Few things to set:
 # =============================================================================
 fix_gamma = 2.
-#psfno =  0#0, 1, 2, 5, 6, 7
+#psfno = 0
 #subg = 2
 fname = 'Shost_Dlenslight_nomask1_subg'
 
