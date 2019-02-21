@@ -13,6 +13,7 @@ for i in range(len(files)):
   dx= (arc[0].header[12]-arc[0].header[11])/frame
   dy= (arc[0].header[14]-arc[0].header[13])/frame
   sq= dx*dy/(0.08**2)
+  print np.sqrt(sq)
   arc.flush()
   d=d*sq
-  pyfits.PrimaryHDU(d).writeto('flux-{0}'.format(filename),overwrite=True)
+#  pyfits.PrimaryHDU(d).writeto('flux-{0}'.format(filename),overwrite=True)

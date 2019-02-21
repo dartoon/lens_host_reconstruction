@@ -13,11 +13,11 @@ import matplotlib.pyplot as plt
 import pickle
 import glob
 
-PSFno_ = [0, 1, 2, 5, 6, 7]
+PSFno_ = [0, 1, 2, 5, 6]
 subg_ = [2,3]
 
 #The values to pick up:
-pick = 1
+pick = 3
 pick_names =  ["AGN flux in image plane", "Host flux image plance",
                "AGN flux in souce plane", "Host flux souce plane", 
                "Host Sersic", "Sersic Reff"] 
@@ -103,9 +103,9 @@ if fill_ref:
     if pick == 3 or pick == 3-len(pick_names):
         ref_value_l,ref_value, ref_value_h = 33.1, (43.8+33.1)/2, 43.8
     elif pick == 4 or pick == 4-len(pick_names): # Sersic index
-        ref_value_l,ref_value, ref_value_h = 1.3, 1.45, 1.6
+        ref_value_l,ref_value, ref_value_h = 1.3, 1.4, 1.5
     elif pick == 5 or pick == 5-len(pick_names):  # Sersic Reff
-        ref_value_l,ref_value, ref_value_h = 0.53, (0.53+0.6)/2 , 0.60
+        ref_value_l,ref_value, ref_value_h = 0.32, (0.32+0.36)/2 , 0.36
     xs = np.linspace(x_pos[0], x_pos[-1])
     ys_l = xs*0 + ref_value_l
     ys_m = xs*0 + ref_value

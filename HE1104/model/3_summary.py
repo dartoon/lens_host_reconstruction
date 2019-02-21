@@ -13,11 +13,11 @@ import matplotlib.pyplot as plt
 import pickle
 import glob
 
-PSFno_ = [0, 1, 2, 4]
+PSFno_ = [0, 1, 4]
 subg_ = [2,3]
 
 #The values to pick up:
-pick = 1
+pick = 3
 pick_names =  ["AGN flux in image plane", "Host flux image plance",
                "AGN flux in souce plane", "Host flux souce plane", 
                "Host Sersic", "Sersic Reff"] 
@@ -44,7 +44,7 @@ for folder in folder_i:
             fit_value_h.append(np.percentile(fit_value,84,axis=0))
             labels.append("{0}, subg{1}, {2}".format(PSFtyp, subg, fit_type))
 
-folder_ave = ['PSFave(0124)_QSOmask_result', 'PSFave(0124)_PSFrecons_result']
+folder_ave = ['fit_PSFave_QSOmask', 'fit_PSFave_PSFrecons']
 for folder in folder_ave:
     filenames = glob.glob('{0}/result*'.format(folder))
     filenames.sort()

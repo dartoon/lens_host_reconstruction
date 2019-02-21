@@ -38,7 +38,7 @@ lens_image = pyfits.getdata('../RXJ1131_cutout.fits')   #!!!need to change
 lens_rms = pyfits.getdata('../RXJ1131_stdd.fits')    #!!!need to change
 lens_image = lens_image[ct:-ct,ct:-ct]
 lens_rms = lens_rms[ct:-ct,ct:-ct]
-
+'''
 sigma_bkg = 0.007   # inference from 0_cutout  #!!!need to change
 exp_time = 1980  # exposure time (arbitrary units, flux per pixel is in units #photons/exp_time unit)
 numPix = len(lens_image)  # cutout pixel size
@@ -370,3 +370,4 @@ pickle.dump([fit_result, trans_result], open(picklename, 'wb'))
 
 import os
 os.system('say "your program of PSF{0} has finished"'.format(psfno))
+'''

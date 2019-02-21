@@ -27,14 +27,14 @@ kwargs_upper_source = []
 fixed_source.append({})  
 kwargs_source_init.append({'R_sersic': 1, 'n_sersic': 2., 'e1': 0., 'e2': 0., 'center_x': 0, 'center_y': 0})
 kwargs_source_sigma.append({'n_sersic': 0.5, 'R_sersic': 0.5, 'e1': 0.1, 'e2': 0.1, 'center_x': 0.1, 'center_y': 0.1})
-kwargs_lower_source.append({'e1': -0.5, 'e2': -0.5, 'R_sersic': 0.5, 'n_sersic': 0.3, 'center_x': -0.5, 'center_y': -0.5})
+kwargs_lower_source.append({'e1': -0.5, 'e2': -0.5, 'R_sersic': 0.01, 'n_sersic': 0.3, 'center_x': -0.5, 'center_y': -0.5})
 kwargs_upper_source.append({'e1': 0.5, 'e2': 0.5, 'R_sersic': 10., 'n_sersic': 7., 'center_x': 0.5, 'center_y': 0.5})
 source_params = [kwargs_source_init, kwargs_source_sigma, fixed_source, kwargs_lower_source, kwargs_upper_source]
 
 source_result, image_host, error_map, reduced_Chisq=fit_galaxy(galaxy_img, psf_ave=None, psf_std = None,
                                               background_rms=np.std(galaxy_img)/2,
                                               source_params=source_params, galaxy_msk = None,
-                                              pix_sz = 0.08, no_MCMC =True,
+                                              pix_sz = 0.048, no_MCMC =False,
                                               tag=None, deep_seed= True, pltshow=1, return_Chisq=True)
 source_result = source_result[0]
 import magVSamp

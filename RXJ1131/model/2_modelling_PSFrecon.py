@@ -83,7 +83,7 @@ psf = psf/psf.sum()
 sigma_bkg = 0.005   # inference from 0_cutout
 exp_time = 10*4  # exposure time (arbitrary units, flux per pixel is in units #photons/exp_time unit)
 numPix = len(lens_image)  # cutout pixel size
-deltaPix = 0.08  # pixel size in arcsec (area per pixel = deltaPix**2)
+!!!deltaPix = 0.08  # pixel size in arcsec (area per pixel = deltaPix**2)
 fwhm = 0.16  # full width half max of PSF
 
 SimAPI = Simulation()
