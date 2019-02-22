@@ -98,6 +98,13 @@ psf_av, psf_std = psf_ave(psfs)
 psf = psf_av/psf_av.sum()
 #psf = psfs[0]  
 
+from flux_profile import profiles_compare
+f_ = profiles_compare([psf, psfs[0], psfs[1], psfs[2]], scal_list=np.ones(4),
+                       prf_name_list=['ave PSF', 'PSF0','PSF1','PSF4'],
+                       gridspace = 'log', if_annuli=True)
+f_.show()
+
+'''
 SimAPI = Simulation()
 kwargs_data = SimAPI.data_configure(numPix, deltaPix)
 kwargs_psf = SimAPI.psf_configure(psf_type='PIXEL', fwhm=fwhm, kernelsize=len(psf), deltaPix=deltaPix,kernel=psf)
@@ -310,3 +317,4 @@ trans_result = [mcmc_new_list, labels_new]
 pickle.dump([fit_result, trans_result], open(picklename, 'wb'))
 #import os
 #os.system('say "your program of PSF{0} has finished"'.format(psfno))
+'''
