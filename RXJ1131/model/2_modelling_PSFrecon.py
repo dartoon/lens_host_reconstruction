@@ -97,7 +97,7 @@ data_class = Data(kwargs_data)
 # Setting up the fitting list, and guess parameter to set up the fitting parameter.
 # =============================================================================
 fix_gamma = 1.93
-lens_model_list = ['SPEMD', 'SHEAR']
+lens_model_list = ['SPEMD', 'SIS', 'SHEAR']
 lens_model_class = LensModel(lens_model_list=lens_model_list)
 lens_light_model_list = ['SERSIC_ELLIPSE','SERSIC_ELLIPSE']
 lens_light_model_class = LightModel(light_model_list=lens_light_model_list)
