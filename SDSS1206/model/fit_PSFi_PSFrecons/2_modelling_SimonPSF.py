@@ -70,7 +70,7 @@ fwhm = 0.16  # full width half max of PSF
 fix_gamma = 2.
 psfno = 0
 subg = 2
-fname = 'DhostDlens_SimonPSF_withstd'
+fname = 'DhostDlens_SimonPSF_nostd'
 
 #psf = pyfits.getdata('../PSF0.fits')
 #_ , _, deblend_sources = mask_obj(psf, snr=2, npixels=20, return_deblend = True)
@@ -87,7 +87,7 @@ fname = 'DhostDlens_SimonPSF_withstd'
 #psf /= psf.sum()
 
 import h5py    
-psf_file = h5py.File('psf.hdf5','r+')   
+psf_file = h5py.File('/Users/Dartoon/Downloads/psf.hdf5','r+')   
 psf = np.array(psf_file['kernel_point_source'])
 psf_std = np.array(psf_file['psf_error_map'])
 
@@ -110,8 +110,8 @@ source_model_class = LightModel(light_model_list=source_model_list)
 point_source_list = ['LENSED_POSITION']
 point_source_class = PointSource(point_source_type_list=point_source_list, fixed_magnification_list=[False])
 
-if psf_std is not None:
-    kwargs_psf['psf_error_map'] = psf_std
+#if psf_std is not None:
+#    kwargs_psf['psf_error_map'] = psf_std
 
 kwargs_numerics = {'subgrid_res': subg, 'psf_subgrid': False}
 psf_class = PSF(kwargs_psf)
