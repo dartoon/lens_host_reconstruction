@@ -88,7 +88,7 @@ def save_loc_png(img, center_QSO, c_psf_list=None,extra_psfs=None,ID=None, label
     my_cmap = copy.copy(matplotlib.cm.get_cmap('gist_heat')) # copy the default cmap
     my_cmap.set_bad('black')
     if reg_ty == None:
-        vmax = 2.2
+        vmax = np.log10(100)
         vmin = 1.e-2
         QSO_box_size = 100
         PSF_box_size = 40
