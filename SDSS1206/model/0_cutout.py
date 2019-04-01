@@ -112,8 +112,8 @@ PSF_masks = [PSFs[i][2] for i in range(len(PSFs))]
 ##    lensing image and noise map
 ##    PSFs
 ##==============================================================================
-#pyfits.PrimaryHDU(lens_image).writeto('SDSS1246_cutout.fits',overwrite=True) 
-#pyfits.PrimaryHDU(lens_rms).writeto('SDSS1246_stdd.fits',overwrite=True) 
+#pyfits.PrimaryHDU(lens_image).writeto('SDSS1206_cutout.fits',overwrite=True) 
+#pyfits.PrimaryHDU(lens_rms).writeto('SDSS1206_stdd.fits',overwrite=True) 
 #for i in range(len(PSFs)):
 #    pyfits.PrimaryHDU(PSF_list[i]).writeto('PSF{0}.fits'.format(i),overwrite=True) 
 #

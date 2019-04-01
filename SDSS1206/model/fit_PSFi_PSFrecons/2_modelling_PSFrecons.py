@@ -32,8 +32,8 @@ from lenstronomy.LightModel.light_model import LightModel
 from lenstronomy.Sampling.parameters import Param
 
 
-lens_image = pyfits.getdata('../SDSS1246_cutout.fits')   #!!!need to change
-lens_rms = pyfits.getdata('../SDSS1246_stdd.fits')    #!!!need to change
+lens_image = pyfits.getdata('../SDSS1206_cutout.fits')   #!!!need to change
+lens_rms = pyfits.getdata('../SDSS1206_stdd.fits')    #!!!need to change
 
 lens_mask = 1 - cr_mask(lens_image, '../lens_mask.reg')
 obj_maks = cr_mask(lens_image, '../obj0_mask.reg')
@@ -69,8 +69,8 @@ fwhm = 0.16  # full width half max of PSF
 # =============================================================================
 fix_gamma = 2.
 psfno = 0
-subg = 2
-fname = 'UPversion_DhostDlens_fixG1c_SISG2'
+subg = 3
+fname = 'UPversion_DhostDlens_fixG1c_SISG2_subg'
 
 psf = pyfits.getdata('../PSF0.fits')
 _ , _, deblend_sources = mask_obj(psf, snr=2, npixels=20, return_deblend = True)
@@ -253,10 +253,10 @@ fitting_kwargs_list_0 = [['PSO', {'sigma_scale': 1., 'n_particles': 300, 'n_iter
 
 fitting_seq.fit_sequence(fitting_kwargs_list_0)
 
-kwargs_psf_iter = {'stacking_method': 'median', 
-                   'keep_error_map': True, 
-                   'psf_symmetry': 1, 
-                   'block_center_neighbour': 0.05}
+#kwargs_psf_iter = {'stacking_method': 'median', 
+#                   'keep_error_map': True, 
+#                   'psf_symmetry': 1, 
+#                   'block_center_neighbour': 0.05}
 
 fitting_kwargs_list_1 = [['psf_iteration', {'num_iter': 100, 'psf_iter_factor': 0.2, 'block_center_neighbour': 0.5}],
                          ['PSO', {'sigma_scale': 1., 'n_particles': 100, 'n_iterations': 100}],

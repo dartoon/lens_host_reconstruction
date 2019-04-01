@@ -13,20 +13,20 @@ import matplotlib.pyplot as plt
 import pickle
 import glob
 
-PSFno_ = [0, 1, 4]
+PSFno_ = [0]
 subg_ = [2,3]
 
 #The values to pick up:
 pick = 3
-pick_names =  ["AGN flux in image plane", "Host flux image plance",
-               "AGN flux in souce plane", "Host flux souce plane", 
-               "Host Sersic", "Sersic Reff"] 
+#pick_names =  ["AGN flux in image plane", "Host flux image plance",
+#               "AGN flux in souce plane", "Host flux souce plane", 
+#               "Host Sersic", "Sersic Reff"] 
 labels = []
 fit_value_l, fit_value_m, fit_value_h, = [], [], []
 
-folder_i = ['fit_PSFi_QSOmask', 'fit_PSFi_PSFrecons']
+folder_i = ['fit_PSFi_PSFmask', 'fit_PSFi_PSFrecons']
 for folder in folder_i:
-    filenames = glob.glob('{0}/result*'.format(folder))
+    filenames = glob.glob('{0}/result_PSF*_UPversion*'.format(folder))
     filenames.sort()
     for filename in filenames:
         PSFtyp = filename.split('/')[1].split('_')[1]
@@ -63,6 +63,8 @@ for folder in folder_ave:
         fit_value_m.append(np.percentile(fit_value,50,axis=0))
         fit_value_h.append(np.percentile(fit_value,84,axis=0))
         labels.append("{0}, subg{1}, {2}".format(PSFtyp, subg, fit_type))
+
+pick_names = trans_result[1]
 
 fit_value_l = [x for _,x in sorted(zip(labels,fit_value_l))]
 fit_value_m = [x for _,x in sorted(zip(labels,fit_value_m))]

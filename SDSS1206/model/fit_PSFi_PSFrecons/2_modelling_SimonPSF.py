@@ -32,8 +32,8 @@ from lenstronomy.LightModel.light_model import LightModel
 from lenstronomy.Sampling.parameters import Param
 
 
-lens_image = pyfits.getdata('../SDSS1246_cutout.fits')   #!!!need to change
-lens_rms = pyfits.getdata('../SDSS1246_stdd.fits')    #!!!need to change
+lens_image = pyfits.getdata('../SDSS1206_cutout.fits')   #!!!need to change
+lens_rms = pyfits.getdata('../SDSS1206_stdd.fits')    #!!!need to change
 
 lens_mask = 1 - cr_mask(lens_image, '../lens_mask.reg')
 obj_maks = cr_mask(lens_image, '../obj0_mask.reg')
@@ -69,7 +69,7 @@ fwhm = 0.16  # full width half max of PSF
 # =============================================================================
 fix_gamma = 2.
 psfno = 0
-subg = 2
+subg = 3
 fname = 'DhostDlens_SimonPSF_nostd'
 
 #psf = pyfits.getdata('../PSF0.fits')
