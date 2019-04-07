@@ -4,3 +4,5 @@
 *_sci.fits
 *_wht.fits
 */model/fast_model/*
+*PSF*img*.pdf
+*corner.pdf

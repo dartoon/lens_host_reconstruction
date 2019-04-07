@@ -12,28 +12,32 @@ import astropy.io.fits as pyfits
 import matplotlib.pyplot as plt
 import pickle
 import glob
+from read_chisq import return_chisq 
 
 PSFno_ = [0]
 subg_ = [2,3]
 
 #The values to pick up:
-pick = 3
+pick = 4
 #pick_names =  ["AGN flux in image plane", "Host flux image plance",
 #               "AGN flux in souce plane", "Host flux souce plane", 
 #               "Host Sersic", "Sersic Reff"] 
 labels = []
 fit_value_l, fit_value_m, fit_value_h, = [], [], []
+chisq = []
 
-folder_i = ['fit_PSFi_PSFmask', 'fit_PSFi_PSFrecons']
+folder_i = ['fit_PSFi_QSOmask', 'fit_PSFi_PSFrecons']
 for folder in folder_i:
-    filenames = glob.glob('{0}/result_PSF*_UPversion*'.format(folder))
+    filenames = glob.glob('{0}/result_PSF?_fit_again_UPversion*'.format(folder))
     filenames.sort()
     for filename in filenames:
         PSFtyp = filename.split('/')[1].split('_')[1]
         if int(PSFtyp.split('PSF')[1]) in PSFno_:
+            print filename
             subg = filename[(filename).find('subg')+len('subg')]
             fit_type = filename.split('/')[0].split('_')[-1]
             result = pickle.load(open(filename,'rb'))
+            chisq.append(repr(round(return_chisq(filename),3)))
             if len(result) == 2:
                 fit_result, trans_result = result
             elif len(result) ==3:
@@ -44,31 +48,32 @@ for folder in folder_i:
             fit_value_h.append(np.percentile(fit_value,84,axis=0))
             labels.append("{0}, subg{1}, {2}".format(PSFtyp, subg, fit_type))
 
-folder_ave = ['fit_PSFave_QSOmask', 'fit_PSFave_PSFrecons']
-for folder in folder_ave:
-    filenames = glob.glob('{0}/result*'.format(folder))
-    filenames.sort()
-    for filename in filenames:
-#        print filename
-        PSFtyp = filename.split('/')[1].split('_')[1]
-        subg = filename[(filename).find('subg')+len('subg')]
-        fit_type = filename.split('/')[0].split('_')[-1]
-        result = pickle.load(open(filename,'rb'))
-        if len(result) == 2:
-            fit_result, trans_result = result
-        elif len(result) ==3:
-            fit_result, trans_result, kwargs_psf_updated = result
-        fit_value = np.asarray(trans_result[0])[:,pick]
-        fit_value_l.append(np.percentile(fit_value,16,axis=0))
-        fit_value_m.append(np.percentile(fit_value,50,axis=0))
-        fit_value_h.append(np.percentile(fit_value,84,axis=0))
-        labels.append("{0}, subg{1}, {2}".format(PSFtyp, subg, fit_type))
-
+#folder_ave = ['fit_PSFave_QSOmask', 'fit_PSFave_PSFrecons']
+#for folder in folder_ave:
+#    filenames = glob.glob('{0}/result*'.format(folder))
+#    filenames.sort()
+#    for filename in filenames:
+##        print filename
+#        PSFtyp = filename.split('/')[1].split('_')[1]
+#        subg = filename[(filename).find('subg')+len('subg')]
+#        fit_type = filename.split('/')[0].split('_')[-1]
+#        result = pickle.load(open(filename,'rb'))
+#        if len(result) == 2:
+#            fit_result, trans_result = result
+#        elif len(result) ==3:
+#            fit_result, trans_result, kwargs_psf_updated = result
+#        fit_value = np.asarray(trans_result[0])[:,pick]
+#        fit_value_l.append(np.percentile(fit_value,16,axis=0))
+#        fit_value_m.append(np.percentile(fit_value,50,axis=0))
+#        fit_value_h.append(np.percentile(fit_value,84,axis=0))
+#        labels.append("{0}, subg{1}, {2}".format(PSFtyp, subg, fit_type))
+#%%
 pick_names = trans_result[1]
-
 fit_value_l = [x for _,x in sorted(zip(labels,fit_value_l))]
 fit_value_m = [x for _,x in sorted(zip(labels,fit_value_m))]
 fit_value_h = [x for _,x in sorted(zip(labels,fit_value_h))]
+chisq = [x for _,x in sorted(zip(labels,chisq))]
+
 labels = [x for _,x in sorted(zip(labels,labels))]  # Sort the label at the last
 
 #bars = [labels[i].split(',')[0] for i in range(len(labels))]
@@ -94,11 +99,12 @@ x_pos = np.arange(length) + 0.5
 fmt =['--','--','-','-']
 for ftype in range(4):
     index = [i*4+ftype for i in range(length)]
-    flux_source = [fit_value_m[i] for i in index]
+    value_result = [fit_value_m[i] for i in index]
     asm_error = [[fit_value_m[i]-fit_value_l[i] for i in index],
                         [fit_value_h[i]-fit_value_m[i] for i in index]]
-    plt.errorbar(x_pos+0.01*ftype, flux_source, yerr=asm_error, fmt =fmt[ftype],
+    plt.errorbar(x_pos+0.01*ftype, value_result, yerr=asm_error, fmt =fmt[ftype],
                  label="{0}, {1}".format(labels[ftype].split(',')[1],labels[ftype].split(',')[2]))
+    plt.text((x_pos+0.01*ftype)[0], value_result[0]*9.2/9, chisq[ftype],fontsize=15)
 ##If want to put horizontal line:
 #fill_ref = True
 #if fill_ref:

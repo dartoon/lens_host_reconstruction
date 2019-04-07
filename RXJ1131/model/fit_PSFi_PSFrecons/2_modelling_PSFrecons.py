@@ -51,8 +51,8 @@ fwhm = 0.16  # full width half max of PSF
 
 psfname_list = ['../PSF{0}.fits'.format(i) for i in range(4)]
 psfs = []
-for i in range(len(psfname_list)):
-    psf_i = pyfits.getdata(psfname_list[i])
+for k in range(len(psfname_list)):
+    psf_i = pyfits.getdata(psfname_list[k])
     _, psf_mask = mask_obj(img=psf_i,snr=2.0,exp_sz=1.7,pltshow=0)
     if 1 in psf_mask[0]:
         if len(psf_mask) > 1:

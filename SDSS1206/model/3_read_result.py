@@ -18,10 +18,11 @@ from flux_profile import cr_mask
 psf_i = 0 #raw_input("Which psf to load? 0, 1, 2, 3...:\n")
 
 subg = 2 #int(filename.split('subg')[1])
-#filename = 'fit_PSFi_PSFrecons/result_PSF0_UPversion_DhostDlens_fixG1c_SISG2_subg{0}'.format(subg)
-filename = 'fit_PSFi_PSFmask/result_PSF0_UPversion_DhostDlens_fixG1c_SISG2_subg{0}'.format(subg)
+filename = 'fit_PSFi_PSFrecons/result_PSF0_2nd_UPversion_DhostDlens_fixG1c_SISG2_subg{0}'.format(subg)
+#filename = 'fit_PSFi_QSOmask/result_PSF0_UPversion_DhostDlens_fixG1c_SISG2_subg{0}'.format(subg)
 result = pickle.load(open(filename,'rb'))
 
+print filename
 
 if len(result) == 2:
     fit_result, trans_result = result
@@ -68,11 +69,11 @@ psfno = psf_i
 if len(result) == 3:
     psf = kwargs_psf_updated['kernel_point_source']
 else:
-    psf = kwargs_psf_updated['kernel_point_source_init']
-#    folder_name = filename.split('/')[0] #.replace('QSOmask','PSFrecons')
-#    import glob
-#    filename_PSFave = glob.glob(folder_name+"/result*PSF{0}*".format(psf_i))[0]
-#    psf = pickle.load(open(filename_PSFave,'rb'))[2]['kernel_point_source_init']
+#    psf = kwargs_psf_updated['kernel_point_source_init']
+    folder_name = filename.split('/')[0].replace('QSOmask','PSFrecons')
+    import glob
+    filename_PSFave = glob.glob(folder_name+"/result*PSF{0}*".format(psf_i))[0]
+    psf = pickle.load(open(filename_PSFave,'rb'))[2]['kernel_point_source_init']
 
 numPix = len(lens_image)  # cutout pixel size
 deltaPix = 0.08  # pixel size in arcsec (area per pixel = deltaPix**2)
@@ -151,7 +152,7 @@ image_host_source0_plane = imageModel.source_surface_brightness(source_result, l
 host_flux0_total = image_host_source0_plane.sum()
 image_host_source1_plane = imageModel.source_surface_brightness(source_result, lens_result, de_lensed=True,unconvolved=False,k=1)
 host_flux1_total = image_host_source1_plane.sum()
-print "bulge, disk flux, source plane:", host_flux0_total, host_flux1_total
+#print "bulge, disk flux, source plane:", host_flux0_total, host_flux1_total
 
 import corner
 fig = corner.corner(mcmc_new_list, labels=labels_new, show_titles=True)

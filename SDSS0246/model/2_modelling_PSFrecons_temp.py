@@ -129,7 +129,7 @@ kwargs_model = {'lens_model_list': lens_model_list,
 num_source_model = len(source_model_list)
 
 kwargs_constraints = {#'joint_source_with_source': [[0, 1, ['center_x', 'center_y']]],
-                       'joint_lens_with_light': [[0,0,['center_x', 'center_y']]],
+#                       'joint_lens_with_light': [[0,0,['center_x', 'center_y']]],
                        'joint_source_with_point_source': [[0, 0]],
                               'num_point_source_list': [2],
 #                              'solver': True,
@@ -148,13 +148,16 @@ kwargs_likelihood = {'check_bounds': True,
 image_band = [kwargs_data, kwargs_psf, kwargs_numerics]
 multi_band_list = [image_band]
 
+##fitting reuslt:
+#print lens_result
+#[{'theta_E': 0.595705684235279, 'center_x': 0.03750008121373825, 'center_y': -0.0074994919864485405, 'e1': -0.00509997602735099, 'gamma': 2, 'e2': 0.05984059377321039}, {'dec_0': 0, 'ra_0': 0, 'e1': 0.03485619157844552, 'e2': 0.004571414628855993}]
+#print source_result
+#[{'e1': 0.12444725856059109, 'n_sersic': 4.9472958637641105, 'center_x': -0.008551272273325528, 'center_y': 0.012192354528189606, 'amp': 1.662078902753553, 'R_sersic': 0.5052455465885309, 'e2': -0.49170911003868545}]
+#print lens_light_result
+#[{'e1': 0.09579974365816668, 'n_sersic': 4.439495753754119, 'center_x': 0.03750008121373825, 'center_y': -0.0074994919864485405, 'amp': 3.928816335176527, 'R_sersic': 1.536712588906626, 'e2': -0.05729330723240766}]
+#print ps_result
+#[{'point_amp': array([ 285.31035925, 1559.76714427]), 'ra_image': array([-0.59833034,  0.30272704]), 'dec_image': array([ 0.15057866, -0.47023133])}]
 
-##fitting reuslt by the pickle:
-#lens_result, source_result, lens_light_result, ps_result, cosmo_result,\
-#chain_list, param_list, samples_mcmc, param_mcmc, dist_mcmc, kwargs_psf_updated = pickle.load(open(filename,'rb'))
-
-# initial guess of non-linear parameters, we chose different starting parameters than the truth #
-#kwargs_lens_init = [{'theta_E': 0.5879044767005183, 'center_x': 0.0, 'center_y': 0, 'e1': 0, 'gamma': 2.0, 'e2': 0}, {'e1': 0.0, 'e2': 0.0}]
 kwargs_lens_init = [{'theta_E': 0.5993335338431928, 'center_x': 0, 'center_y': 0, 
     'e1': -0.006459750624928411, 'gamma': 2.0, 'e2': 0.03303686913375142}, 
     {'e1': -0.0, 'e2': -0.0}]
