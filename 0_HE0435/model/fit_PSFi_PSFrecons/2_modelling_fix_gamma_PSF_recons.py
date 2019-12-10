@@ -64,15 +64,16 @@ plt.imshow(lens_image*lens_mask, origin='low', norm=LogNorm())
 plt.close()
 
 #Things should be changed:
-fix_gamma = [1.9, 2.0, 2.1][2]
+#fix_gamma = [1.9, 2.0, 2.1][2]
+psf_id = [0,1,2,3,4][0]
 #print "fix_gamma", fix_gamma
 #psf_id = 4
 #subg = 2
-for psf_id in [0,1,2,3,4]:
+for fix_gamma in [1.9, 2.0, 2.1]:
     for subg in [3,2]:
         if psf_id ==4 and subg==2 and fix_gamma==1.9:
             continue
-        print "fix_gamma:", fix_gamma, "psf_id:", psf_id, "subg:", subg
+        print "psf_id:", psf_id, "fix_gamma:", fix_gamma, "subg:", subg
         psf = pyfits.getdata('../PSF{0}_clean.fits'.format(psf_id))
         numPix = len(lens_image)  # cutout pixel size
         deltaPix = pixel_scale[ID]

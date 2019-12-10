@@ -6,5 +6,5 @@
 */model/fast_model/*
 *PSF*img*.pdf
 *corner.pdf
-*.fits
+%*.fits
 */prerun_model*/*
