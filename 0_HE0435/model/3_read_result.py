@@ -18,7 +18,8 @@ sys.path.insert(0,'/Users/Dartoon/Astro/my_code/py_tools/')
 from flux_profile import cr_mask
 
 
-readfile = 'fit_PSFi_PSFrecons/test_pickle.pkl'
+#readfile = 'fit_PSFi_PSFrecons/result_PSF0_PSFrecons_gammafix1.9_subg2.pkl'
+#readfile = 'fit_PSFi_QSO_mask/result_PSF0_QSOmask_gammafix1.9_subg2.pkl'
 result = pickle.load(open(readfile,'rb'))
 fit_result, trans_result, kwargs_material, model_lists  = result
 
@@ -54,6 +55,9 @@ point_source_class = PointSource(point_source_type_list=point_source_list, fixed
 
 data_class = Data(**kwargs_data)
 kwargs_psf = kwargs_psf_updated
+#If want to use the original PSF to plot:
+#kwargs_psf['kernel_point_source'] = kwargs_psf['kernel_point_source_init']
+#del kwargs_psf["psf_error_map"]
 psf_class = PSF(**kwargs_psf)
 kwargs_model = kwargs_model
 kwargs_result = kwargs_result
@@ -102,18 +106,19 @@ imageLinearFit = ImageLinearFit(data_class=data_class, psf_class=psf_class, lens
                                 kwargs_numerics=kwargs_numerics) 
 image_host_source0_plane = imageModel.source_surface_brightness(source_result, lens_result, de_lensed=True,unconvolved=False)
 host_flux0_total = image_host_source0_plane.sum()
-print "host flux, source plane:", host_flux0_total
+#print "host flux, source plane:", host_flux0_total
 
-f, axes = out_plot.psf_iteration_compare(kwargs_psf_updated); f.show()
-plt.show()
+if 'kernel_point_source_init' in kwargs_psf.keys():
+    f, axes = out_plot.psf_iteration_compare(kwargs_psf_updated); f.show()
+    plt.show()
 
 import corner
 fig = corner.corner(mcmc_new_list, labels=labels_new, show_titles=True)
 plt.show()
-
-
-n, num_param = np.shape(samples_mcmc)
-plot = corner.corner(samples_mcmc[:,:8], labels=param_mcmc[:8], show_titles=True)
-plot.show()
-plot = corner.corner(samples_mcmc[:,8:], labels=param_mcmc[8:], show_titles=True)
-plot.show()
+#
+#
+#n, num_param = np.shape(samples_mcmc)
+#plot = corner.corner(samples_mcmc[:,:8], labels=param_mcmc[:8], show_titles=True)
+#plot.show()
+#plot = corner.corner(samples_mcmc[:,8:], labels=param_mcmc[8:], show_titles=True)
+#plot.show()

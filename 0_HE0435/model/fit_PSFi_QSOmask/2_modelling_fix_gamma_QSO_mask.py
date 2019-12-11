@@ -9,8 +9,8 @@ Modelling the HE0435
 
 Trying to recover the H0LiCOW_IV's host flux ~47.
 
-In this script, fix gamma as Ken's results. Use, psf mask.
-Use PSF reconstruction.
+The QSO center noise level is boost to inf.
+psf_error_map not taken.
 """
 import numpy as np
 import astropy.io.fits as pyfits
@@ -19,7 +19,7 @@ from matplotlib.colors import LogNorm
 import pickle
 import sys
 sys.path.insert(0,'/Users/Dartoon/Astro/my_code/py_tools/')
-from mask_objects import mask_obj, detect_obj
+from mask_objects import mask_obj, find_loc_max
 import copy, corner 
 from psfs_average import psf_ave
 from flux_profile import cr_mask
@@ -57,6 +57,33 @@ lens_image = lens_image[ct:-ct,ct:-ct]
 lens_rms = lens_rms[ct:-ct,ct:-ct]
 lens_mask = (1-lens_mask)[ct:-ct,ct:-ct]
 
+
+if glob.glob('{0}_stdd_boost.fits'.format(ID)) == []: 
+    print "re-run the rms boost process"
+    x_s, y_s = find_loc_max(lens_image)
+    plt.imshow(lens_image, origin='low', norm=LogNorm())
+    for i in range(len(x_s)):
+        p_x, p_y = x_s[i], y_s[i]
+        plt.text(p_x, p_y, 'obj{0}'.format(i), fontsize = 12)
+    plt.show()
+    qso_ids = [0,2,3,4]
+    QSO_pos= []
+    for i in qso_ids:
+        QSO_pos.append([float(x_s[i]-0.5), float(y_s[i]-0.5)])
+    xy_index = np.indices((len(lens_image),len(lens_image)))
+    for i in range(len(QSO_pos)):
+        if i == 0:
+            areas = (np.sqrt((QSO_pos[i][1]-xy_index[0])**2+(QSO_pos[i][0]-xy_index[1])**2) <3. )  # five piexls
+        else:
+            areas += (np.sqrt((QSO_pos[i][1]-xy_index[0])**2+(QSO_pos[i][0]-xy_index[1])**2) <3. )  # five piexls
+    lens_rms = lens_rms * (areas == 0) + 10**6 * (areas != 0)
+    plt.imshow(lens_rms, origin='low', norm=LogNorm(), vmax = 0.2)
+    plt.show()
+    pyfits.PrimaryHDU(lens_rms).writeto('{0}_stdd_boost.fits'.format(ID),overwrite=False) 
+
+lens_rms = pyfits.getdata('{0}_stdd_boost.fits'.format(ID))
+
+#%%
 #_,lens_obj_mask  = mask_obj(img=lens_image, exp_sz=1, pltshow=0)
 #lens_mask = (1-lens_obj_mask[0])*(1-lens_obj_mask[1]) * (1 - lens_mask_0)
 
@@ -64,12 +91,10 @@ lens_mask = (1-lens_mask)[ct:-ct,ct:-ct]
 #plt.imshow(lens_image*lens_mask, origin='low', norm=LogNorm())
 #plt.close()
 
-#Things should be changed:
-#fix_gamma = [1.9, 2.0, 2.1][2]
-psf_id = [0,1,2,3,4][1]
-for fix_gamma in [1.9, 2.0, 2.1]:
-    for subg in [3,2]:
-        picklename='result_PSF{0}_PSFrecons_gammafix{1}_subg{2}.pkl'.format(psf_id, fix_gamma, subg)        
+fix_gamma = [1.9, 2.0, 2.1][2]
+for psf_id in [0,1,2,3,4]:
+    for subg in [2,3]:
+        picklename='result_PSF{0}_QSOmask_gammafix{1}_subg{2}.pkl'.format(psf_id, fix_gamma, subg)        
         if glob.glob(picklename) != []:
             continue
         print "psf_id:", psf_id, "fix_gamma:", fix_gamma, "subg:", subg
@@ -181,27 +206,11 @@ for fix_gamma in [1.9, 2.0, 2.1]:
         
         fitting_seq = FittingSequence(kwargs_data_joint, kwargs_model, kwargs_constraints, kwargs_likelihood, kwargs_params)
         
-        fitting_kwargs_list_0 = [
-                                ['PSO', {'sigma_scale': 1., 'n_particles': 300, 'n_iterations': 300}]
-                                ]
-        
-        fitting_seq.fit_sequence(fitting_kwargs_list_0)
-        
-        kwargs_psf_iter = {'num_iter': 100, 'psf_iter_factor': 0.2,
-                            'stacking_method': 'median', 
-                           'keep_psf_error_map': False, 
-                           'psf_symmetry': 1, 
-                           'block_center_neighbour': 0.05}
-        
-        fitting_kwargs_list_1 = [
-                                ['psf_iteration', kwargs_psf_iter],
-                                ['PSO', {'sigma_scale': 1., 'n_particles': 100, 'n_iterations': 100}],
-                                ['psf_iteration', kwargs_psf_iter],
-                                ['PSO', {'sigma_scale': 1., 'n_particles': 100, 'n_iterations': 100}],
+        fitting_kwargs_list = [
+                                ['PSO', {'sigma_scale': 1., 'n_particles': 300, 'n_iterations': 300}],
                                 ['MCMC', {'n_burn': 20, 'n_run': 20, 'walkerRatio': 4, 'sigma_scale': .1}]
                                 ]
-        
-        chain_list = fitting_seq.fit_sequence(fitting_kwargs_list_1)
+        chain_list = fitting_seq.fit_sequence(fitting_kwargs_list)
         kwargs_result = fitting_seq.best_fit()
         
         sampler_type, samples_mcmc, param_mcmc, dist_mcmc  = chain_list[-1]    
@@ -210,25 +219,12 @@ for fix_gamma in [1.9, 2.0, 2.1]:
         source_result = kwargs_result['kwargs_source']
         ps_result = kwargs_result['kwargs_ps']
         
-        kwargs_data, kwargs_psf_updated, kwargs_numerics = fitting_seq.multi_band_list[0]
-        
-        ##Update the PSF: Update the imageModel with the new PSF.
-        psf_class = PSF(**kwargs_psf_updated)
         imageLinearFit = ImageLinearFit(data_class=data_class, psf_class=psf_class, lens_model_class = lens_model_class,
                                         source_model_class = source_model_class,  point_source_class= point_source_class,
                                         kwargs_numerics=kwargs_numerics)  
-        imageModel = ImageModel(data_class, psf_class, lens_model_class, source_model_class,
-                                        lens_light_model_class,
-                                        point_source_class, kwargs_numerics=kwargs_numerics)
-        
-        image_band = [kwargs_data, kwargs_psf_updated, kwargs_numerics]
-        multi_band_list = [image_band]        
         
         modelPlot = ModelPlot(multi_band_list, kwargs_model, kwargs_result, arrow_size=0.02, cmap_string="gist_heat", likelihood_mask_list=[lens_mask])
         param_class = fitting_seq.param_class
-#        for i in range(len(chain_list)):
-#            chain_plot.plot_chain_list(chain_list, i)
-#        plt.close()
         
         f, axes = plt.subplots(2, 3, figsize=(16, 8), sharex=False, sharey=False)
         modelPlot.data_plot(ax=axes[0,0])
@@ -239,7 +235,7 @@ for fix_gamma in [1.9, 2.0, 2.1]:
         modelPlot.magnification_plot(ax=axes[1, 2])
         f.tight_layout()
         f.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0., hspace=0.05)
-        plt.savefig('fig_PSF{0}_PSFrecons_gammafix{1}_subg{2}_img0.pdf'.format(psf_id, fix_gamma, subg))
+        plt.savefig('fig_PSF{0}_QSOmask_gammafix{1}_subg{2}_img0.pdf'.format(psf_id, fix_gamma, subg))
         plt.close()
         
         f, axes = plt.subplots(2, 3, figsize=(16, 8), sharex=False, sharey=False)
@@ -251,7 +247,7 @@ for fix_gamma in [1.9, 2.0, 2.1]:
         modelPlot.decomposition_plot(ax=axes[1,2], text='All components convolved', source_add=True, lens_light_add=True, point_source_add=True)
         f.tight_layout()
         f.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0., hspace=0.05)
-        plt.savefig('fig_PSF{0}_PSFrecons_gammafix{1}_subg{2}_img1.pdf'.format(psf_id, fix_gamma, subg))
+        plt.savefig('fig_PSF{0}_QSOmask_gammafix{1}_subg{2}_img1.pdf'.format(psf_id, fix_gamma, subg))
         plt.close()
         mcmc_new_list = []
         fixed_lens = []
@@ -285,14 +281,14 @@ for fix_gamma in [1.9, 2.0, 2.1]:
                 print "finished translate:", i
         
         fig = corner.corner(mcmc_new_list, labels=labels_new, show_titles=True)
-        fig.savefig('fig_PSF{0}_PSFrecons_gammafix{1}_subg{2}_corner.pdf'.format(psf_id, fix_gamma, subg))
+        fig.savefig('fig_PSF{0}_QSOmask_gammafix{1}_subg{2}_corner.pdf'.format(psf_id, fix_gamma, subg))
         plt.close()
         
+#        picklename='result_PSF{0}_QSOmask_gammafix{1}_subg{2}.pkl'.format(psf_id, fix_gamma, subg)
         fit_result = [kwargs_result, chain_list]
         trans_result = [mcmc_new_list, labels_new]
-        #pickle.dump([fit_result, trans_result, kwargs_psf_updated], open(picklename, 'wb'))
         pickle.dump([fit_result, trans_result, 
-                     [kwargs_data, kwargs_psf_updated, kwargs_numerics, kwargs_model, lens_mask],
+                     [kwargs_data, kwargs_psf, kwargs_numerics, kwargs_model, lens_mask],
                      [lens_model_list, source_model_list, lens_light_model_list, point_source_list]], open(picklename, 'wb'))
         t2 = time.time()
         print "time cost (s):", round((t2-t1),3)

@@ -28,7 +28,7 @@ img = fitsFile[0].data # check the back grounp
 img[img==0.] = np.nan
 img_sub, bkg_light = sub_bkg(img)
 
-pyfits.PrimaryHDU(img_sub).writeto('img_sub.fits',overwrite=True) 
+#pyfits.PrimaryHDU(img_sub).writeto('img_sub.fits',overwrite=True) 
 #
 #center_QSO = np.array([1096,948])  #!!!!Need to be change
 #lens_image = cut_image(img, center_QSO, 100)
