@@ -11,4 +11,4 @@ import numpy as np
 import astropy.io.fits as pyfits
 import matplotlib.pyplot as plt
 
-pixel_scale = {'HE0435' : 0.08}
+pixel_scale = {'HE0435' : 0.08, 'RXJ1131' : 0.05}
