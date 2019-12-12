@@ -19,7 +19,7 @@ from flux_profile import cr_mask
 
 
 #readfile = 'fit_PSFi_PSFrecons/result_PSF0_PSFrecons_gammafix1.9_subg2.pkl'
-#readfile = 'fit_PSFi_QSO_mask/result_PSF0_QSOmask_gammafix1.9_subg2.pkl'
+readfile = 'fit_PSFi_QSOmask/result_PSF3_QSOmask_gammafix1.9_subg2.pkl'
 result = pickle.load(open(readfile,'rb'))
 fit_result, trans_result, kwargs_material, model_lists  = result
 
@@ -122,3 +122,13 @@ plt.show()
 #plot.show()
 #plot = corner.corner(samples_mcmc[:,8:], labels=param_mcmc[8:], show_titles=True)
 #plot.show()
+
+#%%
+import lenstronomy.Util.class_creator as class_creator
+imageModel = class_creator.create_im_sim(multi_band_list = multi_band_list, multi_band_type='multi-linear', kwargs_model = kwargs_model,
+                                           bands_compute = [True] * len(multi_band_list),
+                                           likelihood_mask_list=[lens_mask],
+                                           band_index=0)
+logL = imageModel.likelihood_data_given_model(source_marg=False, linear_prior=None, **kwargs_result)
+n_data = imageModel.num_data_evaluate    
+reduced_x2 = - logL * 2 / n_data
