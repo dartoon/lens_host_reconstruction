@@ -19,6 +19,7 @@ from matplotlib.colors import LogNorm
 import pickle
 import sys
 sys.path.insert(0,'../../../../my_code/py_tools/')
+#sys.path.insert(0,'/Users/Dartoon/Astro/my_code/py_tools/')
 from mask_objects import mask_obj, find_loc_max
 import copy, corner 
 from psfs_average import psf_ave

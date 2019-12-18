@@ -18,7 +18,8 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
 import pickle
 import sys
-sys.path.insert(0,'/Users/Dartoon/Astro/my_code/py_tools/')
+sys.path.insert(0,'../../../../my_code/py_tools/')
+#sys.path.insert(0,'/Users/Dartoon/Astro/my_code/py_tools/')
 from mask_objects import mask_obj
 import copy, corner 
 from psfs_average import psf_ave
@@ -69,10 +70,10 @@ lens_mask = lens_mask[ct:-ct,ct:-ct]
 #plt.show()
 
 #Things should be changed:
-id_ind = 0 #sys.argv[1]
+id_ind = int(sys.argv[1])
 fix_gamma = [1.9, 2.0, 2.1][id_ind]
-for psf_id in [[0,1,2,3][0]]:
-    for subg in [[3,2][1]]:
+for psf_id in [0,1,2,3]:
+    for subg in [3,2]:
         picklename='result_PSF{0}_PSFrecons_gammafix{1}_subg{2}.pkl'.format(psf_id, fix_gamma, subg)        
         if glob.glob(picklename) != []:
             continue
