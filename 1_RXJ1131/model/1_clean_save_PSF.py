@@ -23,6 +23,7 @@ psfname_list = glob.glob('PSF?.fits')
 psfs = []
 for i in range(len(psfname_list)):
     psf_i = pyfits.getdata(psfname_list[i])
+    print psfname_list[i]
     _, psf_mask = mask_obj(img=psf_i,snr=2.0,exp_sz=1.7,pltshow=0)
     if 1 in psf_mask[0]:
         if len(psf_mask) > 1:
@@ -40,20 +41,20 @@ for i in range(len(psfname_list)):
     plt.imshow(psf_i, origin = 'low', norm=LogNorm())
     plt.show()
     psfs.append(psf_i)
-
-fig = profiles_compare(psfs, scal_list=np.ones(len(psfs)),
-                       prf_name_list=['PSF'+str(i) for i in range(len(psfs))],
-                       gridspace = 'log', if_annuli=True)
-fig.savefig("PSFs_profile.pdf")
-fig.show()
-    
-for i in range(len(psfs)):
-    psfs[i] = psfs[i]/np.sum(psfs[i])
-    pyfits.PrimaryHDU(psfs[i]).writeto('PSF{0}_clean.fits'.format(i),overwrite=True) 
-
-#%%
-import os   
-if glob.glob('fit_PSFi_PSFrecons')  == []:
-    os.mkdir('fit_PSFi_PSFrecons')
-if glob.glob('fit_PSFi_QSOmask')  == []:
-    os.mkdir('fit_PSFi_QSOmask')
+#
+#fig = profiles_compare(psfs, scal_list=np.ones(len(psfs)),
+#                       prf_name_list=['PSF'+str(i) for i in range(len(psfs))],
+#                       gridspace = 'log', if_annuli=True)
+#fig.savefig("PSFs_profile.pdf")
+#fig.show()
+#    
+#for i in range(len(psfs)):
+#    psfs[i] = psfs[i]/np.sum(psfs[i])
+#    pyfits.PrimaryHDU(psfs[i]).writeto('PSF{0}_clean.fits'.format(i),overwrite=True) 
+#
+##%%
+#import os   
+#if glob.glob('fit_PSFi_PSFrecons')  == []:
+#    os.mkdir('fit_PSFi_PSFrecons')
+#if glob.glob('fit_PSFi_QSOmask')  == []:
+#    os.mkdir('fit_PSFi_QSOmask')

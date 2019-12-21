@@ -18,8 +18,8 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
 import pickle
 import sys
-#sys.path.insert(0,'../../../../my_code/py_tools/')
-sys.path.insert(0,'/Users/Dartoon/Astro/my_code/py_tools/')
+sys.path.insert(0,'../../../../my_code/py_tools/')
+#sys.path.insert(0,'/Users/Dartoon/Astro/my_code/py_tools/')
 from mask_objects import mask_obj, find_loc_max
 import copy, corner 
 from psfs_average import psf_ave
@@ -310,7 +310,7 @@ for psf_id in [0,1,2]:
         plt.savefig('fig_PSF{0}_QSOmask_gammafix{1}_subg{2}_img1.pdf'.format(psf_id, fix_gamma, subg))
         plt.close()
         mcmc_new_list = []
-        param = Param(kwargs_model, kwargs_fixed_lens = fixed_lens, kwargs_fixed_lens_light=fixed_lens_light, **kwargs_constraints)
+        param = Param(kwargs_model, kwargs_fixed_lens = fixed_lens, kwargs_fixed_lens_light=fixed_lens_light,kwargs_fixed_source=fixed_source, **kwargs_constraints)   #!!! This line matters
         if param.num_param()[0] != len(samples_mcmc[0]):
             raise ValueError("The param shape is not as the samples_mcmc_ones.")
             
@@ -320,18 +320,24 @@ for psf_id in [0,1,2]:
         for i in range(len(samples_mcmc)):
             param_out = param.args2kwargs(samples_mcmc[i])
             image_reconstructed, _, _, _ = imageLinearFit.image_linear_solve(kwargs_lens=param_out['kwargs_lens'], kwargs_source=param_out['kwargs_source'], kwargs_lens_light=param_out['kwargs_lens_light'], kwargs_ps=param_out['kwargs_ps'])
+            
             image_ps = imageModel.point_source(param_out['kwargs_ps'], kwargs_lens=param_out['kwargs_lens'], unconvolved=False)
             flux_quasar = np.sum(image_ps)
-            image_host_source_plane = imageModel.source_surface_brightness(param_out['kwargs_source'], param_out['kwargs_lens'], de_lensed=True,unconvolved=False)
-            host_flux_s = np.sum(image_host_source_plane)
-            image_host_image_plane = imageModel.source_surface_brightness(param_out['kwargs_source'], param_out['kwargs_lens'], de_lensed=False,unconvolved=False)
-            host_flux_i = np.sum(image_host_image_plane)
+            image_host_source0_plane = imageModel.source_surface_brightness(param_out['kwargs_source'], param_out['kwargs_lens'], de_lensed=True,unconvolved=False,k=0)
+            host0_flux_s = np.sum(image_host_source0_plane)
+            image_host_source1_plane = imageModel.source_surface_brightness(param_out['kwargs_source'], param_out['kwargs_lens'], de_lensed=True,unconvolved=False,k=1)
+            host1_flux_s = np.sum(image_host_source1_plane)  
+            image_host0_image_plane = imageModel.source_surface_brightness(param_out['kwargs_source'], param_out['kwargs_lens'], de_lensed=False,unconvolved=False,k=0)
+            host0_flux_i = np.sum(image_host0_image_plane)
+            image_host1_image_plane = imageModel.source_surface_brightness(param_out['kwargs_source'], param_out['kwargs_lens'], de_lensed=False,unconvolved=False,k=1)
+            host1_flux_i = np.sum(image_host1_image_plane)
             x_image, y_image, AGN_fluxs = param_out['kwargs_ps'][0]['ra_image'], param_out['kwargs_ps'][0]['dec_image'], param_out['kwargs_ps'][0]['point_amp']
             mag_macro = lensModel_simple.magnification(x_image, y_image, param_out['kwargs_lens'])
             AGN_fluxi_s = AGN_fluxs/mag_macro
             AGN_fluxs_s = np.average(np.abs(AGN_fluxi_s))
         #    print i, host_flux_s, host_flux_i
-            mcmc_new_list.append([flux_quasar,host_flux_i, AGN_fluxs_s, host_flux_s, param_out['kwargs_source'][0]['n_sersic'],param_out['kwargs_source'][0]['R_sersic']])
+            mcmc_new_list.append([flux_quasar, host0_flux_i, host1_flux_i, AGN_fluxs_s, host0_flux_s, host1_flux_s,
+                                  param_out['kwargs_source'][0]['R_sersic'],param_out['kwargs_source'][1]['R_sersic']])
             if i/1000 > (i-1)/1000 :
                 print "finished translate:", i
         

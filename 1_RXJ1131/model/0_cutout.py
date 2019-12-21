@@ -26,19 +26,21 @@ ID = 'RXJ1131'
 fitsFile = pyfits.open('../data/RXJ1131_F814W_drz_sci.fits')
 img = fitsFile[0].data # check the back grounp
 img[img==0.] = np.nan
-img_sub, bkg_light = sub_bkg(img)
+
+
+#img_sub, bkg_light = sub_bkg(img)
 #lens_bkg_light = cut_image(bkg_light, center_QSO, 100)
 #plt.imshow(lens_bkg_light, norm=LogNorm(),origin='low')
 #plt.colorbar()
 #plt.show()
 #pyfits.PrimaryHDU(img_sub).writeto('../model/RXJ1131_bgsub.fits',overwrite=True) 
-#img_sub = pyfits.getdata('../data/RXJ1131_bgsub.fits')
+img_sub = pyfits.getdata('../data/RXJ1131_bgsub.fits')
 #lens_image_sub = cut_image(img_sub, center_QSO, 100)
 center_QSO = np.array([1881,2380])  #!!!!Need to be change
-lens_image = cut_image(img, center_QSO, 100)
-plt.imshow(lens_image, norm=LogNorm(),origin='low')
-plt.colorbar()
-plt.show()
+#lens_image = cut_image(img, center_QSO, 100)
+#plt.imshow(lens_image, norm=LogNorm(),origin='low')
+#plt.colorbar()
+#plt.show()
 
 
 lens_image_sub = cut_image(img_sub, center_QSO, 100)
@@ -58,8 +60,10 @@ print np.average(matt_bkkg_light)
 #==============================================================================
 # #Estimate the exposure time and error map:
 #==============================================================================
+from my_astro_func import read_fits_exp
+exp = read_fits_exp('../data/RXJ1131_F814W_drz_sci.fits')
 wht = pyfits.getdata('../data/RXJ1131_F814W_drz_weight.fits')
-exp = 396.0 *10   #!!!!changed from 1980... 
+#exp = 1980 #396.0 *10   #!!!!changed from 1980... 
 mean_wht = exp * (0.05/0.05)**2
 exp_map = exp * wht/mean_wht
 from photutils import make_source_mask
@@ -114,8 +118,8 @@ PSF_rms_list = [PSFs[i][3] for i in range(len(PSFs))]
 fig = profiles_compare(PSF_list, scal_list=np.ones(len(PSFs)),
                        prf_name_list=['PSF'+str(i) for i in range(len(PSFs))],
                        gridspace = 'log', if_annuli=True)
-fig.savefig('PSF_comp.pdf')
-fig.show()
+#fig.savefig('PSF_comp.pdf')
+#fig.show()
 # =============================================================================
 # Test the bkg level for lensed QSO and PSF
 # =============================================================================
@@ -131,10 +135,10 @@ for i in range(len(PSF_list)):
 #    lensing image and noise map
 #    PSFs
 #==============================================================================
-pyfits.PrimaryHDU(lens_image_sub).writeto('../model/RXJ1131_cutout.fits',overwrite=True) 
-pyfits.PrimaryHDU(lens_rms).writeto('../model/RXJ1131_stdd.fits',overwrite=True) 
-for i in range(len(PSFs)):
-    pyfits.PrimaryHDU(PSF_list[i]).writeto('PSF{0}.fits'.format(i),overwrite=True) 
-    pyfits.PrimaryHDU(PSF_rms_list[i]).writeto('PSF{0}_rms.fits'.format(i),overwrite=True) 
+#pyfits.PrimaryHDU(lens_image_sub).writeto('../model/RXJ1131_cutout.fits',overwrite=True) 
+#pyfits.PrimaryHDU(lens_rms).writeto('../model/RXJ1131_stdd.fits',overwrite=True) 
+#for i in range(len(PSFs)):
+#    pyfits.PrimaryHDU(PSF_list[i]).writeto('PSF{0}.fits'.format(i),overwrite=True) 
+#    pyfits.PrimaryHDU(PSF_rms_list[i]).writeto('PSF{0}_rms.fits'.format(i),overwrite=True) 
 #
 #
