@@ -20,7 +20,6 @@ from read_chisq import return_chisq
 
 pkl_folderfiles = glob.glob("fit_PSFi_PSFrecons/result_PSF*.pkl")
 pkl_files = [pkl_folderfiles[i].split('/')[1] for i in range(len(pkl_folderfiles))]
-psf_num = np.max([int(pkl_files[i].split('_PSF')[1]) for i in range(len(pkl_files))]) + 1
 
 if float(len(pkl_files)/6) != len(pkl_files)/6. :
     raise ValueError("The number of the pickle result is the Multiples of six")
@@ -32,6 +31,8 @@ ID = path.split('/')[-2]
 #%%
 
 PSFno_ = range(psf_num)
+
+
 #The values to pick up:
 filename = pkl_folderfiles[0]
 result = pickle.load(open(filename,'rb'))
@@ -63,26 +64,25 @@ for folder in folder_i:
     filenames.sort()
     for filename in filenames:
         PSFtyp = filename.split('/')[1].split('_')[1]
-        if int(PSFtyp.split('PSF')[1]) in PSFno_:
-            subg = filename[(filename).find('subg')+len('subg')]
-            fit_type = filename.split('/')[0].split('_')[-1]
-            fixgamma = (filename.split('gammafix')[1]).split('_subg')[0]
-            if fixgamma not in fixgamma_list:
-                fixgamma_list.append(fixgamma)
-            print filename
-            result = pickle.load(open(filename,'rb'))
-            fit_result, trans_result, kwargs_material, model_lists  = result
-            fit_value_l_i, fit_value_m_i, fit_value_h_i, = [], [], []
-            for pick in range(len(pick_names)):
-                fit_value = np.asarray(trans_result[0])[:,pick]
-                fit_value_l_i.append(np.percentile(fit_value,16,axis=0))
-                fit_value_m_i.append(np.percentile(fit_value,50,axis=0))
-                fit_value_h_i.append(np.percentile(fit_value,84,axis=0))
-            fit_value_l_list.append(fit_value_l_i)
-            fit_value_m_list.append(fit_value_m_i)
-            fit_value_h_list.append(fit_value_h_i)
-            labels.append("{0}, fixgamma_{1}, subg_{2}, {3}".format(PSFtyp, fixgamma, subg, fit_type))
-            chisq.append(repr(round(return_chisq(filename, lens_mask= lens_mask, fair_mask=True, fair_PSF = fair_PSF),3)))   
+        subg = filename[(filename).find('subg')+len('subg')]
+        fit_type = filename.split('/')[0].split('_')[-1]
+        fixgamma = (filename.split('gammafix')[1]).split('_subg')[0]
+        if fixgamma not in fixgamma_list:
+            fixgamma_list.append(fixgamma)
+        print filename
+        result = pickle.load(open(filename,'rb'))
+        fit_result, trans_result, kwargs_material, model_lists  = result
+        fit_value_l_i, fit_value_m_i, fit_value_h_i, = [], [], []
+        for pick in range(len(pick_names)):
+            fit_value = np.asarray(trans_result[0])[:,pick]
+            fit_value_l_i.append(np.percentile(fit_value,16,axis=0))
+            fit_value_m_i.append(np.percentile(fit_value,50,axis=0))
+            fit_value_h_i.append(np.percentile(fit_value,84,axis=0))
+        fit_value_l_list.append(fit_value_l_i)
+        fit_value_m_list.append(fit_value_m_i)
+        fit_value_h_list.append(fit_value_h_i)
+        labels.append("{0}, fixgamma_{1}, subg_{2}, {3}".format(PSFtyp, fixgamma, subg, fit_type))
+        chisq.append(repr(round(return_chisq(filename, lens_mask= lens_mask, fair_mask=True, fair_PSF = fair_PSF),3)))   
 
 labels_orig = copy.deepcopy(labels)
 
@@ -107,9 +107,9 @@ bars = [labels[i].split(',')[0] for i in range(len(labels))]
 bars = sorted(set(bars), key=bars.index)
 
 #Test if the sort of PSF is wrong:
-index0 = [i*12 for i in range(psf_num)]
+index0 = [i*12 for i in range(len(bars))]
 label0 = [labels[i].split(',')[0] for i in index0]
-index1 = [i*12+11 for i in range(psf_num)]
+index1 = [i*12+11 for i in range(len(bars))]
 label1 = [labels[i].split(',')[0] for i in index1]
 if label0 != label1 or bars!= label0:
     print label0, label1
@@ -121,13 +121,13 @@ color = ['green', 'orange']
 def plt_result(fixgamma, chisq=chisq, ID = ID):
     #Plot it out    
     fig = plt.figure(figsize=(12, 10))
-    x_pos = np.arange(psf_num) + 0.5
+    x_pos = np.arange(len(bars)) + 0.5
     fmt =['--','--','-','-']
     lines_num = 4 #for types including subg 2-3, PSFrecon and QSO mask
     texts = []
     for ftype in range(lines_num):
         index_all = [i for i in range(len(labels)) if 'fixgamma_{0}'.format(fixgamma) in labels[i]]
-        index = [index_all[(i*lines_num+ftype)] for i in range(psf_num)]
+        index = [index_all[(i*lines_num+ftype)] for i in range(len(bars))]
         value_result = [fit_value_m[i] for i in index]
         asm_error = [[fit_value_m[i]-fit_value_l[i] for i in index],
                             [fit_value_h[i]-fit_value_m[i] for i in index]]
@@ -154,20 +154,15 @@ def plt_result(fixgamma, chisq=chisq, ID = ID):
 #    plt.fill_between(xs, weighted_value - rms_value, weighted_value + rms_value, facecolor='red', alpha = 0.1)    
     
     ##If want to put horizontal line:
-    fill_ref = False
-    if pick == 4 or pick == 4-len(pick_names):  #
-        ref_value_l,ref_value, ref_value_h = 34.7696, 44.999, 58.2371347
-        fill_ref = True
-    elif pick == 5 or pick == 5-len(pick_names):
-        ref_value_l,ref_value, ref_value_h = 211.446, 223.46, 236.1565
-        fill_ref = True
-    elif pick == 6 or pick == 6-len(pick_names):
-        ref_value_l,ref_value, ref_value_h = 0.2-0.08, 0.2, 0.2+0.08
-        fill_ref = True
-    elif pick == 7 or pick == 7-len(pick_names):
-        ref_value_l,ref_value, ref_value_h = 0.84 - 0.09, 0.84, 0.84 + 0.09  
-        fill_ref = True
-    if fill_ref == True:
+    fill_ref = True
+    if fill_ref:
+        if pick == 3 or pick == 3-len(pick_names):
+            ref_value_l,ref_value, ref_value_h = 33.1, (43.8+33.1)/2, 43.8
+        elif pick == 4 or pick == 4-len(pick_names): # Sersic index
+            ref_value_l,ref_value, ref_value_h = 1.3, 1.4, 1.5
+        elif pick == 5 or pick == 5-len(pick_names):  # Sersic Reff
+            ref_value_l,ref_value, ref_value_h = 0.32, (0.32+0.36)/2 , 0.36
+        xs = np.linspace(x_pos[0], x_pos[-1])
         ys_l = xs*0 + ref_value_l
         ys_m = xs*0 + ref_value
         ys_h = xs*0 + ref_value_h
@@ -176,7 +171,7 @@ def plt_result(fixgamma, chisq=chisq, ID = ID):
     plt.legend(numpoints=1,ncol=2,loc=2,prop={'size':18})
     plt.title('The fitting result for {0}, fix gamma = {1}'.format(ID[2:], fixgamma),fontsize=25)
     plt.ylabel(pick_names[pick],fontsize=25)
-    plt.ylim(np.min(fit_value_l)/1.5,np.max(fit_value_h)*1.2)
+    plt.ylim(np.min(fit_value_l)/1.1,np.max(fit_value_h)*1.2)
     plt.tick_params(labelsize=15)
     plt.xticks(x_pos, bars)
 #    plt.savefig('fig_result_pick{0}_fixgamma{1}.pdf'.format(pick,fixgamma))
