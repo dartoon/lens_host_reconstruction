@@ -30,7 +30,7 @@ ID = path.split('/')[-2]
 
 #%%
 
-PSFno_ = range(psf_num)
+#PSFno_ = range(psf_num)
 
 
 #The values to pick up:
