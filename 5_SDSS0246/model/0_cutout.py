@@ -91,10 +91,11 @@ for i in range(len(psfs_pos)):
     PSF_mask = (1 - (PSF_mask != 0)*1.)
     PSFs_.append([PSF,PSF_center,PSF_mask])
     count += 1
+    
 center_match = (np.sum(abs(np.asarray(PSF_gauss_centers)-np.asarray(PSF_bright_centers)<0.7),axis = 1) == 2)
 psf_pos_list = [PSF_gauss_centers[i] for i in range(len(PSFs_))] # if center_match[i]==True]
 PSFs = [PSFs_[i] for i in range(len(PSFs_))] # if center_match[i]==True]
-#save_loc_png(img_sub*20,center_QSO,psf_pos_list, ID=ID, label='PSF' ,reg_ty = None)
+save_loc_png(img_sub*20,center_QSO,psf_pos_list, ID=ID, label='PSF' ,reg_ty = 'acs')
 PSF_list = [PSFs[i][0] for i in range(len(PSFs))]
 PSF_masks = [PSFs[i][2] for i in range(len(PSFs))]
 fig = profiles_compare(PSF_list, scal_list=np.ones(len(PSFs)),

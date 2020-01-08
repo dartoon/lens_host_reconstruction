@@ -87,7 +87,7 @@ print "plot fitting image:"
 
 #%%
 #Things should be changed:
-id_ind = 0 #int(sys.argv[1])
+id_ind = int(sys.argv[1])
 fix_gamma = [1.9, 2.0, 2.1][id_ind]
 for psf_id in [0,1,2,3,4,5,6]:
     for subg in [3,2]:

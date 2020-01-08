@@ -85,7 +85,7 @@ if glob.glob('{0}_stdd_boost.fits'.format(ID)) == []:
 lens_rms = pyfits.getdata('{0}_stdd_boost.fits'.format(ID))
 print "plot fitting image:"
 plt.imshow(lens_image*lens_mask*lens_rms, origin='low', norm=LogNorm())
-plt.show()
+plt.close()
 
 #%%
 #Things should be changed:
