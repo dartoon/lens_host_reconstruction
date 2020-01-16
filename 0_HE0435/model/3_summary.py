@@ -110,8 +110,18 @@ if label0 != label1 or bars!= label0:
 
 color = ['green', 'orange']
 
-#figs = []
-#for fixgamma in ['1.9', '2.0', '2.1']:
+#count_n =len(labels) * 10 /100
+chisq = [float(chisq[i]) for i in range(len(chisq))]
+sort_chisq = np.argsort(np.asarray(chisq))    
+Chisq_best = chisq[sort_chisq[0]]
+Chisq_last= chisq[sort_chisq[-1]]
+weight = np.zeros(len(chisq))
+for i in range(len(sort_chisq)):
+    weight[i] = np.exp(-1/2. * (chisq[i]-Chisq_best)/(Chisq_best))
+weighted_value = np.sum(np.array(fit_value_m)*weight) / np.sum(weight)
+rms_value = np.sqrt(np.sum((np.array(fit_value_m)-weighted_value)**2*weight) / np.sum(weight))
+print "weighted_value, rms_value:", weighted_value, rms_value
+
 def plt_result(fixgamma, chisq=chisq):
     #Plot it out    
     fig = plt.figure(figsize=(12, 10))
@@ -137,21 +147,10 @@ def plt_result(fixgamma, chisq=chisq):
     ID = path.split('/')[-2]
     
     xs = np.linspace(x_pos[0], x_pos[-1])
-    count_n =len(labels) * 10 /100
-    chisq = [float(chisq[i]) for i in range(len(chisq))]
-    sort_chisq = np.argsort(np.asarray(chisq))    
-    Chisq_best = chisq[sort_chisq[0]]
-    Chisq_last= chisq[sort_chisq[count_n-1]]
-    inf_alp = (Chisq_last-Chisq_best) / (2*2.* Chisq_best)
-    weight = np.zeros(len(chisq))
-    for i in sort_chisq[:count_n]:
-        weight[i] = np.exp(-1/2. * (chisq[i]-Chisq_best)/(Chisq_best* inf_alp))
-    weighted_value = np.sum(np.array(fit_value_m)*weight) / np.sum(weight)
-    rms_value = np.sqrt(np.sum((np.array(fit_value_m)-weighted_value)**2*weight) / np.sum(weight))
-#    print weighted_value, rms_value
-#    plt.plot(xs, xs*0+(weighted_value - rms_value), xs, xs*0+weighted_value, xs, xs*0+(weighted_value + rms_value),color = 'red')
-#    plt.fill_between(xs, weighted_value - rms_value, weighted_value + rms_value, facecolor='red', alpha = 0.1)    
-    
+
+    plt.plot(xs, xs*0+(weighted_value - rms_value), xs, xs*0+weighted_value, xs, xs*0+(weighted_value + rms_value),color = 'red')
+    plt.fill_between(xs, weighted_value - rms_value, weighted_value + rms_value, facecolor='red', alpha = 0.05)    
+
     ##If want to put horizontal line:
     fill_ref = False
     if pick == 3 or pick == 3-len(pick_names):  #

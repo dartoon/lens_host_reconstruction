@@ -90,7 +90,7 @@ if glob.glob('{0}_stdd_boost.fits'.format(ID)) == []:
             areas += (np.sqrt((QSO_pos[i][1]-xy_index[0])**2+(QSO_pos[i][0]-xy_index[1])**2) <3. )  # five piexls
     lens_rms = lens_rms * (areas == 0) + 10**6 * (areas != 0)
     plt.imshow(lens_rms, origin='low', norm=LogNorm(), vmax = 0.2)
-    plt.show()
+    plt.close()
     pyfits.PrimaryHDU(lens_rms).writeto('{0}_stdd_boost.fits'.format(ID),overwrite=False) 
 
 lens_rms = pyfits.getdata('{0}_stdd_boost.fits'.format(ID))
@@ -101,9 +101,11 @@ lens_rms = pyfits.getdata('{0}_stdd_boost.fits'.format(ID))
 #%%
 
 #Things should be changed:
-fix_gamma = 1.95
-for psf_id in [1]:  #[1,6]
-    for subg in [2]: #[3,2]
+id_ind = int(sys.argv[1])
+print "id_ind", id_ind
+fix_gamma = [1.9, 2.0, 2.1][id_ind]
+for psf_id in [1,2,3,4,5,6]:  #[1,6]
+    for subg in [3,2]: #[3,2]
         picklename='result_PSF{0}_QSOmask_gammafix{1}_subg{2}.pkl'.format(psf_id, fix_gamma, subg)        
         if glob.glob(picklename) != []:
             continue
@@ -150,14 +152,24 @@ for psf_id in [1]:  #[1,6]
                                       'num_point_source_list': [4],
                                       }
         
+#        kwargs_likelihood = {'check_bounds': True,
+#                             'force_no_add_image': False,
+#                             'source_marg': False,
+#                             'position_uncertainty': 0.005,
+#                             'check_solver': True,
+#                             'solver_tolerance': 0.001,
+#                              'source_position_likelihood': True,
+#                              'image_likelihood_mask_list': [lens_mask]
+#                             }
+        
         kwargs_likelihood = {'check_bounds': True,
-                             'force_no_add_image': False,
-                             'source_marg': False,
-                             'position_uncertainty': 0.005,
-                             'check_solver': True,
-                             'solver_tolerance': 0.001,
-                              'source_position_likelihood': True,
-                              'image_likelihood_mask_list': [lens_mask]
+                     'force_no_add_image': False,
+                     'source_marg': False,
+                     'image_position_uncertainty': 0.004,
+                     'check_matched_source_position': True,
+                     'source_position_tolerance': 0.001,
+                     'source_position_sigma': 0.001,
+                     'image_likelihood_mask_list': [lens_mask]
                              }
         
         image_band = [kwargs_data, kwargs_psf, kwargs_numerics]
@@ -168,12 +180,10 @@ for psf_id in [1]:  #[1,6]
                            'center_y': -0.07561143165296064,
                            'e1': 0.0742330281700561,
                            'e2': -0.16787728023226878,
-                           'gamma': 1.95,
+                           'gamma': fix_gamma,
                            'theta_E': 1.4300127521568509},
-                          {'dec_0': 0,
-                           'e1': -0.07754507034590198,
-                           'e2': -0.19985431458326375,
-                           'ra_0': 0}]
+                          {'gamma1': -0.07754507034590198,
+                           'gamma2': -0.19985431458326375}]
         kwargs_source_init = [{'R_sersic': 0.4923466696533954,
                                'center_x': -0.14951730435256952,
                                'center_y': -0.0036752770516842934,
@@ -205,7 +215,7 @@ for psf_id in [1]:  #[1,6]
                 
         # initial spread in parameter estimation #
         kwargs_lens_sigma = [{'theta_E': 0.1, 'e1': 0.2, 'e2': 0.2, 'gamma': .1, 'center_x': 0.1, 'center_y': 0.1},
-                             {'e1': 0.1, 'e2': 0.1}]
+                             {'gamma1': 0.1, 'gamma2': 0.1}]
         kwargs_source_sigma = [{'R_sersic': 0.2, 'n_sersic': .5, 'center_x': .1, 'center_y': 0.1, 'e1': 0.2, 'e2': 0.2}]
         #kwargs_source_sigma.append({'R_sersic': 0.2, 'center_x': .1, 'n_sersic': .5, 'center_y': 0.1, 'e1': 0.2, 'e2': 0.2})
         kwargs_lens_light_sigma = [{'R_sersic': 0.2, 'center_x': .1, 'n_sersic': .5, 'center_y': 0.1, 'e1': 0.2, 'e2': 0.2}]
@@ -216,7 +226,7 @@ for psf_id in [1]:  #[1,6]
         # hard bound lower limit in parameter space #
         kwargs_lower_lens = [{'theta_E': 0, 'e1': -0.5, 'e2': -0.5, 'gamma': 1.5, 'center_x': -10., 'center_y': -10},
         #                     {'theta_E': 0, 'center_x': -10., 'center_y': -10},
-                             {'e1': -0.2, 'e2': -0.2}]
+                             {'gamma1': -0.2, 'gamma2': -0.2}]
         kwargs_lower_source = [{'R_sersic': 0.001, 'n_sersic': 0.5, 'e1': -0.5, 'e2': -0.5, 'center_x': -10, 'center_y': -10}]
         #kwargs_lower_source.append({'R_sersic': 0.001,'n_sersic': 0.5,  'e1': -0.5, 'e2': -0.5, 'center_x': -10, 'center_y': -10})
         kwargs_lower_lens_light = [{'R_sersic': 0.001, 'n_sersic': 0.5, 'e1': -0.5, 'e2': -0.5, 'center_x': -10, 'center_y': -10}]
@@ -227,7 +237,7 @@ for psf_id in [1]:  #[1,6]
         # hard bound upper limit in parameter space #
         kwargs_upper_lens = [{'theta_E': 10, 'e1': 0.5, 'e2': 0.5, 'gamma': 2.5, 'center_x': 10., 'center_y': 10},
         #                     {'theta_E': 10, 'center_x': 10., 'center_y': 10},
-                             {'e1': 0.2, 'e2': 0.2}]
+                             {'gamma1': 0.2, 'gamma2': 0.2}]
         kwargs_upper_source = [{'R_sersic': 10, 'n_sersic': 5., 'e1': 0.5, 'e2': 0.5, 'center_x': 10, 'center_y': 10}]
         #kwargs_upper_source.append({'R_sersic': 10, 'n_sersic': 5., 'e1': 0.5, 'e2': 0.5, 'center_x': 10, 'center_y': 10})
         kwargs_upper_lens_light = [{'R_sersic': 10, 'n_sersic': 5., 'e1': 0.5, 'e2': 0.5, 'center_x': 10, 'center_y': 10}]

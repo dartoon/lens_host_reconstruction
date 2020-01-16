@@ -17,11 +17,18 @@ from flux_profile import cr_mask
 def return_chisq(filename, lens_mask = None, fair_mask=True, fair_PSF =False):
     result = pickle.load(open(filename,'rb'))
     fit_result, trans_result, kwargs_material, model_lists  = result
-    
+
     kwargs_data, kwargs_psf_updated, kwargs_numerics, kwargs_model, lens_mask_saved = kwargs_material
     lens_model_list, source_model_list, lens_light_model_list, point_source_list = model_lists
 
     kwargs_result, chain_list = fit_result
+    
+    kwargs_result, chain_list = fit_result
+    if 'e1' in kwargs_result['kwargs_lens'][1].keys():
+        g1 = kwargs_result['kwargs_lens'][1]['e1']
+        g2 = kwargs_result['kwargs_lens'][1]['e2']
+        del kwargs_result['kwargs_lens'][1]
+        kwargs_result['kwargs_lens'].append({'gamma1': g1, 'gamma2': g2})
     
     sampler_type, samples_mcmc, param_mcmc, dist_mcmc  = chain_list[-1]    
     kwargs_psf = kwargs_psf_updated

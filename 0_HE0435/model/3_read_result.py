@@ -38,7 +38,13 @@ from lenstronomy.ImSim.image_linear_solve import ImageLinearFit
 from lenstronomy.Plots import chain_plot
 import lenstronomy.Plots.chain_plot as out_plot
 #%%
+#!!! For the Lenstronomy version 1.3.0
 kwargs_result, chain_list = fit_result
+if 'e1' in kwargs_result['kwargs_lens'][1].keys():
+    g1 = kwargs_result['kwargs_lens'][1]['e1']
+    g2 = kwargs_result['kwargs_lens'][1]['e2']
+    del kwargs_result['kwargs_lens'][1]
+    kwargs_result['kwargs_lens'].append({'gamma1': g1, 'gamma2': g2})
 
 sampler_type, samples_mcmc, param_mcmc, dist_mcmc  = chain_list[-1]    
 lens_result = kwargs_result['kwargs_lens']
