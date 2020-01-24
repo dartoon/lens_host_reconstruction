@@ -18,7 +18,7 @@ from adjustText import adjust_text   # avoid the overlapping while ploting
 sys.path.insert(0,'../../share_tools/')
 from read_chisq import return_chisq 
 
-pkl_folderfiles = glob.glob("fit_PSFi_PSFrecons/result_PSF*.pkl")
+pkl_folderfiles = glob.glob("2nd_fit_PSFi_PSFrecons/result_PSF*.pkl")
 pkl_files = [pkl_folderfiles[i].split('/')[1] for i in range(len(pkl_folderfiles))]
 
 if float(len(pkl_files)/6) != len(pkl_files)/6. :
@@ -93,7 +93,12 @@ chisq = [x for _,x in sorted(zip(labels,chisq))]
 labels = [x for _,x in sorted(zip(labels,labels))]  # Sort the label at the last
 
 #%% Still needs to be tested:
-labels = copy.deepcopy(labels)
+sort_label_type=['subg_2, PSFrecons', ', subg_2, QSOmask', 'subg_3, PSFrecons',', subg_3, QSOmask']
+#if labels[0][-17:]!='subg_2, PSFrecons' or labels[1][-15:]!='subg_2, QSOmask' or labels[0][-17:]!='subg_3, PSFrecons' or labels[1][-15:]!='subg_3, QSOmask'
+for i in range(len(labels)):
+    if labels[i][-17:] != sort_label_type[i%4]:
+        raise ValueError("The labels is wrong for some reason")
+        
 for i in range(len(pick_names)):
     print i, ':', pick_names[i]
 print pick_names
@@ -128,6 +133,9 @@ def plt_result(fixgamma, chisq=chisq, ID = ID):
     for ftype in range(lines_num):
         index_all = [i for i in range(len(labels)) if 'fixgamma_{0}'.format(fixgamma) in labels[i]]
         index = [index_all[(i*lines_num+ftype)] for i in range(len(bars))]
+        for i in range(len(index)):
+            if labels[index[i]][6:] != labels[index[0]][6:]:
+                raise ValueError("The labels is wrong for some reason")        
         value_result = [fit_value_m[i] for i in index]
         asm_error = [[fit_value_m[i]-fit_value_l[i] for i in index],
                             [fit_value_h[i]-fit_value_m[i] for i in index]]

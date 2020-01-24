@@ -102,7 +102,7 @@ plt.close()
 #Things should be changed:
 id_ind = int(sys.argv[1])
 fix_gamma = [1.9, 2.0, 2.1][id_ind]
-for psf_id in [1,2,3,4,5,6]:  #[1,6]
+for psf_id in [0]:#[1,2,3,4,5,6]: 
     for subg in [3,2]: #[3,2]
         picklename='result_PSF{0}_PSFrecons_gammafix{1}_subg{2}.pkl'.format(psf_id, fix_gamma, subg)        
         if glob.glob(picklename) != []:

@@ -14,21 +14,19 @@ import lenstronomy.Util.class_creator as class_creator
 sys.path.insert(0,'/Users/Dartoon/Astro/my_code/py_tools')
 from flux_profile import cr_mask
 
-def return_chisq(filename, lens_mask = None, fair_mask=True, fair_PSF =False):
+def return_chisq(filename, lens_mask = None, fair_mask=True, fair_PSF =False, if_reduce=True):
     result = pickle.load(open(filename,'rb'))
     fit_result, trans_result, kwargs_material, model_lists  = result
 
     kwargs_data, kwargs_psf_updated, kwargs_numerics, kwargs_model, lens_mask_saved = kwargs_material
     lens_model_list, source_model_list, lens_light_model_list, point_source_list = model_lists
-
     kwargs_result, chain_list = fit_result
     
-    kwargs_result, chain_list = fit_result
-    if 'e1' in kwargs_result['kwargs_lens'][1].keys():
-        g1 = kwargs_result['kwargs_lens'][1]['e1']
-        g2 = kwargs_result['kwargs_lens'][1]['e2']
-        del kwargs_result['kwargs_lens'][1]
-        kwargs_result['kwargs_lens'].append({'gamma1': g1, 'gamma2': g2})
+    share_i = [i for i in range(len(lens_model_list)) if lens_model_list[i]=='SHEAR'][0]
+    if 'e1' in kwargs_result['kwargs_lens'][share_i].keys():
+        g1 = kwargs_result['kwargs_lens'][share_i]['e1']
+        g2 = kwargs_result['kwargs_lens'][share_i]['e2']
+        kwargs_result['kwargs_lens'][share_i]={'gamma1': g1, 'gamma2': g2}
     
     sampler_type, samples_mcmc, param_mcmc, dist_mcmc  = chain_list[-1]    
     kwargs_psf = kwargs_psf_updated
@@ -50,7 +48,10 @@ def return_chisq(filename, lens_mask = None, fair_mask=True, fair_PSF =False):
                                                band_index=0)
     logL = imageModel.likelihood_data_given_model(source_marg=False, linear_prior=None, **kwargs_result)
     n_data = imageModel.num_data_evaluate    
-    reduced_x2 = - logL * 2 / n_data    
+    if if_reduce == True:
+        reduced_x2 = - logL * 2 / n_data   
+    else:
+        reduced_x2 = - logL * 2    
     return reduced_x2
 
 #print return_chisq('../0_HE0435/model/fit_PSFi_PSFrecons/result_PSF0_PSFrecons_gammafix1.9_subg2.pkl')

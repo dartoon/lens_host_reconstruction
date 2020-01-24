@@ -18,8 +18,8 @@ sys.path.insert(0,'/Users/Dartoon/Astro/my_code/py_tools/')
 from flux_profile import cr_mask
 
 
-#readfile = 'fit_PSFi_PSFrecons/result_PSF0_PSFrecons_gammafix1.9_subg2.pkl'
-readfile = 'fit_PSFi_QSOmask/result_PSF3_QSOmask_gammafix1.9_subg2.pkl'
+readfile = '2nd_fit_PSFi_PSFrecons/result_PSF2_PSFrecons_gammafix1.9_subg3.pkl'
+#readfile = 'fit_PSFi_QSOmask/result_PSF2_QSOmask_gammafix1.9_subg2.pkl'
 result = pickle.load(open(readfile,'rb'))
 fit_result, trans_result, kwargs_material, model_lists  = result
 
@@ -39,6 +39,11 @@ from lenstronomy.Plots import chain_plot
 import lenstronomy.Plots.chain_plot as out_plot
 #%%
 kwargs_result, chain_list = fit_result
+share_i = [i for i in range(len(lens_model_list)) if lens_model_list[i]=='SHEAR'][0]
+if 'e1' in kwargs_result['kwargs_lens'][share_i].keys():
+    g1 = kwargs_result['kwargs_lens'][share_i]['e1']
+    g2 = kwargs_result['kwargs_lens'][share_i]['e2']
+    kwargs_result['kwargs_lens'][share_i]={'gamma1': g1, 'gamma2': g2}
 
 sampler_type, samples_mcmc, param_mcmc, dist_mcmc  = chain_list[-1]    
 lens_result = kwargs_result['kwargs_lens']
@@ -79,7 +84,7 @@ modelPlot.data_plot(ax=axes[0,0])
 modelPlot.model_plot(ax=axes[0,1])
 modelPlot.normalized_residual_plot(ax=axes[0,2], v_min=-6, v_max=6)
 modelPlot.source_plot(ax=axes[1, 0], deltaPix_source=0.01, numPix=100)
-modelPlot.convergence_plot(ax=axes[1, 1], v_max=1)
+modelPlot.subtract_from_data_plot(ax=axes[1, 1], v_max=1, point_source_add=True,lens_light_add=True, source_add=False)
 modelPlot.magnification_plot(ax=axes[1, 2])
 f.tight_layout()
 f.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0., hspace=0.05)

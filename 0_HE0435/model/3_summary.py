@@ -18,13 +18,16 @@ from adjustText import adjust_text   # avoid the overlapping while ploting
 sys.path.insert(0,'../../share_tools/')
 from read_chisq import return_chisq 
 
-pkl_folderfiles = glob.glob("fit_PSFi_PSFrecons/result_PSF*.pkl")
+pkl_folderfiles = glob.glob("2nd_fit_PSFi_PSFrecons/result_PSF*.pkl")
 pkl_files = [pkl_folderfiles[i].split('/')[1] for i in range(len(pkl_folderfiles))]
 psf_num = np.max([int(pkl_files[i].split('_PSF')[1]) for i in range(len(pkl_files))]) + 1
 
 if float(len(pkl_files)/6) != len(pkl_files)/6. :
     raise ValueError("The number of the pickle result is the Multiples of six")
 
+import os
+path = os.getcwd()
+ID = path.split('/')[-2]
 #%%
 
 PSFno_ = range(psf_num)
@@ -35,7 +38,10 @@ fit_result, trans_result, kwargs_material, model_lists  = result
 pick_names = trans_result[-1]
 
 _, _, _, _, lens_mask = kwargs_material
-rms_boost = pyfits.getdata('fit_PSFi_QSOmask/HE0435_stdd_boost.fits')
+stdd_file = glob.glob('fit_PSFi_QSOmask/*_stdd_boost.fits')
+if len(stdd_file)>1:
+    raise ValueError("More than on *_stdd_boost.fits exits") 
+rms_boost = pyfits.getdata(stdd_file[0])
 lens_mask[rms_boost == rms_boost.max()] = 0
 plt.imshow(lens_mask,origin='low')
 plt.show()
@@ -47,7 +53,7 @@ fit_value_l_list, fit_value_m_list, fit_value_h_list, = [], [], []
 chisq = []
 fixgamma_list = []
 
-folder_i = ['fit_PSFi_QSOmask', 'fit_PSFi_PSFrecons']
+folder_i = ['2nd_fit_PSFi_QSOmask', '2nd_fit_PSFi_PSFrecons']
 for folder in folder_i:
 #    if folder == 'fit_PSFi_QSOmask':
 #        filenames = glob.glob('{0}/result_PSF?_S*'.format(folder))
@@ -85,8 +91,13 @@ fit_value_h_list = [x for _,x in sorted(zip(labels,fit_value_h_list))]
 chisq = [x for _,x in sorted(zip(labels,chisq))]
 labels = [x for _,x in sorted(zip(labels,labels))]  # Sort the label at the last
 
-#%% Still needs to be tested:
-labels = copy.deepcopy(labels)
+#%%
+sort_label_type=['subg_2, PSFrecons', ', subg_2, QSOmask', 'subg_3, PSFrecons',', subg_3, QSOmask']
+#if labels[0][-17:]!='subg_2, PSFrecons' or labels[1][-15:]!='subg_2, QSOmask' or labels[0][-17:]!='subg_3, PSFrecons' or labels[1][-15:]!='subg_3, QSOmask'
+for i in range(len(labels)):
+    if labels[i][-17:] != sort_label_type[i%4]:
+        raise ValueError("The labels is wrong for some reason")
+        
 for i in range(len(pick_names)):
     print i, ':', pick_names[i]
 print pick_names
@@ -96,42 +107,54 @@ fit_value_l = [fit_value_l_list[i][pick] for i in range(len(labels))]
 fit_value_m = [fit_value_m_list[i][pick] for i in range(len(labels))]
 fit_value_h = [fit_value_h_list[i][pick] for i in range(len(labels))]
 
+zp = 24. #!!!
+if_trans_mag = False
+if if_trans_mag and pick_names[pick]=='Host flux souce plane':
+    fit_value_l = -2.5*np.log10(fit_value_h)+zp
+    fit_value_m = -2.5*np.log10(fit_value_m)+zp
+    fit_value_h = -2.5*np.log10(fit_value_l)+zp
+
 bars = [labels[i].split(',')[0] for i in range(len(labels))]
 bars = sorted(set(bars), key=bars.index)
 
-#Test if the sort of PSF is wrong:
-index0 = [i*12 for i in range(psf_num)]
+index0 = [i*12 for i in range(len(bars))]
 label0 = [labels[i].split(',')[0] for i in index0]
-index1 = [i*12+11 for i in range(psf_num)]
+index1 = [i*12+11 for i in range(len(bars))]
 label1 = [labels[i].split(',')[0] for i in index1]
 if label0 != label1 or bars!= label0:
     print label0, label1
     raise ValueError("The labels is wrong for some reason")
-
 color = ['green', 'orange']
 
-#count_n =len(labels) * 10 /100
+count_n =len(labels) * 20 /100
 chisq = [float(chisq[i]) for i in range(len(chisq))]
 sort_chisq = np.argsort(np.asarray(chisq))    
 Chisq_best = chisq[sort_chisq[0]]
-Chisq_last= chisq[sort_chisq[-1]]
+#Chisq_last= chisq[sort_chisq[-1]]
+Chisq_last= chisq[sort_chisq[count_n-1]]
 weight = np.zeros(len(chisq))
-for i in range(len(sort_chisq)):
-    weight[i] = np.exp(-1/2. * (chisq[i]-Chisq_best)/(Chisq_best))
+inf_alp = (Chisq_last-Chisq_best) / (2*2.* Chisq_best)
+for i in sort_chisq[:count_n]:
+#for i in range(len(sort_chisq)):
+#    weight[i] = np.exp(-1/2. * (chisq[i]-Chisq_best)/(Chisq_best))
+    weight[i] = np.exp(-1/2. * (chisq[i]-Chisq_best)/(Chisq_best* inf_alp))
 weighted_value = np.sum(np.array(fit_value_m)*weight) / np.sum(weight)
 rms_value = np.sqrt(np.sum((np.array(fit_value_m)-weighted_value)**2*weight) / np.sum(weight))
-print "weighted_value, rms_value:", weighted_value, rms_value
+print "weighted_value, rms_value:", weighted_value, rms_value, 'used sets:', count_n
 
 def plt_result(fixgamma, chisq=chisq):
     #Plot it out    
     fig = plt.figure(figsize=(12, 10))
-    x_pos = np.arange(psf_num) + 0.5
+    x_pos = np.arange(len(bars)) + 0.5
     fmt =['--','--','-','-']
     lines_num = 4 #subg 2-3, PSFrecon and QSO mask
     texts = []
     for ftype in range(lines_num):
         index_all = [i for i in range(len(labels)) if 'fixgamma_{0}'.format(fixgamma) in labels[i]]
-        index = [index_all[(i*lines_num+ftype)] for i in range(psf_num)]
+        index = [index_all[(i*lines_num+ftype)] for i in range(len(bars))]
+        for i in range(len(index)):
+            if labels[index[i]][6:] != labels[index[0]][6:]:
+                raise ValueError("The labels is wrong for some reason")
 #        print index
 #        label_type = [labels[i] for i in index]
         value_result = [fit_value_m[i] for i in index]
@@ -140,16 +163,15 @@ def plt_result(fixgamma, chisq=chisq):
         plt.errorbar(x_pos+0.01*ftype, value_result, yerr=asm_error, fmt =fmt[ftype], color=color[ftype%2],
                      label="{0}, {1}".format(labels[ftype].split(',')[2],labels[ftype].split(',')[3]))
         for i in range(len(index)):
-            texts.append(plt.text((x_pos+0.01*ftype)[i], value_result[i]*9.2/9, chisq[index[i]],fontsize=15) )
+            texts.append(plt.text((x_pos+0.01*ftype)[i], value_result[i], chisq[index[i]],fontsize=15) )
     adjust_text(texts, arrowprops=dict(arrowstyle='->', color='red'))            
-    import os
-    path = os.getcwd()
-    ID = path.split('/')[-2]
     
     xs = np.linspace(x_pos[0], x_pos[-1])
-
-    plt.plot(xs, xs*0+(weighted_value - rms_value), xs, xs*0+weighted_value, xs, xs*0+(weighted_value + rms_value),color = 'red')
-    plt.fill_between(xs, weighted_value - rms_value, weighted_value + rms_value, facecolor='red', alpha = 0.05)    
+    ys_l = xs*0 + weighted_value-rms_value
+    ys_m = xs*0 + weighted_value
+    ys_h = xs*0 + weighted_value+rms_value
+    plt.plot(xs,ys_l, xs, ys_m, xs,ys_h,color = 'red')
+    plt.fill_between(xs, ys_l, ys_h, facecolor='red', alpha = 0.06)
 
     ##If want to put horizontal line:
     fill_ref = False
@@ -162,16 +184,24 @@ def plt_result(fixgamma, chisq=chisq):
     elif pick == 5 or pick == 5-len(pick_names):
         ref_value_l,ref_value, ref_value_h = 0.82 - 0.14, 0.82, 0.82 + 0.14
         fill_ref = True
-    if fill_ref == True:
-        ys_l = xs*0 + ref_value_l
-        ys_m = xs*0 + ref_value
-        ys_h = xs*0 + ref_value_h
+    ys_l = xs*0 + ref_value_l
+    ys_m = xs*0 + ref_value
+    ys_h = xs*0 + ref_value_h
+    if if_trans_mag and pick_names[pick]=='Host flux souce plane':
+        ys_l = -2.5*np.log10(ys_h)+zp
+        ys_m = -2.5*np.log10(ys_m)+zp
+        ys_h = -2.5*np.log10(ys_l)+zp
+    if fill_ref ==True:
         plt.plot(xs,ys_l, xs, ys_m, xs,ys_h,color = 'gray')
         plt.fill_between(xs, ys_l, ys_h, facecolor='gray', alpha = 0.2)
     plt.legend(numpoints=1,ncol=2,loc=2,prop={'size':18})
     plt.title('The fitting result for {0}, fix gamma = {1}'.format(ID[2:], fixgamma),fontsize=25)
     plt.ylabel(pick_names[pick],fontsize=25)
+    
     plt.ylim(np.min(fit_value_l)/1.3,np.max(fit_value_m)*1.3)
+    if if_trans_mag and pick_names[pick]=='Host flux souce plane':
+        plt.ylim(np.min(fit_value_l)/1.05,np.max(fit_value_m)*1.05)
+        plt.ylabel('Magnitude',fontsize=25)
     plt.tick_params(labelsize=15)
     plt.xticks(x_pos, bars)
 #    plt.savefig('fig_result_pick{0}_fixgamma{1}.pdf'.format(pick,fixgamma))
