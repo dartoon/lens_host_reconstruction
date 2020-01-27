@@ -18,7 +18,7 @@ from adjustText import adjust_text   # avoid the overlapping while ploting
 sys.path.insert(0,'../../share_tools/')
 from read_chisq import return_chisq 
 
-pkl_folderfiles = glob.glob("2nd_fit_PSFi_PSFrecons/result_PSF*.pkl")
+pkl_folderfiles = glob.glob("fit_PSFi_PSFrecons/result_PSF*.pkl")
 pkl_files = [pkl_folderfiles[i].split('/')[1] for i in range(len(pkl_folderfiles))]
 
 if float(len(pkl_files)/6) != len(pkl_files)/6. :

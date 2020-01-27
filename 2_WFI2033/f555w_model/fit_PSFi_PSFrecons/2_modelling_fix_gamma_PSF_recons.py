@@ -96,7 +96,7 @@ for i in range(len(x)):
 #%%
 #Things should be changed:
 for fix_gamma in [1.9, 2.0, 2.1]:
-    for psf_id in [0,1,2]:
+    for psf_id in [0,1,2,3,4]:
         for subg in [3,2]:
             picklename='result_PSF{0}_PSFrecons_gammafix{1}_subg{2}.pkl'.format(psf_id, fix_gamma, subg)        
             if glob.glob(picklename) != []:
