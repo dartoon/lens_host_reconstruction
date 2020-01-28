@@ -55,7 +55,7 @@ fit_value_l_list, fit_value_m_list, fit_value_h_list, = [], [], []
 chisq = []
 fixgamma_list = []
 
-folder_i = ['fit_PSFi_QSOmask', 'fit_PSFi_PSFrecons']
+folder_i = ['2nd_fit_PSFi_QSOmask', '2nd_fit_PSFi_PSFrecons']
 for folder in folder_i:
 #    if folder == 'fit_PSFi_QSOmask':
 #        filenames = glob.glob('{0}/result_PSF?_S*'.format(folder))
