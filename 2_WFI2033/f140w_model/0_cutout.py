@@ -11,7 +11,7 @@ import astropy.io.fits as pyfits
 import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
 import sys
-sys.path.insert(0,'/Users/Dartoon/Astro/my_code/py_tools/')
+sys.path.insert(0,'../../../my_code/py_tools/')
 from cut_image import sub_bkg, cut_center_bright, cut_image, save_loc_png
 from mask_objects import mask_obj
 from flux_profile import flux_profile, profiles_compare
@@ -59,6 +59,8 @@ exp_map = exp * wht/mean_wht
 stdd = 0.018
 print "stdd:",stdd
 lens_exp_map =  cut_image(exp_map, center_QSO, 100)
+lens_exp_map = lens_exp_map / np.mean(lens_exp_map) * exp   #Norminalize the exp map at the same order
+
 lens_rms =(lens_image/lens_exp_map+stdd**2)**0.5
 plt.imshow(lens_rms, norm=LogNorm(),origin='low')
 plt.colorbar()
@@ -120,7 +122,7 @@ plt.show()
 ##    PSFs
 ##==============================================================================
 #pyfits.PrimaryHDU(lens_image).writeto('{0}_cutout.fits'.format(ID),overwrite=True) 
-#pyfits.PrimaryHDU(lens_rms).writeto('{0}_stdd.fits'.format(ID),overwrite=True) 
+pyfits.PrimaryHDU(lens_rms).writeto('{0}_stdd.fits'.format(ID),overwrite=True) 
 #for i in range(len(PSFs)):
 #    pyfits.PrimaryHDU(PSF_list[i]).writeto('PSF{0}.fits'.format(i),overwrite=True) 
 #

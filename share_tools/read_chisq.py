@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 import pickle
 import sys
 import lenstronomy.Util.class_creator as class_creator
-sys.path.insert(0,'/Users/Dartoon/Astro/my_code/py_tools')
-from flux_profile import cr_mask
+sys.path.insert(0,'../py_tools')
+#from flux_profile import cr_mask
 
 def return_chisq(filename, lens_mask = None, fair_mask=True, fair_PSF =False, if_reduce=True):
     result = pickle.load(open(filename,'rb'))

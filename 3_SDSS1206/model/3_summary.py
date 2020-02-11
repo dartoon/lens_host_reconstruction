@@ -18,7 +18,9 @@ from adjustText import adjust_text   # avoid the overlapping while ploting
 sys.path.insert(0,'../../share_tools/')
 from read_chisq import return_chisq 
 
-pkl_folderfiles = glob.glob("fit_PSFi_PSFrecons/result_PSF*.pkl")
+pre_head = '2nd_'
+
+pkl_folderfiles = glob.glob(pre_head+"fit_PSFi_PSFrecons/result_PSF*.pkl")
 pkl_files = [pkl_folderfiles[i].split('/')[1] for i in range(len(pkl_folderfiles))]
 
 if float(len(pkl_files)/6) != len(pkl_files)/6. :
@@ -55,7 +57,8 @@ fit_value_l_list, fit_value_m_list, fit_value_h_list, = [], [], []
 chisq = []
 fixgamma_list = []
 
-folder_i = ['2nd_fit_PSFi_QSOmask', '2nd_fit_PSFi_PSFrecons']
+
+folder_i = [pre_head+'fit_PSFi_QSOmask', pre_head+'fit_PSFi_PSFrecons']
 for folder in folder_i:
 #    if folder == 'fit_PSFi_QSOmask':
 #        filenames = glob.glob('{0}/result_PSF?_S*'.format(folder))
@@ -192,7 +195,7 @@ def plt_result(fixgamma, chisq=chisq, ID = ID):
 
 import imageio
 kwargs_write = {'fps':1.0, 'quantizer':'nq'}
-imageio.mimsave('fig_result_{0}_PSF.gif'.format(pick_names[pick]), [plt_result(fix_gamma) for fix_gamma in  ['1.9', '2.0', '2.1']], fps=1)
+imageio.mimsave(pre_head+'fig_result_{0}_PSF.gif'.format(pick_names[pick]), [plt_result(fix_gamma) for fix_gamma in  ['1.9', '2.0', '2.1']], fps=1)
 
 #
 
