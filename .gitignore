@@ -10,8 +10,6 @@
 */prerun_model*/*
 *.gif
 */otherband_data/*
-*.pkl
-*.pkl
 *.log
 *.aux
 *.cls
