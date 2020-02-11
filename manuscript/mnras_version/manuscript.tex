@@ -1,0 +1,250 @@
+% mnras_template.tex 
+%
+% LaTeX template for creating an MNRAS paper
+%
+% v3.0 released 14 May 2015
+% (version numbers match those of mnras.cls)
+%
+% Copyright (C) Royal Astronomical Society 2015
+% Authors:
+% Keith T. Smith (Royal Astronomical Society)
+
+% Change log
+%
+% v3.0 May 2015
+%    Renamed to match the new package name
+%    Version number matches mnras.cls
+%    A few minor tweaks to wording
+% v1.0 September 2013
+%    Beta testing only - never publicly released
+%    First version: a simple (ish) template for creating an MNRAS paper
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Basic setup. Most papers should leave these options alone.
+\documentclass[fleqn,usenatbib]{mnras}
+
+% MNRAS is set in Times font. If you don't have this installed (most LaTeX
+% installations will be fine) or prefer the old Computer Modern fonts, comment
+% out the following line
+\usepackage{newtxtext,newtxmath}
+% Depending on your LaTeX fonts installation, you might get better results with one of these:
+%\usepackage{mathptmx}
+%\usepackage{txfonts}
+
+% Use vector fonts, so it zooms properly in on-screen viewing software
+% Don't change these lines unless you know what you are doing
+\usepackage[T1]{fontenc}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% my commands
+\newcommand{\lcdm}{$\Lambda$CDM}
+\newcommand{\hst}{{\it HST}}
+\newcommand{\efr}{$R_{\mathrm{eff}}$}
+\newcommand{\galfit}{{\sc Galfit}}
+\newcommand{\mbh}{$\mathcal M_{\rm BH}$}
+\newcommand{\lhost}{$L_{\rm host}$}
+\newcommand{\mr}{$Mag_{\rm ~R}$}
+\newcommand{\halpha}{${\it H}\alpha$}
+\newcommand{\hbeta}{${\it H}\beta$}
+\newcommand{\sersic}{S\'ersic}
+\newcommand{\lenstronomy}{{\sc Lenstronomy}}
+\newcommand{\reff}{{$R_{\mathrm{eff}}$}}
+\newcommand{\kmsMpc}{km~s$^{\rm -1}$~Mpc$^{\rm -1}$}
+\newcommand{\kms}{\ifmmode{\,\rm{km}\, \rm{s}^{-1}}\else{$\,$km$\,$s$^{-1}$}\fi}
+\newcommand{\sigstar}{{$\sigma_*$}}
+\newcommand{\mstar}{{$M_*$}}
+\newcommand{\Mgii}{Mg$_{\rm II}$}
+\newcommand{\Civ}{C$_{\rm IV}$}
+%\newcommand{\farcs}{\mbox{\ensuremath{.\!\!^{\prime\prime}}}}% fractional arcsecond symbol: 0.''0
+\newcommand{\sam}{\texttt{SAM}}
+\newcommand{\mbii}{\texttt{MBII}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\ding}[1]{\textcolor{red}{[{\bf Xuheng}: #1]}}
+\newcommand{\todo}[1]{\textcolor{red}{[{\bf Todo}: #1]}}  
+\newcommand{\aklant}[1]{\textcolor{blue}{[{\bf AKB}: #1]}} 
+\newcommand{\red}[1]{{ \textcolor{red}{#1}}}
+\newcommand{\blue}[1]{{ \textcolor{blue}{#1}}}
+\newcommand{\pink}[1]{{ \textcolor{magenta}{#1}}}
+
+% Allow "Thomas van Noord" and "Simon de Laguarde" and alike to be sorted by "N" and "L" etc. in the bibliography.
+% Write the name in the bibliography as "\VAN{Noord}{Van}{van} Noord, Thomas"
+\DeclareRobustCommand{\VAN}[3]{#2}
+\let\VANthebibliography\thebibliography
+\def\thebibliography{\DeclareRobustCommand{\VAN}[3]{##3}\VANthebibliography}
+
+
+%%%%% AUTHORS - PLACE YOUR OWN PACKAGES HERE %%%%%
+
+% Only include extra packages if you really need them. Common packages are:
+\usepackage{graphicx}	% Including figure files
+\usepackage{amsmath}	% Advanced maths commands
+\usepackage{amssymb}	% Extra maths symbols
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%% AUTHORS - PLACE YOUR OWN COMMANDS HERE %%%%%
+
+% Please keep new commands to a minimum, and use \newcommand not \def to avoid
+% overwriting existing commands. Example:
+%\newcommand{\pcm}{\,cm$^{-2}$}	% per cm-squared
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%% TITLE PAGE %%%%%%%%%%%%%%%%%%%
+
+% Title of the paper, and the short title which is used in the headers.
+% Keep the title short and informative.
+\title[lens source reconstruction]{H0LiCOW xxx: correlation between black hole mass and host galaxy luminosity}
+
+% The list of authors, and the short list which is used in the headers.
+% If you need two or more lines of authors, add an extra line using \newauthor
+\author[X. Ding et al.]{
+Xuheng Ding,$^{1}$\thanks{E-mail: dxh@astro.ucla.edu}
+Tommaso Treu,$^{1}$
+Simon Birrer$^{1, 2}$
+and et al. $^{3}$
+\\
+% List of institutions
+$^{1}$Department of Physics and Astronomy, University of California, Los Angeles, CA, 90095-1547, USA\\
+$^{2}$Kavli Institute for Particle Astrophysics and Cosmology and Department of Physics, Stanford University, Stanford, CA 94305, USA\\
+$^{3}$xxx
+}
+
+% These dates will be filled out by the publisher
+\date{Accepted XXX. Received YYY; in original form ZZZ}
+
+% Enter the current year, for the copyright statements etc.
+\pubyear{2020}
+
+% Don't change these lines
+\begin{document}
+\label{firstpage}
+\pagerange{\pageref{firstpage}--\pageref{lastpage}}
+\maketitle
+
+% Abstract of the paper
+\begin{abstract}
+Strong lensed AGN has been considered as a unique tool to exam the correlations between the mass of the supermassive Black Hole and its host galaxies. In this work, we have adopted eight strongly lensed system from the H0LiCOW collaboration. The deep \hst\ data and adopt the \lenstronomy\ to reconstruct the image of the source. The \mbh\ are estimated using the board emission line. We compare our inference to the once in the literature and find a consistent result. Combining them together, we are able to constrain the $\gamma$ to xxx. Our our demonstrate is demonstrate the power of using strong lensed AGNs. The sample of the data are supposed to increase rapidly.
+\end{abstract}
+
+% Select between one and six entries from the list of approved keywords.
+% Don't make up new ones.
+\begin{keywords}
+galaxies: evolution -- galaxies: active -- gravitational lensing: strong
+\end{keywords}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%% BODY OF PAPER %%%%%%%%%%%%%%%%%%
+
+\section{Introduction}
+Structure:
+
+[] What is scaling relations.
+
+[] Strong lensing provide a tool to study to higher redshift.
+
+[] Previous work. H0LiCOW XI. H0LiCOW XII. In these two works, the host galaxy is first reconstructed using the pixellation. Then, the host image are inferred in the source plan by fitting as a Sersic model. This means, the two-step inference of the host information. 
+
+[] In this work, we adopt an independent tool and carry out a direct inference of the host properties. 
+
+[]This paper is organized as follows. Zeropoint are defined in the AB systems.
+
+\section{Sample Selection}
+The eight lens systems are selected from our H0LiCOW collaboration including HE~0435$-$1223, RXJ~1131$-$1231, WFI~2033$-$4723, HE~1104$-$1805, SDSS~1206$+$4332, SDSS~0246$-$0825, HE~0047$-$1756 and HS~2209$+$1914. For conciseness, we abbreviate each lens name to four digits (e.g., RXJ~1131$-$1231 to RXJ~1131). In \citet{Ding2017a}, the simulation exercise has been performed to understand the fidelity of the source reconstruction based on these eight systems and verified that the host inference is trustworthy when its magnitude are brighter than 20 magnitude, 2$-$4 magnitudes dimmer than the AGN. The detailed information of the observations for these eight systems are given in Table~1 therein.
+
+
+
+Rather than infer the host properties from the side produces. 
+We focus on source reconstruction in this paper, 
+%[]The comparison sample (32 QSO paper)
+To expend the sample size, we select the recent efforts by Ding2019, including 32 QSO at redshift  range 1.2<z<1.9, with the local sample.
+
+\section{Surface photometry}
+We describe the measurement of the host galaxy in this section. We use adopt the lensing techniques to reconstruct the host galaxy and recover the host magnitude in the source plane. We then obtain the color of the host to derive the rest-frame R band magnitude and estimate the stellar mass.
+
+\subsection{Lensing host reconstruction}
+Lensing modeling technique.
+
+[] We define the light profile of the source and lensing galaxy can be described by Sersic profile. The deflector mass are described by the power law.
+
+[] We adopt the \lenstronomy~to perform the modeling task. The detail of the fitting settings: gamma as 1.9, 2.0, 2.1. The mask. Two approaches including QSO mask and PSF reconstruction. Subgrid with 2 and 3 are selected to describe the Sersic profile.
+
+[] Top rank result combined to get the inference of the host galaxies and the way of weighting flux to get magnitude.
+
+We present the fitting for the eight systems in the following sub-sections.
+
+\subsubsection{HE0435}
+The results of HE0435. A table to summarize the fitting results. The inference of the observed magnitude, Reff and sersic. 
+
+\subsubsection{RXJ1131}
+
+\subsubsection{WFI2033}
+
+The comparison to the previous fitting.
+
+We summarized the inference for the eight systems in the table.
+name--Setts--BestFitChisq--Totalflux--Reff--Sersicn--magnitude
+
+\subsection{k-correction and stellar mass estimates}
+For those ones have multibands. For those only have one bands.
+
+How do we infer the color? All the available bands? Which is dominating the scatter?
+
+\section{Black Hole mass estimates}
+We use viral method to estimate the mass of the black hole. The board-line adopted. We aim to adopt the self-consistent to recalibrate the \mbh~of our sample. [] The recipes. [] The board lines and the resulting BH mass and listed in the table. 
+
+\section{Results}
+
+Selection effect? We only select 8 sample?
+
+The last numbered section should briefly summarize what has been done, and describe
+the final conclusions which the authors draw from their work.
+
+\section{Discussion and Conclusion}
+
+
+
+\section*{Acknowledgements}
+
+The Acknowledgements section is not numbered. Here you can thank helpful
+colleagues, acknowledge funding agencies, telescopes and facilities used etc.
+Try to keep it short.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%% REFERENCES %%%%%%%%%%%%%%%%%%
+
+% The best way to enter references is to use BibTeX:
+
+\bibliographystyle{mnras}
+\bibliography{reference} % if your bibtex file is called example.bib
+
+
+% Alternatively you could enter them by hand, like this:
+% This method is tedious and prone to error if you have lots of references
+%\begin{thebibliography}{99}
+%\bibitem[\protect\citeauthoryear{Author}{2012}]{Author2012}
+%Author A.~N., 2013, Journal of Improbable Astronomy, 1, 1
+%\bibitem[\protect\citeauthoryear{Others}{2013}]{Others2013}
+%Others S., 2012, Journal of Interesting Stuff, 17, 198
+%\end{thebibliography}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%% APPENDICES %%%%%%%%%%%%%%%%%%%%%
+
+\appendix
+
+\section{Color inference of the host}
+We took the other band data and get the only arc image. We adopt these image and do the SED fitting to get the color information.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Don't change these lines
+\bsp	% typesetting comment
+\label{lastpage}
+\end{document}
+
+% End of mnras_template.tex

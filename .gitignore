@@ -12,3 +12,12 @@
 */otherband_data/*
 *.pkl
 *.pkl
+*.log
+*.aux
+*.cls
+*.bst
+*.eps
+manuscript/mnras_version/manuscript.pdf
+*.gz
+manuscript/mnras_version/mnras_guide.tex
+manuscript/mnras_version/manuscript.out
