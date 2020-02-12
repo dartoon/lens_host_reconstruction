@@ -1,5 +1,6 @@
 ./*.fits
 */data/*.fits
+*/data/*/*.fits
 *.pyc
 *_sci.fits
 *_wht.fits
