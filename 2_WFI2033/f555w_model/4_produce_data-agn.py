@@ -16,8 +16,12 @@ import copy
 import sys
 sys.path.insert(0,'/Users/Dartoon/Astro/my_code/py_tools/')
 
+import os
+path = os.getcwd()
+filt = path.split('/')[-1][:5]
+
 psf_i = 'PSF0'
-subg = 'subg3'
+subg = 'subg2'
 fixgamma = '1.9'
 #readfile = 'fit_PSFi_PSFrecons/result_PSF0_PSFrecons_gammafix1.9_subg2.pkl'
 readfile = 'fit_PSFi_PSFrecons/result_{0}_PSFrecons_gammafix{2}_{1}.pkl'.format(psf_i,subg, fixgamma)
@@ -85,9 +89,8 @@ plt.imshow((data-img)*lens_mask, origin='lower',norm=LogNorm(), cmap=my_cmap)
 plt.show()
 print np.sum((data-img)*lens_mask)
 
-filt = 'f555w'
 center_QSO = np.array([3602-1,5677-1]) #c_psf_list[QSO_loc]
-fitsFile = pyfits.open('../otherband_data/{0}_drc_sci.fits'.format(filt))
+fitsFile = pyfits.open('../data/otherband_data/{0}_drc_sci.fits'.format(filt))
 file_header = copy.deepcopy(fitsFile[0].header)
 file_header['CRPIX1'] = file_header['CRPIX1']-center_QSO[0]+len(img)/2
 file_header['CRPIX2'] = file_header['CRPIX2']-center_QSO[1]+len(img)/2
