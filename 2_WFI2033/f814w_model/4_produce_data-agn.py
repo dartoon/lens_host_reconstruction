@@ -25,7 +25,7 @@ subg = 'subg2'
 fixgamma = '2.0'
 #readfile = 'fit_PSFi_PSFrecons/result_PSF0_PSFrecons_gammafix1.9_subg2.pkl'
 readfile = 'fit_PSFi_PSFrecons/result_{0}_PSFrecons_gammafix{2}_{1}.pkl'.format(psf_i,subg, fixgamma)
-result = pickle.load(open(readfile,'rb'))
+result = pickle.load(open(readfile,'rb'), encoding='latin1')
 fit_result, trans_result, kwargs_material, model_lists  = result
 
 kwargs_data, kwargs_psf_updated, kwargs_numerics, kwargs_model, lens_mask = kwargs_material
@@ -87,11 +87,19 @@ plt.show()
 data = kwargs_data['image_data']
 plt.imshow((data-img)*lens_mask, origin='lower',norm=LogNorm(), cmap=my_cmap)
 plt.show()
-print np.sum((data-img)*lens_mask)
+# print np.sum((data-img)*lens_mask)
 
 center_QSO = np.array([3602-1,5679-1]) #c_psf_list[QSO_loc]
 fitsFile = pyfits.open('../data/WFI2033_added/{0}_drc_sci.fits'.format(filt))
 file_header = copy.deepcopy(fitsFile[0].header)
 file_header['CRPIX1'] = file_header['CRPIX1']-center_QSO[0]+len(img)/2
 file_header['CRPIX2'] = file_header['CRPIX2']-center_QSO[1]+len(img)/2
-pyfits.PrimaryHDU((data-img)*lens_mask,header=file_header).writeto('lensed_arc_{3}_{0}_{1}_fixgamma{2}.fits'.format(psf_i,subg,fixgamma,filt),overwrite=True)
+# pyfits.PrimaryHDU((data-img)*lens_mask,header=file_header).writeto('lensed_arc_{3}_{0}_{1}_fixgamma{2}.fits'.format(psf_i,subg,fixgamma,filt),overwrite=True)
+
+#%%Save residual map
+img_all = imageModel.image(kwargs_lens=lens_result, kwargs_source=source_result, kwargs_lens_light=lens_light_result, kwargs_ps=ps_result,
+                 point_source_add=True,lens_light_add=True, source_add=True)
+residual = ((data-img_all)/kwargs_data['noise_map'])*lens_mask
+plt.imshow(residual, origin='lower', vmin=-6, vmax=6, cmap = 'bwr')
+plt.show()
+pyfits.PrimaryHDU((data-img)*lens_mask,header=file_header).writeto('normresidual_{3}_{0}_{1}_fixgamma{2}.fits'.format(psf_i,subg,fixgamma,filt),overwrite=True)
