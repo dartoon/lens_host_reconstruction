@@ -2,6 +2,7 @@
 */data/*.fits
 */data/*/*.fits
 *.pyc
+*.pkl
 *_sci.fits
 *_wht.fits
 */model/fast_model/*
