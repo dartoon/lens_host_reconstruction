@@ -22,3 +22,5 @@ manuscript/mnras_version/manuscript.pdf
 *.gz
 manuscript/mnras_version/mnras_guide.tex
 manuscript/mnras_version/manuscript.out
+*.cpkl
+*.cat
