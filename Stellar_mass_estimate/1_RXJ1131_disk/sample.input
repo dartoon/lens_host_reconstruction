@@ -1,0 +1,51 @@
+# Input file
+
+#
+# params for MCMC
+#
+NMC		100 # interation of MCMC    #Run after redshift MCMC
+NWALK		100 #number of walker
+NMCZ		5	#MCMC interation for redshift.  #First run in the MCMC
+NWALKZ		2  #walkers for redshift
+TAU0		-1 # in Gyr for tau; Randomly taken when MCMC.  IGNORE
+FNELD		0
+NTEMP		0 # Number of parallel tempering.
+NCPU		0 # Number of multiprocessing.
+TAU_COMP	1 # comparison between different tau for each ssp when plot.
+
+#
+# Params for data
+#
+DIR_TEMP	/Users/Dartoon/Astro/Packages/gsf/gsf/example/templates/ # Directory of extracted spectra.
+DIR_EXTR	./ # Directory of extracted spectra.
+DIR_FILT	/Users/Dartoon/Astro/Packages/gsf/gsf/example/filter/ 
+CAT_BB		./sample.cat # Directory of extracted spectra.
+FILTER		239,206 #!!! Using hst/wfc3/IR/f140w.dat
+
+#
+# Params for SED
+#
+AGE			1.5 #!!! 0.01,0.03,0.1,0.3,0.5,0.7,1.0,2.0,3.0 #I only select one value
+ZMAX		0.0 # Max metalicity
+ZMIN		0.0 # Min metalicity
+#ZFIX		0.0 # logZ/Zsun
+DELZ		0.0  # Should be smaller than the gap between ZMAX and ZMIN.
+ZEVOL		0 # Evolution in Z; 1=yes, 2=no.
+AVMIN		0.0
+AVMAX		0.0
+ZMC		0 # redshift as a free parameter in mcmc.
+NIMF		1 # Choice of IMF. 0=Salpeter, 1=Chabrier, 2=Kroupa, 3=van Dokkum, 4=Dave, 5=tabulated, specified in imf.dat file located in the data directory.
+#NDIM		22 # ndim  = int(1 + len(age) * 2) # dust + age + Z(age)
+
+#
+# Params for target
+#
+ID		1  # Tell the ID for the cat, need to run one by one.
+PA		00
+ZGAL		0.65 #!!! Initial guess of source redshift.   #If redshift is know, set the NMCZ very smalled
+###IGNORE the following.
+CZ0 		0.83167 # Initial guess of spectral normalization for G102. #Doesn't affect, have to be here.
+CZ1		0.96804 # Initial guess of spectral normalization for G141.
+LINE 		0 #4102,4341,4861,4959 #3869.,3894.6,4102,4341,4960.,5008.  # Emission line, iin AA.
+ZVIS		0 # Visual inspection of redshift. 1=yes, 0=no. If you are not confident with zgal, cz1/2, then ZVIS should be 1 for iteration.
+ADD_NEBULAE	0 # Add nebular lines from Cloudy if 1.

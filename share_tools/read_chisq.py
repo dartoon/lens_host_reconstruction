@@ -15,7 +15,7 @@ sys.path.insert(0,'../py_tools')
 #from flux_profile import cr_mask
 
 def return_chisq(filename, lens_mask = None, fair_mask=True, fair_PSF =False, if_reduce=True):
-    result = pickle.load(open(filename,'rb'))
+    result = pickle.load(open(filename,'rb'),encoding="latin1") 
     fit_result, trans_result, kwargs_material, model_lists  = result
 
     kwargs_data, kwargs_psf_updated, kwargs_numerics, kwargs_model, lens_mask_saved = kwargs_material

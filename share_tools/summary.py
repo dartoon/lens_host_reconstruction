@@ -16,10 +16,11 @@ import copy
 from adjustText import adjust_text   # avoid the overlapping while ploting
 from read_chisq import return_chisq 
 
-# IDs = ['0_HE0435', '1_RXJ1131', '2_WFI2033', '3_SDSS1206', '4_HE1104', '5_SDSS0246', '6_HS2209', '7_HE0047']
-# folder = '2nd_fit_'
-IDs = ['3_SDSS1206']
-folder_type = 'singel_fit_'
+IDs = ['0_HE0435', '1_RXJ1131', '2_WFI2033', '3_SDSS1206', '4_HE1104', '5_SDSS0246', '6_HS2209', '7_HE0047']
+folder = '2nd_fit_'
+# IDs = ['3_SDSS1206']
+# folder_type = 'singel_fit_'
+
 
 # for i in range(len(IDs)):
 #     ID = IDs[i][2:]
@@ -91,12 +92,12 @@ folder_type = 'singel_fit_'
 
 #%%
 for i in range(len(IDs)):
-    print i, ':', IDs[i]
-inp = input("Which source:\n")
+    print(i, ':', IDs[i])
+inp = int(input("Which source:\n"))
 ID = IDs[inp][2:]
-# filename = ID+'2nd_run_summary.pkl'
-filename = ID+'_singel_host_run_summary.pkl'
-result = pickle.load(open(filename,'rb'))
+filename = ID+'_2nd_run_summary.pkl'
+# filename = ID+'_singel_host_run_summary.pkl'
+result = pickle.load(open(filename,'rb') ,encoding="latin1") 
 fit_values, chisq, labels, pick_names = result
 fit_value_l_list, fit_value_m_list, fit_value_h_list = fit_values
 
@@ -107,9 +108,9 @@ for i in range(len(labels)):
         raise ValueError("The labels is wrong for some reason")
         
 for i in range(len(pick_names)):
-    print i, ':', pick_names[i]
-print pick_names
-pick = input('select the names to plot?:\n')
+    print(i, ':', pick_names[i])
+print(pick_names)
+pick = int(input('select the names to plot?:\n'))
 
 fit_value_l = [fit_value_l_list[i][pick] for i in range(len(labels))]
 fit_value_m = [fit_value_m_list[i][pick] for i in range(len(labels))]
@@ -130,11 +131,11 @@ label0 = [labels[i].split(',')[0] for i in index0]
 index1 = [i*12+11 for i in range(len(bars))]
 label1 = [labels[i].split(',')[0] for i in index1]
 if label0 != label1 or bars!= label0:
-    print label0, label1
+    print(label0, label1)
     raise ValueError("The labels is wrong for some reason")
 color = ['green', 'orange']
 
-count_n =len(labels) * 20 /100
+count_n = 8#int(len(labels) * 20 /100)
 chisq = [float(chisq[i]) for i in range(len(chisq))]
 sort_chisq = np.argsort(np.asarray(chisq))    
 Chisq_best = chisq[sort_chisq[0]]
@@ -148,7 +149,7 @@ for i in sort_chisq[:count_n]:
     weight[i] = np.exp(-1/2. * (chisq[i]-Chisq_best)/(Chisq_best* inf_alp))
 weighted_value = np.sum(np.array(fit_value_m)*weight) / np.sum(weight)
 rms_value = np.sqrt(np.sum((np.array(fit_value_m)-weighted_value)**2*weight) / np.sum(weight))
-print "weighted_value, rms_value:", weighted_value, rms_value, 'used sets:', count_n
+print("weighted_value, rms_value:", weighted_value, rms_value, 'used sets:', count_n)
 
 def plt_result(fixgamma, chisq=chisq):
     #Plot it out    

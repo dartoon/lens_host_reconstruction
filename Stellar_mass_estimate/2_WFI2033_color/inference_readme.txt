@@ -1,0 +1,1 @@
+The Inferred color is 0.625 Gyr.
