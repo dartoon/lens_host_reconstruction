@@ -26,7 +26,7 @@ for folder in folders:
     table = hdul[1].data
     mstar_idx = [i for i in range(len(name)) if 'Mstel' in str(name[i])][0]
     age_idx = [i for i in range(len(name)) if 'T_MW' in str(name[i])][0]
-#    print(folder,':\n', 'M_star:', round(table[1][mstar_idx],3), 'AGE:', str(round(10**table[1][age_idx],2))+' Gyrs', "redshift", table_sum[1][z_idx])
+    print(folder,':\n', 'M_star:', round(table[1][mstar_idx],3), 'AGE:', str(round(10**table[1][age_idx],3))+' Gyrs', "redshift", table_sum[1][z_idx])
     mstar_temp_dict[folder] = round(table[1][mstar_idx],3)
 
 systems = ['HE0435', 'RXJ1131', 'WFI2033', 'SDSS1206', 'HE1104', 'SDSS0246', 'HS2209', 'HE0047']
@@ -38,12 +38,12 @@ for ID in systems:
         folder_ID = [folder for folder in folders if ID in folder][0]
         mstar_dict[ID] = mstar_temp_dict[folder_ID]
 
-#%%     
-mstar_dict = {'HE0435': 10.713,
- 'RXJ1131': [10.264, 11.082],
- 'WFI2033': 10.668,
- 'SDSS1206': 10.779,
- 'HE1104': 11.036,
- 'SDSS0246': 10.686,
- 'HS2209': 11.182,
- 'HE0047': 10.913}
+##%%     
+#mstar_dict = {'HE0435': 10.713,
+# 'RXJ1131': [10.264, 11.082], #Bluge and Disk
+# 'WFI2033': 10.668,
+# 'SDSS1206': 10.779,
+# 'HE1104': 11.036,
+# 'SDSS0246': 10.686,
+# 'HS2209': 11.182,
+# 'HE0047': 10.913}

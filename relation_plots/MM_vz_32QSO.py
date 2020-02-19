@@ -419,18 +419,18 @@ h0licow = ['HE0435', 'RXJ1131', 'WFI2033', 'SDSS1206', 'HE1104', 'SDSS0246', 'HE
 sys.path.insert(0,'../Stellar_mass_estimate')
 from mstar_inference import mstar_dict
 sys.path.insert(0,'../MBH_estimator')
-from est_MBH import MBH_by_Domini
+from est_MBH import MBH_dic
 sys.path.insert(0,'../share_tools')
 from lens_information import lens_redshift
 
 texts = []
 for ID in h0licow:
     Mstar = mstar_dict[ID]
-    MBs = MBH_by_Domini[ID]
+    MBs = MBH_dic[ID]
     if ID == 'RXJ1131':
-        Mstar = np.log10(10**Mstar[0] + 10**Mstar[1])
+        Mstar = np.log10(10**Mstar[0])# + 10**Mstar[1])
 #    plt.scatter(Mstar, MBs[0], c='blue',s=580,marker=".",zorder=100, edgecolors='k')
-    plt.scatter(np.log10(1+lens_redshift[ID]),MBs[0]-(m_ml*Mstar+b_ml),c='blue',
+    plt.scatter(np.log10(1+lens_redshift[ID]),MBs-(m_ml*Mstar+b_ml),c='blue',
             s=580,marker=".",zorder=300, vmin=0.3, vmax=5, edgecolors='k')
 #    plt.text(np.log10(1+lens_redshift[ID]),MBs[0]-(m_ml*Mstar+b_ml), ID, fontsize=15, zorder=200) 
 #adjust_text(texts, arrowprops=dict(arrowstyle='->', color='red')) 
