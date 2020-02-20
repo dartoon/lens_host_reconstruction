@@ -40,7 +40,7 @@ NIMF		1 # Choice of IMF. 0=Salpeter, 1=Chabrier, 2=Kroupa, 3=van Dokkum, 4=Dave,
 #
 # Params for target
 #
-ID		1  # Tell the ID for the cat, need to run one by one.
+ID		11311  # Tell the ID for the cat, need to run one by one.
 PA		00
 ZGAL		0.65 #!!! Initial guess of source redshift.   #If redshift is know, set the NMCZ very smalled
 ###IGNORE the following.

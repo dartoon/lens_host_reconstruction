@@ -8,19 +8,21 @@ Created on Tue Feb 18 15:25:07 2020
 import numpy as np
 import astropy.io.fits as pyfits
 import matplotlib.pyplot as plt
-
+import glob
 folders = ['0_HE0435', '1_RXJ1131_bulge', '1_RXJ1131_disk', '2_WFI2033', '3_SDSS1206', '4_HE1104', '5_SDSS0246', '6_HS2209', '7_HE0047']
 
 #%%
 mstar_temp_dict = {}
 for folder in folders:
-    filename  = '../Stellar_mass_estimate/'+ folder + '/summary_1_PA00.fits'
+    filename  = '../Stellar_mass_estimate/'+ folder + '/summary_*_PA00.fits'
+    filename = glob.glob(filename)[0]
     hdul_sum = pyfits.open(filename)
     name_sum = hdul_sum[1].columns
     table_sum = hdul_sum[1].data
     z_idx = [i for i in range(len(name_sum)) if 'zmc' in str(name_sum[i])][0]
 #    
-    filename  = '../Stellar_mass_estimate/'+ folder + '/SFH_1_PA00_param.fits'
+    filename  = '../Stellar_mass_estimate/'+ folder + '/SFH_*_PA00_param.fits'
+    filename = glob.glob(filename)[0]
     hdul = pyfits.open(filename)
     name = hdul[1].columns
     table = hdul[1].data

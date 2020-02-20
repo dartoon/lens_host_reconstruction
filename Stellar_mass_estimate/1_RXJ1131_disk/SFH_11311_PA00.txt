@@ -1,0 +1,3 @@
+# time_l time_u SFR SFR16 SFR84
+# (Gyr)  (Gyr)  (M/yr) (M/yr) (M/yr)
+6.06 6.07 19054.39 19041.76 19066.04
