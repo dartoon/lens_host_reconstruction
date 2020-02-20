@@ -24,3 +24,5 @@ manuscript/mnras_version/mnras_guide.tex
 manuscript/mnras_version/manuscript.out
 *.cpkl
 *.cat
+*.out
+*.blg
