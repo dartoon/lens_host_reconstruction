@@ -26,3 +26,5 @@ manuscript/mnras_version/manuscript.out
 *.cat
 *.out
 *.blg
+manuscript/manuscript.pdf
+*.bbl
