@@ -14,13 +14,13 @@ import pickle
 from matplotlib.colors import LogNorm
 import copy
 import sys
-sys.path.insert(0,'/Users/Dartoon/Astro/my_code/py_tools/')
+sys.path.insert(0,'/Users/Dartoon/Astro/Projects/my_code/py_tools/')
 from flux_profile import cr_mask
 
 
 #readfile = 'fit_PSFi_PSFrecons/result_PSF0_PSFrecons_gammafix1.9_subg2.pkl'
 readfile = 'fit_PSFi_QSOmask/result_PSF3_QSOmask_gammafix1.9_subg2.pkl'
-result = pickle.load(open(readfile,'rb'))
+result = pickle.load(open(readfile,'rb') ,encoding="latin1")
 fit_result, trans_result, kwargs_material, model_lists  = result
 
 kwargs_data, kwargs_psf_updated, kwargs_numerics, kwargs_model, lens_mask = kwargs_material
