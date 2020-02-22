@@ -34,6 +34,7 @@
 % Use vector fonts, so it zooms properly in on-screen viewing software
 % Don't change these lines unless you know what you are doing
 \usepackage[T1]{fontenc}
+\usepackage{subfig} %for figure subplot
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % my commands
@@ -152,21 +153,21 @@ Structure:
 []This paper is organized as follows. Zeropoint are defined in the AB systems.
 
 \section{Sample Selection}
-We adopt the eight lens systems from our H0LiCOW collaboration including HE~0435$-$1223, RXJ~1131$-$1231, WFI~2033$-$4723, HE~1104$-$1805, SDSS~1206$+$4332, SDSS~0246$-$0825, HE~0047$-$1756 and HS~2209$+$1914. For conciseness, we abbreviate each lens name to four digits (e.g., RXJ~1131$-$1231 to RXJ1131). In \citet{Ding2017a}, the simulation exercise has been performed to understand the fidelity of the source reconstruction based on these eight systems and verified that the host inference is trustworthy when its magnitude are brighter than 20 magnitude, 2$-$4 magnitudes dimmer than the AGN. The detailed information for the information of these eight systems are given in Table~1 therein. Besides, half of the systems, including HE0435, RXJ1131, WFI2033 and HE1104 have \hst\ imaging data in multi-bands. To estimate the \mbh, we adopt the spectra information as inferred by \citet{Sluse2012, Peng2006, Shen2011}. We use a Table[] to summarize the data information. \ding{table should including the redshift, filter/Camera, the drizzled pixel size.}
+We adopt the eight lens systems from our H0LiCOW collaboration including HE~0435$-$1223, RXJ~1131$-$1231, WFI~2033$-$4723, HE~1104$-$1805, SDSS~1206$+$4332, SDSS~0246$-$0825, HE~0047$-$1756 and HS~2209$+$1914. For conciseness, we abbreviate each lens name to four digits (e.g., RXJ~1131$-$1231 to RXJ1131). In \citet{Ding2017a}, the simulation exercise has been performed to understand the fidelity of the source reconstruction based on these eight systems and verified that the host inference is trustworthy when its magnitude are brighter than 20 magnitude, 2$-$4 magnitudes dimmer than the AGN. The detailed information for the information of these eight systems are given in Table~1 therein. Besides, half of the systems, including HE0435, RXJ1131, WFI2033 and HE1104 have \hst\ imaging data in multi-bands. To estimate the \mbh, we adopt the spectra information as inferred by \citet{Sluse2012, Peng2006, Shen2011}. We use a Table[] to summarize the data information. \ding{table should include the redshift, filter/Camera, the drizzled pixel size.}
 
 While we note that our sample size included eight systems, which is a limited sample to constrain the evolution of the scaling relation. In this particular work, we simply aim to plot the scaling relation of our sample and make comparison to the ones in the literature. %[]The comparison sample (32 QSO paper)
 We adopt the recent efforts by~\citet{Ding2020}, including 32 AGNs at redshift range $1.2<z<1.9$, 79 redshift QSO and 55 local measurements.
 
-We adopt a class of consistent recipes as introduced in~\citet{Ding2020} to estimate the \mbh\ of our sample. \ding{Do we want to include the detailed information here?}
+We adopt a class of consistent recipes as introduced in~\citet{Ding2020} to estimate the \mbh\ of our sample. \ding{Do we want to include the detailed information such as recipe and the other things here?}
 
 \section{surface photometry with lensing technique}
 We describe the reconstruction of the lensed host galaxy in this section. For part of the lensed systems, the lens models have been derived with host galaxies reconstructed ref[]. Aiming at the time-delay cosmography, these works focused on deriving the precise and accurate lens models, while the reconstructed the host galaxy is only a by-product. Thus, in this paper, we apply our own approach to infer the photometry of the host galaxy in the source plane. For cross check purpose, we will compare our inference to the reconstructions by the previous works.
 
 \subsection{Model Choice}
 We carry out the fitting process to subtract the central AGN light, constrain the lens model, and reconstruct the host galaxy in the source plan, simultaneously.
-We assume the photometry of the galaxies (including the lensing galaxy and source galaxy) is described by the 2-D elliptical \sersic\ profile. We start with a single \sersic\ and consider to use two \sersic\ if any significant residual indicate a multiply component. By this definition, we could infer the host flux as consistent to our comparison sample. The bright AGNs are unsolved and modelled by a scaled point spread function (PSF). We adopt the elliptical power-law model to describe the surface mass density of the deflector. An external shear component is also considered.
+For all the systems, we assume the photometry of the galaxies (including the lensing galaxy and source galaxy) is described by the 2-D elliptical \sersic\ profile. We start with a single \sersic\ and consider to use two \sersic\ if any significant residual indicate a multiply component. For single \sersic\ case, we set the prior of the \sersic\ index value $n$ between $[0.5-5.0]$ to avoid unphysical inference. By this definition, we could infer the host flux as consistent to our comparison sample. The bright AGNs are unsolved and modelled by a scaled point spread function (PSF). We adopt the elliptical power-law model to describe the surface mass density of the deflector. An external shear component is also considered.
 
-We employ the imaging modelling tool \lenstronomy~ref[] to perform the fitting task. The input ingredients include the lensing imaging data, noise level map and a PSF, as is described by~\citet{Ding2020}. We draw the image mask for each systems to define the region in which the pixels would to be included in the likelihood. For any objects which is close to the lens, we model its light as one extended source described by \sersic\ profile. 
+We employ the imaging modelling tool \lenstronomy~ref[] to perform the fitting task. We following the standard procedure as introduced by~\citet{Ding2020} to produce the fitting ingredients including the lensing imaging data, noise level map and the PSF condition. We draw the image mask for each systems to define the region in which the pixels would to be included in the likelihood.
 
 For each lens systems, we adopt different choices to perform the fitting. The distribution of the fitting inference are assumed to sufficiently cover the truth. We then apply a statistical measurement to weighting for the final inference and estimate the uncertainty level. The different choice of the fitting including the following.
 \begin{enumerate}
@@ -176,24 +177,44 @@ For each lens systems, we adopt different choices to perform the fitting. The di
 \item Since using the lensing imaging alone is difficult to constrain the power-law slope, we choose to fixed the slope values with three options $[1.9, 2.0, 2.1]$.
 \end{enumerate}
 
-For a lens system with a number of $N$ initial PSFs, there are in total $N\times12$ (i.e., $2 \times2 \times3$) fittings. After the all sets of fittings are completed, we rank the performance of each choice based on their best-fitted $\chi^2$ value. We adopt the weighting algorithm as introduced by ~\citet{Ding2020} and combine the top eight choices to derive the final inference.
+For a lens system with a number of $N$ initial PSFs, there are in total $N\times12$ (i.e., $2 \times2 \times3$) fittings. After the all sets of fittings are completed, we rank the performance of each choice based on their best-fitted $\chi^2$ value. We adopt the weighting algorithm as introduced by ~\citet{Ding2020} and combine the top eight choices to derive the final inference and estimate the uncertainties.
 
 \subsection{Photometry Inference}
-In this section, we describe the details of the fitting for each systems and present the corresponding inference of the host photometry information. 
+In the result of this section, we describe the details of the fitting for each systems and present the corresponding inference of the host photometry information. 
 
 %remember to present a table to summarize the fitting results. The inference of the observed magnitude, Reff and sersic. 
 \subsubsection{HE0435}
-This system has been modeled.
+We follow Ken[] and assuming light of the deflector are composed of two elliptical \sersic\ with index value $n$ fixed to $1$ and $4$ to represent the disk and bulge components
 
-We choose five isolated stars in this field to input as the initial PSFs. 
-Comparison to the previous inference.
+We select five isolated stars in this field initial PSFs to input to the fitting thus, we have in total 60 fittings for this case. The best-fit models are present in the Figure~\ref{fig:image_inference}-(a). Using the top eight inference, we use weighting to combining them and inferred the results. 
 The fitting image and inferred parameter, including: Einstein Radius, host n, host Reff, host flux, host flux ratio.
+
+Note that the residual maps are appears to be less ideal than the ones as presented by Ken[]. The major reason is the definition of the host galaxy. We compare the result with the inferred host galaxy by Ken[] and Ding+2017.
 
 Besides the F160W band, HE0435 has also been observed by the \hst\ through F814W and F555W. We carry out the similar steps to modeling at the two band. Given that the data quality and the host flux is less bright in these two bands, we only focus on modeling lensed arcs in the image plane. Based on the obtained color information, we estimate the stellar template and derive the stellar mass based on the intrinsic magnitude inferred by the F160W band.
 
+\begin{figure*}
+\centering
+\begin{tabular}{c c}
+\subfloat[HE0435]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/HE0435_best_inference.pdf}}&
+\subfloat[RXJ1131]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/RXJ1131_best_inference.pdf}}\\
+\subfloat[WFI2033]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/WFI2033_best_inference.pdf}}&
+\subfloat[SDSS1206]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/SDSS1206_best_inference.pdf}}\\
+\subfloat[HE1104]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/HE1104_best_inference.pdf}}&
+\subfloat[SDSS0246]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/SDSS0246_best_inference.pdf}}\\
+\subfloat[HS2209]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/HS2209_best_inference.pdf}}&
+\subfloat[HE0047]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/HE0047_best_inference.pdf}}\\
+\end{tabular}
+\caption{\label{fig:image_inference} 
+Something}
+\end{figure*} 
+
 \subsubsection{RXJ1131}
 
+
 \subsubsection{WFI2033}
+The objects which is close to the lens, we model its light as one extended source described by \sersic\ profile. 
+
 
 \subsubsection{SDSS1206}
 
@@ -224,7 +245,7 @@ We use viral method to estimate the mass of the black hole. The board-line adopt
 
 %scaling relation and compare to the Ding+20
 
-\ding{Do we consider the Selection effect? We only select 8 sample? Maybe we only over plot them together and see if the results are self-consistent?}
+%\ding{Do we consider the Selection effect? We only select 8 sample? Maybe we only over plot them together and see if the results are self-consistent?}
 
 \section{Discussion and Conclusion}
 [] This work confirm the bright future of lensing.
