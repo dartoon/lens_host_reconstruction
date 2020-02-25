@@ -112,7 +112,7 @@ modelPlot.decomposition_plot(ax=axes[1,1], text='Modelled source light', source_
 modelPlot.source_plot(ax=axes[1, 2], deltaPix_source=0.01, numPix=100,text='Reconstrucerd host, source plane')
 #f.tight_layout()
 f.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0., hspace=0.05)
-plt.savefig('{0}_best_inference.pdf'.format(ID))
+#plt.savefig('{0}_best_inference.pdf'.format(ID))
 plt.show()
 
 #f, axes = plt.subplots(2, 3, figsize=(16, 8), sharex=False, sharey=False)
