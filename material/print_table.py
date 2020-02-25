@@ -34,7 +34,7 @@ resolution = ['$0\\farcs{}08$', '$0\\farcs{}05$', '$0\\farcs{}08$', '$0\\farcs{}
 			  '$0\\farcs{}08$', '$0\\farcs{}03$', '$0\\farcs{}03$', '$0\\farcs{}03$']
 
 #%%Table 1 :
-print("Object ID & z & camera & Filter & exposure & pixel scale \\\\")
+print("Object ID & $z$ & camera & Filter & exposure & pixel scale \\\\")
 print(" & & & & time (s) & (drizzled) \\\\ \\hline")
 for i in range(len(IDs)):
 #    files = glob.glob(path+IDs[i]+'/data/*sci.fits')
@@ -45,7 +45,28 @@ for i in range(len(IDs)):
 #    exp_list.append(round(fitsFile[0].header['EXPTIME'],1))
     print(full_name[i], '&',lens_redshift[IDs[i][2:]]  , '&', Camera[i], '&', Filter[i] , '&', round(exp_list[i]), '&', resolution[i], "\\\\")
 
-#%%Table 2:    
+#%%Table 2
+#Pring BH information
+sys.path.insert(0,'../MBH_estimator/')
+from est_MBH import BL_info, cal_MBH
+print("Object ID & Line(s) used & FWHM & log($L_\\lambda$) & $\\log$\\mbh \\\\")
+print("& & (\\kms) & ($[\\rm erg~s^[-1]]$) & (M$_{\\odot}$) \\\\ \\hline")
+for ID in ['0_HE0435', '1_RXJ1131', '2_WFI2033', '3_SDSS1206', '4_HE1104', '5_SDSS0246', '7_HE0047']:
+	ID = ID[2:]
+	line_infor = BL_info[ID]
+#	for key in BL_info[ID].keys():
+	if len(BL_info[ID].keys()) == 1:
+		key = list(BL_info[ID].keys())[0]
+		print(ID, '&', '\\{0}'.format(key), '&', '{0:.0f}'.format(BL_info[ID][key]['FWHM']), '&',
+		'{0:.2f}'.format(np.mean(BL_info[ID][key]['L'])), '&', '{0:.2f}'.format(cal_MBH(key, np.mean(BL_info[ID][key]['L']), BL_info[ID][key]['FWHM'])) ,"\\\\" )
+	elif len(BL_info[ID].keys()) == 2:
+		key1, key2 = list(BL_info[ID].keys())
+		print(ID, '&', '\\{0}/\\{1}'.format(key1, key2), '&', '{0:.0f}/{1:.0f}'.format(BL_info[ID][key1]['FWHM'],BL_info[ID][key2]['FWHM']), '&',
+		'{0:.2f}/{1:.2f}'.format(np.mean(BL_info[ID][key1]['L']),np.mean(BL_info[ID][key2]['L'])), 
+		'&', '{0:.2f}/{1:.2f}'.format(cal_MBH(key1, np.mean(BL_info[ID][key1]['L']), BL_info[ID][key1]['FWHM']), cal_MBH(key2, np.mean(BL_info[ID][key2]['L']), BL_info[ID][key2]['FWHM'])), "\\\\" )
+		
+
+#%%Table 3:    
 #Get the infernece from pickle: 
 print("Object ID & Magnitude & Host-Total Flux Ratio & Reff & \\sersic\\ $n$ & adopted AGE & $\\log (M_{*}$)  \\\\")
 print(" & (AB system) & ($\\%$) & (arcsec) & & (Gyr) & (M$_{\\odot}$) \\\\ \\hline")

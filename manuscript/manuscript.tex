@@ -50,8 +50,8 @@
 \newcommand{\mbh}{$\mathcal M_{\rm BH}$}
 \newcommand{\lhost}{$L_{\rm host}$}
 \newcommand{\mr}{$Mag_{\rm ~R}$}
-\newcommand{\halpha}{${\it H}\alpha$}
-\newcommand{\hbeta}{${\it H}\beta$}
+\newcommand{\halpha}{H$_{\alpha}$}
+\newcommand{\Hb}{H$_{\beta}$}
 \newcommand{\sersic}{S\'ersic}
 \newcommand{\lenstronomy}{{\sc Lenstronomy}}
 \newcommand{\reff}{{$R_{\mathrm{eff}}$}}
@@ -170,7 +170,7 @@ We adopt the recent efforts by~\citet{Ding2020}, including 32 AGNs at redshift r
 \resizebox{9cm}{!}{
      \begin{tabular}{cccccc}
         \hline
-Object ID & z & camera & Filter & exposure & pixel scale \\
+Object ID & $z$ & camera & Filter & exposure & pixel scale \\
  & & & & time (s) & (drizzled) \\ \hline
 HE0435$-$1223 & 1.69 & WFC3-IR & F160W & 9340 & $0\farcs{}08$ \\
 RXJ1131$-$1231 & 0.65 & ACS & F814W & 1980 & $0\farcs{}05$ \\
@@ -185,12 +185,38 @@ HE0047$-$1756 & 1.66 & WFC3-UVIS & F814W & 9712 & $0\farcs{}03$ \\
     }
 \begin{tablenotes}
       \small
-      \item Note: $-$ If any
+      \item Note: $-$ The observational information is presented in~\citet{Ding2017a}.
 \end{tablenotes}  
 %\end{threeparttable}
 \end{table}
 
 We adopt a class of consistent recipes as introduced in~\citet{Ding2020} to estimate the \mbh\ of our sample. \ding{Do we want to include the detailed information such as recipe and the other things here?}
+
+\begin{table}
+\centering
+%\begin{threeparttable}
+\caption{Summary of lensed \mbh\ estimates.}\label{data_set}
+\resizebox{8.5cm}{!}{
+     \begin{tabular}{ccccc}
+        \hline
+Object ID & Line(s) used & FWHM & log($L_\lambda$) & $\log$\mbh \\
+& & (\kms) & (${\rm erg~s^{-1}}$) & (M$_{\odot}$) \\ \hline
+HE0435 & \Mgii & 4930 & 45.14 & 8.54 \\
+RXJ1131 & \Mgii/\Hb & 5630/4545 & 44.29/44.02 & 8.26/8.23 \\
+WFI2033 & \Mgii & 3960 & 45.19 & 8.38 \\
+SDSS1206 & \Mgii & 5632 & 45.61 & 8.88 \\
+HE1104 & \Civ & 6004 & 46.18 & 9.03 \\
+SDSS0246 & \Mgii & 3700 & 45.19 & 8.32 \\
+HE0047 & \Mgii & 4145 & 45.59 & 8.60 \\
+        \hline
+     \end{tabular}
+    }
+\begin{tablenotes}
+      \small
+      \item Note: $-$ The masses
+\end{tablenotes}  
+%\end{threeparttable}
+\end{table}
 
 \section{surface photometry with lensing technique}
 We describe the reconstruction of the lensed host galaxy in this section. For part of the lensed systems, the lens models have been derived with host galaxies reconstructed ref[]. Aiming at the time-delay cosmography, these works focused on deriving the precise and accurate lens models, while the reconstructed the host galaxy is only a by-product. Thus, in this paper, we apply our own approach to infer the photometry of the host galaxy in the source plane. For cross check purpose, we will compare our inference to the reconstructions by the previous works.
@@ -294,6 +320,8 @@ HE0047 & $22.972\substack{+0.626\\-0.394}$ & $2.496\pm1.093$ & $0.282\pm0.176$ &
 \end{tablenotes}    
 \end{threeparttable}
 \end{table*}
+
+
 
 
 \subsection{Stellar mass estimates}
