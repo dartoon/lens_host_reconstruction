@@ -165,27 +165,29 @@ We adopt the recent efforts by~\citet{Ding2020}, including 32 AGNs at redshift r
 
 \begin{table}
 \centering
+%\begin{threeparttable}
 \caption{Summary of lensed AGN information.}\label{data_set}
-%\resizebox{18cm}{!}{
-     \begin{tabular}{ccccc}
+\resizebox{9cm}{!}{
+     \begin{tabular}{cccccc}
         \hline
-Object ID & camera & Filter & exposure & pixel scale \\
- & & & time (s) & (drizzled) \\ \hline
-HE0435$-$1223 & WFC3-IR & F160W & 9340 & $0\farcs{}08$ \\
-RXJ1131$-$1231 & ACS & F814W & 1980 & $0\farcs{}05$ \\
-WFI2033$-$4723 & WFC3-IR & F160W & 26257 & $0\farcs{}08$ \\
-SDSS1206$+$4332 & WFC3-IR & F160W & 8457 & $0\farcs{}08$ \\
-HE1104$-$1805 & WFC3-IR & F160W & 14698 & $0\farcs{}08$ \\
-SDSS0246$-$0825 & WFC3-UVIS & F814W & 8481 & $0\farcs{}03$ \\
-HS2209$+$1914 & WFC3-UVIS & F814W & 14238 & $0\farcs{}03$ \\
-HE0047$-$1756 & WFC3-UVIS & F814W & 9712 & $0\farcs{}03$ \\
+Object ID & z & camera & Filter & exposure & pixel scale \\
+ & & & & time (s) & (drizzled) \\ \hline
+HE0435$-$1223 & 1.69 & WFC3-IR & F160W & 9340 & $0\farcs{}08$ \\
+RXJ1131$-$1231 & 0.65 & ACS & F814W & 1980 & $0\farcs{}05$ \\
+WFI2033$-$4723 & 1.66 & WFC3-IR & F160W & 26257 & $0\farcs{}08$ \\
+SDSS1206$+$4332 & 1.79 & WFC3-IR & F160W & 8457 & $0\farcs{}08$ \\
+HE1104$-$1805 & 2.32 & WFC3-IR & F160W & 14698 & $0\farcs{}08$ \\
+SDSS0246$-$0825 & 1.68 & WFC3-UVIS & F814W & 8481 & $0\farcs{}03$ \\
+HS2209$+$1914 & 1.07 & WFC3-UVIS & F814W & 14238 & $0\farcs{}03$ \\
+HE0047$-$1756 & 1.66 & WFC3-UVIS & F814W & 9712 & $0\farcs{}03$ \\
         \hline
      \end{tabular}
-    %}
-    \begin{tablenotes}
+    }
+\begin{tablenotes}
       \small
-      \item Note - To be written.
-    \end{tablenotes} 
+      \item Note: $-$ If any
+\end{tablenotes}  
+%\end{threeparttable}
 \end{table}
 
 We adopt a class of consistent recipes as introduced in~\citet{Ding2020} to estimate the \mbh\ of our sample. \ding{Do we want to include the detailed information such as recipe and the other things here?}
@@ -264,26 +266,33 @@ We summarized the inference for the eight systems in the table.
 name--Setts--BestFitChisq--Totalflux-- Host ratio --Reff--Sersicn--magnitude - Stellar mass
 
 \begin{table*}
+\renewcommand{\arraystretch}{1.5}
+%\setlength{\tabcolsep}{20pt}
 \centering
+  \begin{threeparttable}
+\caption{Summary of lensed AGN inference.}\label{data_set}    
 %\resizebox{12cm}{!}{
      \begin{tabular}{ccccccc}
 \hline
 Object ID & Magnitude & Host-Total Flux Ratio & Reff & \sersic\ $n$ & adopted AGE & $\log (M_{*}$)  \\
  & (AB system) & ($\%$) & (arcsec) & & (Gyr) & (M$_{\odot}$) \\ \hline
-HE0435 & $21.332\substack{+0.208\\-0.175}$ & $62.471\pm10.893$ & $0.298\pm0.027$ & $2.829\pm0.251$ & $1.500$ & $10.978$ \\
-RXJ1131$_{\rm bulge}$ & $22.074\substack{+0.164\\-0.142}$ & $91.573\pm11.280$ & $0.106\pm0.007$ & fix to 4 & $3.000$ & $10.276$ \\
-RXJ1131$_{\rm disk}$ & $19.305\substack{+0.154\\-0.135}$ & $91.573\pm11.280$ & $0.875\pm0.062$ & fix to 1 & $1.500$ & $11.091$ \\
-WFI2033 & $21.404\substack{+0.167\\-0.145}$ & $35.723\pm5.093$ & $0.294\pm0.025$ & $0.528\pm0.011$ & $0.625$ & $10.662$ \\
-SDSS1206 & $21.287\substack{+0.222\\-0.184}$ & $32.286\pm5.977$ & $0.110\pm0.020$ & $4.526\pm0.555$ & $0.625$ & $10.781$ \\
-HE1104 & $21.274\substack{+0.188\\-0.160}$ & $14.142\pm2.250$ & $0.265\pm0.026$ & $1.033\pm0.034$ & $0.625$ & $11.039$ \\
-SDSS0246 & $23.575\substack{+0.394\\-0.289}$ & $3.756\pm1.143$ & $0.381\pm0.098$ & $4.963\pm0.048$ & $0.626$ & $10.690$ \\
-HS2209 & $20.385\substack{+0.262\\-0.211}$ & $19.454\pm4.165$ & $1.921\pm1.070$ & $2.953\pm0.438$ & $1.001$ & $11.177$ \\
-HE0047 & $22.972\substack{+0.626\\-0.394}$ & $2.496\pm1.093$ & $0.282\pm0.176$ & $3.603\pm1.533$ & $0.625$ & $10.888$ \\
+HE0435 & $21.332\substack{+0.208\\-0.175}$ & $62.471\pm10.893$ & $0.298\pm0.027$ & $2.829\pm0.251$ & $1.500$ & $10.98\substack{+0.07\\-0.08}$ \\
+RXJ1131$_{\rm bulge}$ & $22.074\substack{+0.164\\-0.142}$ & $6.634\pm0.929$ & $0.106\pm0.007$ & fix to 4 & $3.000$ & $1.01\substack{+0.06\\-0.07}$ \\
+RXJ1131$_{\rm disk}$ & $19.305\substack{+0.154\\-0.135}$ & $84.939\pm11.241$ & $0.875\pm0.062$ & fix to 1 & $1.500$ & $1.04\substack{+0.05\\-0.06}$ \\
+WFI2033 & $21.404\substack{+0.167\\-0.145}$ & $35.723\pm5.093$ & $0.294\pm0.025$ & $0.528\pm0.011$ & $0.625$ & $10.66\substack{+0.06\\-0.07}$ \\
+SDSS1206 & $21.287\substack{+0.222\\-0.184}$ & $32.286\pm5.977$ & $0.110\pm0.020$ & $4.526\pm0.555$ & $0.625$ & $10.78\substack{+0.07\\-0.09}$ \\
+HE1104 & $21.274\substack{+0.188\\-0.160}$ & $14.142\pm2.250$ & $0.265\pm0.026$ & $1.033\pm0.034$ & $0.625$ & $11.04\substack{+0.06\\-0.08}$ \\
+SDSS0246 & $23.575\substack{+0.394\\-0.289}$ & $3.756\pm1.143$ & $0.381\pm0.098$ & $4.963\pm0.048$ & $0.626$ & $10.69\substack{+0.12\\-0.16}$ \\
+HS2209 & $20.385\substack{+0.262\\-0.211}$ & $19.454\pm4.165$ & $1.921\pm1.070$ & $2.953\pm0.438$ & $1.001$ & $11.18\substack{+0.08\\-0.10}$ \\
+HE0047 & $22.972\substack{+0.626\\-0.394}$ & $2.496\pm1.093$ & $0.282\pm0.176$ & $3.603\pm1.533$ & $0.625$ & $10.89\substack{+0.16\\-0.25}$ \\
 \hline
 \end{tabular}
-    %}
-\caption{Summary of lensed AGN inference.}\label{data_set}    
-\small
+%}
+\begin{tablenotes}
+      \small
+      \item Note: $-$ If any
+\end{tablenotes}    
+\end{threeparttable}
 \end{table*}
 
 
