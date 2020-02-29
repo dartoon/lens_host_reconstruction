@@ -339,5 +339,5 @@ plt.legend([Bkc,Hkc,SS13,new_sample],[
 "intermediate redshift AGNs",
 "Ding+2020 32 QSO"\
 ],scatterpoints=1,numpoints=1,loc=2,prop={'size':20},ncol=2)
-#plt.savefig("MBH-Mstar.pdf")
+plt.savefig("MBH-Mstar.pdf")
 plt.show()
