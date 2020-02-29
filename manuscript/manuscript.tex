@@ -190,12 +190,24 @@ HE0047$-$1756 & 1.66 & WFC3-UVIS & F814W & 9712 & $0\farcs{}03$ \\
 %\end{threeparttable}
 \end{table}
 
-We adopt a class of consistent recipes as introduced in~\citet{Ding2020} to estimate the \mbh\ of our sample. \ding{Do we want to include the detailed information such as recipe and the other things here?}
+To assure the validity of the comparison, we adopt a class of self-consistent recipes as introduced in~\citet{Ding2020} to estimate the \mbh\ of our sample. For the overall systems, we adopt the following virial formalism:
+\begin{eqnarray}
+\label{recipe}
+\log \left(\frac{\mathcal M_{\rm BH}}{M_{\odot}}\right)&~=~& a+b \log \left(\frac{ \rm L _{\lambda_{line}}}{10^{44}{\rm erg~s^{-1}}}\right) \nonumber\\
+&~+~& 2 \log \left(\frac{\rm FWHM(line)}{1000 ~{\rm km~s^{-1}}}\right) , 
+\end {eqnarray}
+%
+with a\{\Civ, \Mgii, \Hb\}=\{6.322, 6.623, 6.910\},
+b\{\Civ, \Mgii, \Hb\}=\{0.53, 0.47, 0.50\},
+$\lambda_{line}$\{\Civ, \Mgii, \Hb\}=\{1350, 3000, 5100\}.
+%
+Having achieved a consistent cross-calibration, we adopt the board line information from the literature to estimate the \mbh. The information are presented in Table~\ref{mbh}. The uncertainty of the \mbh\ are expected as $0.4$~dex.
+
 
 \begin{table}
 \centering
 %\begin{threeparttable}
-\caption{Summary of lensed \mbh\ estimates.}\label{data_set}
+\caption{Summary of lensed \mbh\ estimates.}\label{mbh}
 \resizebox{8.5cm}{!}{
      \begin{tabular}{ccccc}
         \hline
@@ -213,7 +225,7 @@ HE0047 & \Mgii & 4145 & 45.59 & 8.60 \\
     }
 \begin{tablenotes}
       \small
-      \item Note: $-$ The masses
+      \item Note: $-$ The reference for the board line information. For SDSS1206, we follow Birrer2018 and consider the magnification effect to correct the L.
 \end{tablenotes}  
 %\end{threeparttable}
 \end{table}
@@ -270,11 +282,13 @@ Something}
 \end{figure*} 
 
 \subsubsection{RXJ1131}
+The RXJ1131 is the other system that has been studied in \citet{Ding2017b}. The host galaxy is lensed to a extended arc with a feature of bulge $+$ disk clearly appeared, we consider them both in the fitting.
+
+We compare to the previous reconstructions. The bulge are consistent, however, our inferred disk are brighter.
 
 
 \subsubsection{WFI2033}
 The objects which is close to the lens, we model its light as one extended source described by \sersic\ profile. 
-
 
 \subsubsection{SDSS1206}
 
@@ -325,24 +339,24 @@ HE0047 & $22.972\substack{+0.626\\-0.394}$ & $2.496\pm1.093$ & $0.282\pm0.176$ &
 
 
 \subsection{Stellar mass estimates}
-For those ones have multi-bands, we attempt to infer the color of the host in the image plane.
+[] Color inference for the first three cases to decide their stellar template. 
 
-How do we infer the color? All the available bands? Which is dominating the scatter?
+[] For the other systems, we follow Ding to assume their age based on their redshift.
 
-\section{Black Hole mass estimates}
-We use viral method to estimate the mass of the black hole. The board-line adopted. We aim to adopt the self-consistent to recalibrate the \mbh~of our sample. 
-[] The recipes. [] The board lines and the resulting BH mass and listed in the table. []The summarizing table.
+The uncertainty of the \mstar\ are considered as 0.2 dex, and as studied in~\citet{Ding2017a}, we expect that the uncertainty of the \mbh\ dominate the error budget.
+
+%\section{Black Hole mass estimates}
+%We use viral method to estimate the mass of the black hole. The board-line adopted. We aim to adopt the self-consistent to recalibrate the \mbh~of our sample. 
+%[] The recipes. [] The board lines and the resulting BH mass and listed in the table. []The summarizing table.
 
 \section{Results}
-%estimate the black hole mass.
+Derive the the inference of our sample, we over plot our measurements on top of the measurements by \citet{Ding2020}, shown in Figure. The result demonstrate an excellent consistency. and the result support the evolution. 
 
-%scaling relation and compare to the Ding+20
-
-%\ding{Do we consider the Selection effect? We only select 8 sample? Maybe we only over plot them together and see if the results are self-consistent?}
 
 \section{Discussion and Conclusion}
 [] This work confirm the bright future of lensing.
 
+Look at the future? JWST and TDCOSMO will extend the sample size.
 
 
 \section*{Acknowledgements}
