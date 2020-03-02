@@ -126,7 +126,7 @@ for i in range(len(IDs)):
 			table = hdul[1].data	
 			tab_name = hdul[1].columns
 			mstar_idx = [ii for ii in range(len(tab_name)) if 'Mstel' in str(tab_name[ii])][0]
-			m_star =  round(table[1][mstar_idx],3)
+			m_star =  10**table[1][mstar_idx]
 			age_idx = [ii for ii in range(len(tab_name)) if 'T_MW' in str(tab_name[ii])][0]
 			age = round(10**table[1][age_idx],3)
 
