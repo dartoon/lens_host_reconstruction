@@ -219,51 +219,50 @@ WFI2033 & \Mgii & 3960 & 45.19 & 8.38 \\
 SDSS1206 & \Mgii & 5632 & 45.61 & 8.88 \\
 HE1104 & \Civ & 6004 & 46.18 & 9.03 \\
 SDSS0246 & \Mgii & 3700 & 45.19 & 8.32 \\
+HS2209 & xxx & xxx & xxx &  xxx  \\
 HE0047 & \Mgii & 4145 & 45.59 & 8.60 \\
         \hline
      \end{tabular}
     }
 \begin{tablenotes}
       \small
-      \item Note: $-$ The reference for the board line information. For SDSS1206, we follow Birrer2018 and consider the magnification effect to correct the L.
+      \item Note: $-$ The reference for the board line information. For SDSS1206, we follow Birrer2018~ref[] and consider the magnification effect to correct the L.
 \end{tablenotes}  
 %\end{threeparttable}
 \end{table}
 
 \section{surface photometry with lensing technique}
-We describe the reconstruction of the lensed host galaxy in this section. For part of the lensed systems, the lens models have been derived with host galaxies reconstructed ref[]. Aiming at the time-delay cosmography, these works focused on deriving the precise and accurate lens models, while the reconstructed the host galaxy is only a by-product. Thus, in this paper, we apply our own approach to infer the photometry of the host galaxy in the source plane. For cross check purpose, we will compare our inference to the reconstructions by the previous works.
+We present the lensed host galaxy source reconstruction to derive their intrinsic photometry in this section. Our lensed AGN systems are from the H0LiCOW project, and the lens models of four systems have been derived with host galaxies reconstructed ref[]. Aiming at time-delay cosmography, these works focused on deriving the precise and accurate lens models, while the reconstruction of the host galaxy is only a by-product. In this paper, we apply the state-of-the-art lens modeling technique and dedicate to recovering the photometry of the host galaxy. As will show, approach would allow us to obtain a one-step host magnitude defined by \sersic\ profile, which is consistent to the definitions in the literature. %Furthermore, for cross check purpose, we compare our inference to the reconstructions by the previous works.
 
 \subsection{Model Choice}
 We carry out the fitting process to subtract the central AGN light, constrain the lens model, and reconstruct the host galaxy in the source plan, simultaneously.
-For all the systems, we assume the photometry of the galaxies (including the lensing galaxy and source galaxy) is described by the 2-D elliptical \sersic\ profile. We start with a single \sersic\ and consider to use two \sersic\ if any significant residual indicate a multiply component. For single \sersic\ case, we set the prior of the \sersic\ index value $n$ between $[0.5-5.0]$ to avoid unphysical inference. By this definition, we could infer the host flux as consistent to our comparison sample. The bright AGNs are unsolved and modelled by a scaled point spread function (PSF). We adopt the elliptical power-law model to describe the surface mass density of the deflector. An external shear component is also considered.
+For all the systems, we assume the photometry of the galaxies (including the lensing galaxy and source galaxy) is described by the 2-D elliptical \sersic\ profile. We start with a single \sersic\ and consider to use two \sersic\ if any significant residual indicate a multiply component. For single \sersic\ case, we set the prior of the \sersic\ index value $n$ between $[0.5-5.0]$ to avoid unphysical inference\footnote{It has been studied in ref[] that this prior value would result in a consistent host magnitude inference as to fix n to its true value.}. The bright AGNs are unsolved and modelled by a scaled point spread function (PSF). We adopt the elliptical Power-law model to describe the surface mass density of the deflector. An external shear component is also considered.
 
-We employ the imaging modelling tool \lenstronomy~ref[] to perform the fitting task. We following the standard procedure as introduced by~\citet{Ding2020} to produce the fitting ingredients including the lensing imaging data, noise level map and the PSF condition. We draw the image mask for each systems to define the region in which the pixels would to be included in the likelihood.
+We employ the imaging modelling tool \lenstronomy~ref[] to perform the fitting task. We following the standard procedure as described by~\citet{Ding2020} to prepare the fitting ingredients including the lensing imaging data, noise level map and the PSF information. The imaging data are drizzled to a higher resolution by setting a Gaussian kernel; the adopted final resolution are listed in Table~\ref{data_set}. We then adopt the {\sc photutils} by Python to model the 2-D global background light using SExtractor algorithm. We then remove the background light and cut the clear image data into postage stamp at a suitable size. We draw the image mask for each systems to define the region in which the pixels would to be included in the likelihood; see Figure~\ref{fig:image_inference}.
 
-For each lens systems, we adopt different choices to perform the fitting. The distribution of the fitting inference are assumed to sufficiently cover the truth. We then apply a statistical measurement to weighting for the final inference and estimate the uncertainty level. The different choice of the fitting including the following.
+For each lens system, we adopt different choices to perform the fitting. The distribution of the fitting inference are assumed to sufficiently cover the truth. We then apply a statistical measurement to weighting for the final inference and estimate the uncertainty level. The different choice of the fitting including the following.
 \begin{enumerate}
-\item  We select all the bright, isolated stars across the image frame of targets to define the PSF. Each selected star is input as the initial PSF to perform the fitting.
-\item The central pixel of the AGNs are very bright and have systematic errors during the interpolation of the subsampled PSF. To avoid overfitting the noise, we choose to either manually boost the noise estimate in the central area to effectively infinite, or perform the iterative PSF estimation ref[].
-\item To perform the ray tracing through a higher resolution grid, the different relative level to the pixel sizes is selected, including [$2\times2$, $3\times3$] pixel$^{-1}$.
-\item Since using the lensing imaging alone is difficult to constrain the power-law slope, we choose to fixed the slope values with three options $[1.9, 2.0, 2.1]$.
+\item Following common practice, we select all the bright, isolated stars across the image frame of targets to define the PSF. Each selected star is consider as the initial PSF to input to the fitting, which is considered as different choice.
+\item The central pixel of the AGNs are very bright and have systematic errors during the interpolation of the subsampled PSF. To avoid overfitting the noise, we adopt two modeling choices. 1)~manually boost the noise estimate in the central area to effectively infinite; 2)~perform the iterative PSF estimation as introduced by ref[].
+\item To calculate the ray tracing under a higher resolution grid, the different relative level to the pixel sizes is selected, including [$2\times2$, $3\times3$] pixel$^{-1}$.
+\item Using the lensing imaging alone is difficult to constrain the power-law slope. To avoid any overfitting, we fix the slope values during the lens modelling with three optional value $[1.9, 2.0, 2.1]$.
 \end{enumerate}
 
-For a lens system with a number of $N$ initial PSFs, there are in total $N\times12$ (i.e., $2 \times2 \times3$) fittings. After the all sets of fittings are completed, we rank the performance of each choice based on their best-fitted $\chi^2$ value. We adopt the weighting algorithm as introduced by ~\citet{Ding2020} and combine the top eight choices to derive the final inference and estimate the uncertainties.
+All in all, for one lens system with a number of $N$ initial PSFs, we select in total of $N\times12$ (i.e., $2 \times2 \times3$) different choices of fitting. After  all sets of fittings are completed, we rank their performance of each choice based on their best-fitted $\chi^2$ value. Finally, we adopt the weighting algorithm as introduced by Equations (3)$-$(6) in~\citet{Ding2020} and combine the top eight choices to derive the final value and evaluate the uncertainties.
 
 \subsection{Photometry Inference}
-In the result of this section, we describe the details of the fitting for each systems and present the corresponding inference of the host photometry information. 
+In this subsection, we describe the details of the fitting for each systems and present our inference of the host galaxy photometry.
 
-%remember to present a table to summarize the fitting results. The inference of the observed magnitude, Reff and sersic. 
 \subsubsection{HE0435}
-We follow Ken[] and assuming light of the deflector are composed of two elliptical \sersic\ with index value $n$ fixed to $1$ and $4$ to represent the disk and bulge components
+The modeling is set up based on the descriptions in the last section. We select five isolated stars in this field initial PSFs to input to the fitting with in total of 60 fittings for this system. Based on the top-eight choices, we perform the weighting algorithm and measure the host-to-total flux ratio, host magnitude, effective radius and \sersic\ index. The inference results are shown in Table~\ref{tab:host_measure}, (2)$-$(5) columns.
 
-We select five isolated stars in this field initial PSFs to input to the fitting thus, we have in total 60 fittings for this case. The best-fit models are present in the Figure~\ref{fig:image_inference}-(a). Using the top eight inference, we use weighting to combining them and inferred the results. 
-The fitting image and inferred parameter, including: Einstein Radius, host n, host Reff, host flux, host flux ratio.
+The lens model inference based on the best-fit result for HE0435 is drawn in Figure~\ref{fig:image_inference}-(a). Not surprisingly, we note that the residual level reveals are appears to be larger than the ones as presented by Ken[] or Simon[]. This is due to the fact that the definition of the host galaxy in our models is a 2-D \sersic\ model which is relatively simple compare to the pixellated reconstruction technique by {\sc Glee} or the shapelet functions as adopted by \lenstronomy. The smooth feature of our model couldn't capture the clumps in the host of the star-forming regions, however, our model is more effective to derive the global host light as function of the \sersic\ which is consistent to measurements in the comparison sample. 
 
-Note that the residual level reveals in the inference figures are appears to be larger than the ones as presented by Ken[]. The major reason is the definition of the host galaxy in the models. Without using sophisticated models such as shepelet or pixellized ones, we will be able to infer directly the \sersic\ flux of the host galaxy.
+As a cross check, we compare our host magnitude to the measurement in Ding+2017[], in which they model the reconstructed host galaxy as \sersic\ based on Galfit []. The host magnitude measured in that paper is: $mag = 21.75 \pm 0.13$%, $R_{eff} = 0.82 \pm 0.14$ and $n = 3.94 \pm 0.14$. 
+which is slightly fainter than our results, i.e. $mag = 21.33 \pm 0.2$. \ding{Some discussion of the origin of this offset?}
+Still, the center mismatch is only $0.15$~dex, which is a little of the total error budget.
 
-We compare the result with the inferred host galaxy by Ken[] and Ding+2017.
-
-Besides the F160W band, HE0435 has also been observed by the \hst\ through F814W and F555W. We carry out the similar steps to modeling at the two band. Given that the data quality and the host flux is less bright in these two bands, we only focus on modeling lensed arcs in the image plane. Based on the obtained color information, we estimate the stellar template and derive the stellar mass based on the intrinsic magnitude inferred by the F160W band.
+Besides the F160W band, HE0435 has also been observed by the \hst\ through F814W and F555W. We carry out the similar steps to modeling at the two band. The inferred host magnitudes are xxx and xxx, respectively. Nevertheless, given that the data quality and the host flux is less bright in these two bands, we only combining the modeling lensed arcs in the image plane to inference the color of the host galaxy and we use {\sc Gsf} code to fit the color and find a 1.5 Gyr stellar template with solar metallicity could well match this color. This stellar template would be adopted to infer the \mstar\ in the next section.
 
 \begin{figure*}
 \centering
@@ -278,14 +277,17 @@ Besides the F160W band, HE0435 has also been observed by the \hst\ through F814W
 \subfloat[HE0047]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/HE0047_best_inference.pdf}}\\
 \end{tabular}
 \caption{\label{fig:image_inference} 
-Something}
+Illustrations of the inference for each system. On the top: (left to right): . On the bottom: (left to right.) }
 \end{figure*} 
 
 \subsubsection{RXJ1131}
-The RXJ1131 is the other system that has been studied in \citet{Ding2017b}. The host galaxy is lensed to a extended arc with a feature of bulge $+$ disk clearly appeared, we consider them both in the fitting.
+The RXJ1131 has been well studied in many reference. The host galaxy of this system is lensed to a spacious arc with a boundary line between the dominated area of bulge and disk could be clearly seen. Thus, we set the host galaxy is composed of two \sersic\ with index value $n$ fixed to $1$ and $4$ to mimic the light distribution of the disk and bulge, respectively. Besides, same as suyu[], we consider the perturbations by the small object in the north and fitting it as a SIS and \sersic\ for its mass and light.
 
-We compare to the previous reconstructions. The bulge are consistent, however, our inferred disk are brighter.
+The inference of the RXJ1131 based on three initial PSFs are summarized in Table~\ref{tab:host_measure}, with the best-fit result drawn in Figure~\ref{fig:image_inference}-~(b).
 
+We also compare our measurement to the previous reconstructions in Ding. Based on the reconstructions by Suyu[], the inference of the host magnitude by Ding[] is $mag_{disk} = 20.07\pm0.06$ and $mag_{bulge} = 21.81 \pm 0.28$. Compared to our inference in Table~\ref{tab:host_measure}, our bulge flux is consistent $\sim0.25$ dex, however, while the inferred disk light is much brighter by $\sim 0.7$ dex.
+
+Due to the arc is extend and resolved to the PSF, one can directly perform the SED fitting of the arc in the image plane. Based on the inference in Ding[], we adopt 3 Gyr and 1.5 Gyr stellar template to its disk and bulge respectively.
 
 \subsubsection{WFI2033}
 The objects which is close to the lens, we model its light as one extended source described by \sersic\ profile. 
@@ -310,7 +312,7 @@ name--Setts--BestFitChisq--Totalflux-- Host ratio --Reff--Sersicn--magnitude - S
 %\setlength{\tabcolsep}{20pt}
 \centering
   \begin{threeparttable}
-\caption{Summary of lensed AGN inference.}\label{data_set}    
+\caption{Summary of lensed AGN inference.}\label{tab:host_measure}    
 %\resizebox{12cm}{!}{
      \begin{tabular}{ccccccc}
 \hline
@@ -336,9 +338,10 @@ HE0047 & $22.972\substack{+0.626\\-0.394}$ & $2.496\pm1.093$ & $0.282\pm0.176$ &
 \end{table*}
 
 
+\section{Results}
+In this section, we present the inference of the stellar mass to derive the scaling relations. We compare our measurements to the ones by the  literature samples to study their evolution.
 
-
-\subsection{Stellar mass estimates}
+\subsection{Stellar mass}
 [] Color inference for the first three cases to decide their stellar template. 
 
 [] For the other systems, we follow Ding to assume their age based on their redshift.
@@ -348,10 +351,10 @@ The uncertainty of the \mstar\ are considered as 0.2 dex, and as studied in~\cit
 %\section{Black Hole mass estimates}
 %We use viral method to estimate the mass of the black hole. The board-line adopted. We aim to adopt the self-consistent to recalibrate the \mbh~of our sample. 
 %[] The recipes. [] The board lines and the resulting BH mass and listed in the table. []The summarizing table.
+Deriving the the inference of our sample, we over plot our measurements on top of the measurements by \citet{Ding2020}, shown in Figures. The result demonstrate an excellent consistency. and the result support the evolution. 
 
-\section{Results}
-Derive the the inference of our sample, we over plot our measurements on top of the measurements by \citet{Ding2020}, shown in Figure. The result demonstrate an excellent consistency. and the result support the evolution. 
-
+\subsection{The \mbh-\mstar\ relation}
+We combine the \mstar\ to their \mbh\ and compare to the ones in the literature.
 
 \section{Discussion and Conclusion}
 [] This work confirm the bright future of lensing.
