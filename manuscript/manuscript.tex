@@ -99,7 +99,7 @@
 
 % Title of the paper, and the short title which is used in the headers.
 % Keep the title short and informative.
-\title[lens source reconstruction]{H0LiCOW: correlation between black hole mass and host galaxy luminosity.}
+\title[Mass relations by lensed AGN hosts]{The Mass Relations between Supermassive Black Holes and Their Host Galaxies by Eight Strongly Lensed AGN Systems.}
 
 % The list of authors, and the short list which is used in the headers.
 % If you need two or more lines of authors, add an extra line using \newauthor
@@ -109,6 +109,10 @@ Tommaso Treu,$^{1}$
 Simon Birrer,$^{1, 2}$
 Dominique Sluse,\newauthor
 Chris Fassnacht,
+Matthew W. Auger,
+Sherry H. Suyu,
+Kenneth C. Wong,\newauthor
+Takahiro Morshita,
 and et al. $^{3}$
 \\
 % List of institutions
@@ -236,7 +240,8 @@ We present the lensed host galaxy source reconstruction to derive their intrinsi
 
 \subsection{Model Choice}
 We carry out the fitting process to subtract the central AGN light, constrain the lens model, and reconstruct the host galaxy in the source plan, simultaneously.
-For all the systems, we assume the photometry of the galaxies (including the lensing galaxy and source galaxy) is described by the 2-D elliptical \sersic\ profile. We start with a single \sersic\ and consider to use two \sersic\ if any significant residual indicate a multiply component. For single \sersic\ case, we set the prior of the \sersic\ index value $n$ between $[0.5-5.0]$ to avoid unphysical inference\footnote{It has been studied in ref[] that this prior value would result in a consistent host magnitude inference as to fix n to its true value.}. The bright AGNs are unsolved and modelled by a scaled point spread function (PSF). We adopt the elliptical Power-law model to describe the surface mass density of the deflector. An external shear component is also considered.
+For all the systems, we assume the photometry of the galaxies (including the lensing galaxy and source galaxy) is described by the 2-D elliptical \sersic\ profile. We start with a single \sersic\ and consider to use two \sersic\ if any significant residual indicate a multiply component. For single \sersic\ case, we set the prior of the \sersic\ index value $n$ between $[0.5-5.0]$ to avoid unphysical inference\footnote{It has been studied in ref[] that this prior value would result in a consistent host magnitude inference as to fix n to its true value.}. The bright AGNs are unsolved and modelled by a scaled point spread function (PSF). We also joint the fitting of the AGN position to the center of its host.
+ We adopt the elliptical Power-law model to describe the surface mass density of the deflector; an external shear component is also added.
 
 We employ the imaging modelling tool \lenstronomy~ref[] to perform the fitting task. We following the standard procedure as described by~\citet{Ding2020} to prepare the fitting ingredients including the lensing imaging data, noise level map and the PSF information. The imaging data are drizzled to a higher resolution by setting a Gaussian kernel; the adopted final resolution are listed in Table~\ref{data_set}. We then adopt the {\sc photutils} by Python to model the 2-D global background light using SExtractor algorithm. We then remove the background light and cut the clear image data into postage stamp at a suitable size. We draw the image mask for each systems to define the region in which the pixels would to be included in the likelihood; see Figure~\ref{fig:image_inference}.
 
@@ -281,18 +286,28 @@ Illustrations of the inference for each system. On the top: (left to right): . O
 \end{figure*} 
 
 \subsubsection{RXJ1131}
-The RXJ1131 has been well studied in many reference. The host galaxy of this system is lensed to a spacious arc with a boundary line between the dominated area of bulge and disk could be clearly seen. Thus, we set the host galaxy is composed of two \sersic\ with index value $n$ fixed to $1$ and $4$ to mimic the light distribution of the disk and bulge, respectively. Besides, same as suyu[], we consider the perturbations by the small object in the north and fitting it as a SIS and \sersic\ for its mass and light.
+The RXJ1131 has been well studied in many reference. The host galaxy of this system is lensed to a spacious arc with a boundary line between the dominated area of bulge and disk could be clearly seen. Thus, we set the host galaxy is composed of two \sersic\ with index value $n$ fixed to $1$ and $4$ to mimic the light distribution of the disk and bulge, respectively. Besides, same as suyu[], we consider the perturbations by the small object ($0\farcs{5}$ in the north) and fitting as the SIS and \sersic\ for its mass and light, respectively.
 
 The inference of the RXJ1131 based on three initial PSFs are summarized in Table~\ref{tab:host_measure}, with the best-fit result drawn in Figure~\ref{fig:image_inference}-~(b).
 
-We also compare our measurement to the previous reconstructions in Ding. Based on the reconstructions by Suyu[], the inference of the host magnitude by Ding[] is $mag_{disk} = 20.07\pm0.06$ and $mag_{bulge} = 21.81 \pm 0.28$. Compared to our inference in Table~\ref{tab:host_measure}, our bulge flux is consistent $\sim0.25$ dex, however, while the inferred disk light is much brighter by $\sim 0.7$ dex.
+We also compare our measurement to the previous reconstructions in Ding. Based on the reconstructions by Suyu[], the inference of the host magnitude by Ding[] is $mag_{\rm disk} = 20.07\pm0.06$ and $mag_{\rm bulge} = 21.81 \pm 0.28$. Compared to our inference in Table~\ref{tab:host_measure}, our inferred bulge flux is consistent at $\sim0.25$ dex level, however, while the inferred disk light is much brighter by $\sim 0.7$ dex.
 
-Due to the arc is extend and resolved to the PSF, one can directly perform the SED fitting of the arc in the image plane. Based on the inference in Ding[], we adopt 3 Gyr and 1.5 Gyr stellar template to its disk and bulge respectively.
+Due to the fact that the arc is very extended in the image plane which is resolved to the AGNs, one could directly perform the SED fitting of the arc in the image plane. Combining the HST imaging data through F814W and F555W, Ding[] has inference the color and we adopt the stellar templates 3 Gyr and 1.5 Gyr with solar metallicity stellar to its disk and bulge, respectively.
 
 \subsubsection{WFI2033}
-The objects which is close to the lens, we model its light as one extended source described by \sersic\ profile. 
+WFI2033 is the last quads which has also been carefully studied recently in Ken[]. There is a satellite galaxy in the north. However, as noted by Ken[], it has a much smaller mass than the main deflector, thus we ignore its influence on the magnification but only fit its light using a \sersic\ model. There are in total of eight PSF stars are selected to modelling this system.
+
+The final inference are presented in Table~\ref{tab:host_measure} and Figure~\ref{fig:image_inference}-~(c). We also compare the inference to the reconstructions by Ken. Fitting their reconstruction as a \sersic\ profile, we have inferred that $mag = 21.98 \pm 0.15$ which is slightly fainter than our inference by $\sim0.2$~dex.
+
+Besides the F160W filter, there are also four other filters by F125W, F140W, F555W and F814W was available in the HST. We perform the lens model inference for all the filter and infer the host color through five band in the image plane. We find a stellar template with 0.625 Gyr could well match their color.
 
 \subsubsection{SDSS1206}
+SDSS1206 is a special system -- the AGN is a doubly images while most of the host is falls inside the inner caustic thus being quadruply imaged. We consider the galaxy triplet group at the north-west and use a single SIS model to denote their over all mass perturbations. Moreover, as noted by Simon[] (Figure 1 therein), a sub-clump is located in the north which is hardly visible. We model it as a SIS mass model and circular \sersic\ light model with joint centroids. Though we see the visible residuals in the fitted arcs using a single \sersic\ model, we find a double \sersic\ could help significantly improve the goodness of the fitting. Thus, we adopt the single \sersic\ model in our final inference. 
+
+The results are presented in Table~\ref{tab:host_measure} and Figure~\ref{fig:image_inference}-~(d).
+\todo{Ask Simon for the reconstruction image to compare.}
+
+Beside F160W, there is no other \hst\ imaging data for this system and the color. For such case, we adopt the criteria by Ding2020[] to define the stellar template, i.e., the 1 Gyr and 0.625 Gyr stellar population would be adopted for systems as $z<1.44$ and $z>1.44$, respectively. Since the source redshfit of SDSS1206 is at 1.79, a 0.625 Gyr is selected.
 
 \subsubsection{HE1104}
 
@@ -319,8 +334,8 @@ name--Setts--BestFitChisq--Totalflux-- Host ratio --Reff--Sersicn--magnitude - S
 Object ID & Magnitude & Host-Total Flux Ratio & Reff & \sersic\ $n$ & adopted AGE & $\log (M_{*}$)  \\
  & (AB system) & ($\%$) & (arcsec) & & (Gyr) & (M$_{\odot}$) \\ \hline
 HE0435 & $21.332\substack{+0.208\\-0.175}$ & $62.471\pm10.893$ & $0.298\pm0.027$ & $2.829\pm0.251$ & $1.500$ & $10.98\substack{+0.07\\-0.08}$ \\
-RXJ1131$_{\rm bulge}$ & $22.074\substack{+0.164\\-0.142}$ & $6.634\pm0.929$ & $0.106\pm0.007$ & fix to 4 & $3.000$ & $1.01\substack{+0.06\\-0.07}$ \\
-RXJ1131$_{\rm disk}$ & $19.305\substack{+0.154\\-0.135}$ & $84.939\pm11.241$ & $0.875\pm0.062$ & fix to 1 & $1.500$ & $1.04\substack{+0.05\\-0.06}$ \\
+RXJ1131$_{\rm bulge}$ & $22.074\substack{+0.164\\-0.142}$ & $6.634\pm0.929$ & $0.106\pm0.007$ & fix to 4 & $3.000$ & $10.28\substack{+0.06\\-0.07}$ \\
+RXJ1131$_{\rm disk}$ & $19.305\substack{+0.154\\-0.135}$ & $84.939\pm11.241$ & $0.875\pm0.062$ & fix to 1 & $1.500$ & $11.09\substack{+0.05\\-0.06}$ \\
 WFI2033 & $21.404\substack{+0.167\\-0.145}$ & $35.723\pm5.093$ & $0.294\pm0.025$ & $0.528\pm0.011$ & $0.625$ & $10.66\substack{+0.06\\-0.07}$ \\
 SDSS1206 & $21.287\substack{+0.222\\-0.184}$ & $32.286\pm5.977$ & $0.110\pm0.020$ & $4.526\pm0.555$ & $0.625$ & $10.78\substack{+0.07\\-0.09}$ \\
 HE1104 & $21.274\substack{+0.188\\-0.160}$ & $14.142\pm2.250$ & $0.265\pm0.026$ & $1.033\pm0.034$ & $0.625$ & $11.04\substack{+0.06\\-0.08}$ \\
@@ -395,6 +410,11 @@ Try to keep it short.
 
 \section{Color inference of the host}
 We took the other band data and get the only arc image. We adopt these image and do the SED fitting to get the color information.
+\subsection{HE0435}
+The HE0435 system has been modelled through three band. In the Figure, we demonstrate the host inference in the image plance for the three bands. 
+
+\subsection{WFI2033}
+The WFI2033 system has been modelled through five band.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
