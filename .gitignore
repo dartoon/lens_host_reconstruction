@@ -28,3 +28,5 @@ manuscript/mnras_version/manuscript.out
 *.blg
 manuscript/manuscript.pdf
 *.bbl
+*.pdf
+material/*png
