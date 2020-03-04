@@ -301,15 +301,15 @@ plt.errorbar(Mstar,MBs, xerr=[np.abs(Mstar_err)[:,0], np.abs(Mstar_err)[:,1]], y
 #folders = ['0_HE0435', '1_RXJ1131', '2_WFI2033', '3_SDSS1206', '4_HE1104', '5_SDSS0246', '6_HS2209', '7_HE0047']
 h0licow = ['HE0435', 'RXJ1131', 'WFI2033', 'SDSS1206', 'HE1104', 'SDSS0246', 'HE0047']#, 'HS2209']
 sys.path.insert(0,'../Stellar_mass_estimate')
-from mstar_inference import mstar_dict
+#from mstar_inference import mstar_dict
+sys.path.insert(0,'../share_tools')
+from read_inference import read_mstar
 sys.path.insert(0,'../MBH_estimator')
 from est_MBH import MBH_dic
 texts = []
 for ID in h0licow:
-    Mstar = mstar_dict[ID]
+    Mstar = np.log10(read_mstar(ID, count_n=[4, 4])[0][0])
     MBs = MBH_dic[ID]
-    if ID == 'RXJ1131':
-        Mstar = np.log10(10**Mstar[0])# + 10**Mstar[1])
     plt.scatter(Mstar, MBs, c='blue',s=580,marker=".",zorder=100, edgecolors='k')
     texts.append( plt.text(Mstar, MBs, ID, fontsize=15, zorder=200) )
 adjust_text(texts, arrowprops=dict(arrowstyle='->', color='red')) 

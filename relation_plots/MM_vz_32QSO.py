@@ -422,13 +422,14 @@ sys.path.insert(0,'../MBH_estimator')
 from est_MBH import MBH_dic
 sys.path.insert(0,'../share_tools')
 from lens_information import lens_redshift
+from read_inference import read_mstar
 
 texts = []
 for ID in h0licow:
     Mstar = mstar_dict[ID]
     MBs = MBH_dic[ID]
     if ID == 'RXJ1131':
-        Mstar = np.log10(10**Mstar[0])# + 10**Mstar[1])
+        Mstar = np.log10(read_mstar(ID, count_n=[4, 4])[0][0])
 #    plt.scatter(Mstar, MBs[0], c='blue',s=580,marker=".",zorder=100, edgecolors='k')
     plt.scatter(np.log10(1+lens_redshift[ID]),MBs-(m_ml*Mstar+b_ml),c='blue',
             s=280,marker="*",zorder=300, vmin=0.3, vmax=5, edgecolors='k')
