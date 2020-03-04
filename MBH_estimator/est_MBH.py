@@ -62,7 +62,7 @@ def est_MBH(ID):
 MBH_dic = {}
 for key in MBH_by_Domini.keys():
     MBH_dic[key] = np.mean(est_MBH(key))
-    print(key, est_MBH(key), MBH_by_Domini[key][0])
+#    print(key, est_MBH(key), MBH_by_Domini[key][0])
     
 #MBH_dic =     {'HE0435': 8.543644440905101,
 # 'RXJ1131': 8.347036339665747,
