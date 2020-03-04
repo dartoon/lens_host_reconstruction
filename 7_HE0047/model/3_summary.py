@@ -33,7 +33,7 @@ ID = path.split('/')[-2]
 PSFno_ = range(psf_num)
 #The values to pick up:
 filename = pkl_folderfiles[0]
-result = pickle.load(open(filename,'rb'))
+result = pickle.load(open(filename,'rb'),encoding="latin1") 
 fit_result, trans_result, kwargs_material, model_lists  = result
 pick_names = trans_result[-1]
 
@@ -58,7 +58,7 @@ for folder in folder_i:
 #    if folder == 'fit_PSFi_QSOmask':
 #        filenames = glob.glob('{0}/result_PSF?_S*'.format(folder))
 #    elif 'fit_PSFi_PSFrecons':
-    filenames = glob.glob('{0}/result_PSF?_*'.format(folder))        
+    filenames = glob.glob('{0}/result_PSF?_*'.format(folder))    
     filenames.sort()
     for filename in filenames:
         PSFtyp = filename.split('/')[1].split('_')[1]
@@ -68,8 +68,8 @@ for folder in folder_i:
             fixgamma = (filename.split('gammafix')[1]).split('_subg')[0]
             if fixgamma not in fixgamma_list:
                 fixgamma_list.append(fixgamma)
-            print filename
-            result = pickle.load(open(filename,'rb'))
+            print(filename)
+            result = pickle.load(open(filename,'rb'),encoding="latin1") 
             fit_result, trans_result, kwargs_material, model_lists  = result
             fit_value_l_i, fit_value_m_i, fit_value_h_i, = [], [], []
             for pick in range(len(pick_names)):
@@ -99,9 +99,9 @@ for i in range(len(labels)):
         raise ValueError("The labels is wrong for some reason")
         
 for i in range(len(pick_names)):
-    print i, ':', pick_names[i]
-print pick_names
-pick = input('select the names to plot?:\n')
+    print(i, ':', pick_names[i])
+print(pick_names)
+pick = int(input('select the names to plot?:\n'))
 
 fit_value_l = [fit_value_l_list[i][pick] for i in range(len(labels))]
 fit_value_m = [fit_value_m_list[i][pick] for i in range(len(labels))]
@@ -122,11 +122,11 @@ label0 = [labels[i].split(',')[0] for i in index0]
 index1 = [i*12+11 for i in range(len(bars))]
 label1 = [labels[i].split(',')[0] for i in index1]
 if label0 != label1 or bars!= label0:
-    print label0, label1
+    print(label0, label1)
     raise ValueError("The labels is wrong for some reason")
 color = ['green', 'orange']
 
-count_n =len(labels) * 20 /100
+count_n = 8 #len(labels) * 20 /100
 chisq = [float(chisq[i]) for i in range(len(chisq))]
 sort_chisq = np.argsort(np.asarray(chisq))    
 Chisq_best = chisq[sort_chisq[0]]
@@ -140,7 +140,7 @@ for i in sort_chisq[:count_n]:
     weight[i] = np.exp(-1/2. * (chisq[i]-Chisq_best)/(Chisq_best* inf_alp))
 weighted_value = np.sum(np.array(fit_value_m)*weight) / np.sum(weight)
 rms_value = np.sqrt(np.sum((np.array(fit_value_m)-weighted_value)**2*weight) / np.sum(weight))
-print "weighted_value, rms_value:", weighted_value, rms_value, 'used sets:', count_n
+print("weighted_value, rms_value:", weighted_value, rms_value, 'used sets:', count_n)
 
 def plt_result(fixgamma, chisq=chisq):
     #Plot it out    
@@ -155,7 +155,7 @@ def plt_result(fixgamma, chisq=chisq):
         for i in range(len(index)):
             if labels[index[i]][6:] != labels[index[0]][6:]:
                 raise ValueError("The labels is wrong for some reason")
-#        print index
+#        print(index)
 #        label_type = [labels[i] for i in index]
         value_result = [fit_value_m[i] for i in index]
         asm_error = [[fit_value_m[i]-fit_value_l[i] for i in index],
