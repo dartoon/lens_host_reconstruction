@@ -18,8 +18,8 @@ sys.path.insert(0,'/Users/Dartoon/Astro/projects/my_code/py_tools/')
 from flux_profile import cr_mask
 
 
-#readfile = 'fit_PSFi_PSFrecons/result_PSF0_PSFrecons_gammafix1.9_subg2.pkl'
-readfile = '2nd_fit_PSFi_QSOmask/result_PSF2_QSOmask_gammafix1.9_subg3.pkl'
+readfile = 'fit_PSFi_PSFrecons/result_PSF0_PSFrecons_gammafix1.9_subg2.pkl'
+#readfile = 'fit_PSFi_QSOmask/result_PSF2_QSOmask_gammafix1.9_subg3.pkl'
 result = pickle.load(open(readfile,'rb'),encoding="latin1") 
 fit_result, trans_result, kwargs_material, model_lists  = result
 

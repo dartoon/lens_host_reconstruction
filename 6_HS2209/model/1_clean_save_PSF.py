@@ -21,9 +21,9 @@ psfname_list = glob.glob('PSF?.fits')
 psfname_list.sort()
 psfs = []
 for i in range(len(psfname_list)):
-    print "PSF:", psfname_list[i]
+    print("PSF:", psfname_list[i])
     psf_i = pyfits.getdata(psfname_list[i])
-    print psf_i.sum()
+    print(psf_i.sum())
     mask_files = glob.glob('PSF{0}_mask*.reg'.format(i))
     if mask_files != []:
         psf_mask = cr_mask_img(psf_i, mask_list=mask_files)
@@ -33,7 +33,7 @@ for i in range(len(psfname_list)):
             for j in range(len(psf_i)):
                 if psf_mask[i, j] == 0:
                     psf_clear[i, j] = (psf_i[-i-1, -j-1]*psf_mask[-i-1, -j-1])
-        print "plot PSF after clear:"
+        print("plot PSF after clear:")
         psf_i = psf_clear
     plt.imshow(psf_i, origin = 'low', norm=LogNorm())
     plt.show()
@@ -45,8 +45,8 @@ for i in range(len(psfname_list)):
 #fig.savefig("PSFs_profile.pdf")
 #fig.show()
 
-framesize = 81
-ct = (len(psfs[0]) - framesize)/2    
+framesize = 111
+ct = int((len(psfs[0]) - framesize)/2)
 for i in range(len(psfs)):
     psfs[i] = psfs[i][ct:-ct,ct:-ct]
     psfs[i] = psfs[i]/np.sum(psfs[i])
