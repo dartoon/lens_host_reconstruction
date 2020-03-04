@@ -22,7 +22,7 @@ pkl_folderfiles = glob.glob("fit_PSFi_PSFrecons/result_PSF*.pkl")
 pkl_files = [pkl_folderfiles[i].split('/')[1] for i in range(len(pkl_folderfiles))]
 psf_num = np.max([int(pkl_files[i].split('_PSF')[1]) for i in range(len(pkl_files))]) + 1
 
-if float(len(pkl_files)/6) != len(pkl_files)/6. :
+if float(len(pkl_files)/3) != len(pkl_files)/3. :
     raise ValueError("The number of the pickle result is the Multiples of six")
 
 import os
@@ -35,7 +35,7 @@ sort_label_type=['subg_2, PSFrecons']
 PSFno_ = range(psf_num)
 #The values to pick up:
 filename = pkl_folderfiles[0]
-result = pickle.load(open(filename,'rb'))
+result = pickle.load(open(filename,'rb'),encoding="latin1") 
 fit_result, trans_result, kwargs_material, model_lists  = result
 pick_names = trans_result[-1]
 
@@ -63,8 +63,8 @@ for folder in folder_i:
             fixgamma = (filename.split('gammafix')[1]).split('_subg')[0]
             if fixgamma not in fixgamma_list:
                 fixgamma_list.append(fixgamma)
-            print filename
-            result = pickle.load(open(filename,'rb'))
+            print(filename)
+            result = pickle.load(open(filename,'rb'),encoding="latin1") 
             fit_result, trans_result, kwargs_material, model_lists  = result
             fit_value_l_i, fit_value_m_i, fit_value_h_i, = [], [], []
             for pick in range(len(pick_names)):
@@ -89,9 +89,9 @@ labels = [x for _,x in sorted(zip(labels,labels))]  # Sort the label at the last
 #%%
         
 for i in range(len(pick_names)):
-    print i, ':', pick_names[i]
-print pick_names
-pick = input('select the names to plot?:\n')
+    print(i, ':', pick_names[i])
+print(pick_names)
+pick = int(input('select the names to plot?:\n'))
 
 fit_value_l = [fit_value_l_list[i][pick] for i in range(len(labels))]
 fit_value_m = [fit_value_m_list[i][pick] for i in range(len(labels))]
@@ -116,7 +116,7 @@ label1 = [labels[i].split(',')[0] for i in index1]
 #     weight[i] = np.exp(-1/2. * (chisq[i]-Chisq_best)/(Chisq_best))
 # weighted_value = np.sum(np.array(fit_value_m)*weight) / np.sum(weight)
 # rms_value = np.sqrt(np.sum((np.array(fit_value_m)-weighted_value)**2*weight) / np.sum(weight))
-# print "weighted_value, rms_value:", weighted_value, rms_value
+# print("weighted_value, rms_value:", weighted_value, rms_value)
 
 #Plot it out    
 x_pos = np.arange(len(bars)) + 0.5
@@ -152,7 +152,7 @@ adjust_text(texts, arrowprops=dict(arrowstyle='->', color='red'))
 # #        weight[i] = np.exp(-1/2. * (chisq[i]-Chisq_best)/(Chisq_best* inf_alp))
 # #    weighted_value = np.sum(np.array(fit_value_m)*weight) / np.sum(weight)
 # #    rms_value = np.sqrt(np.sum((np.array(fit_value_m)-weighted_value)**2*weight) / np.sum(weight))
-# #    print weighted_value, rms_value
+# #    print(weighted_value, rms_value)
 # #    plt.plot(xs, xs*0+(weighted_value - rms_value), xs, xs*0+weighted_value, xs, xs*0+(weighted_value + rms_value),color = 'red')
 # #    plt.fill_between(xs, weighted_value - rms_value, weighted_value + rms_value, facecolor='red', alpha = 0.1)    
 plt.legend(numpoints=1,ncol=2,loc=2,prop={'size':18})
