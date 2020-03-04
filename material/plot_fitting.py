@@ -42,6 +42,8 @@ label = labels[idx]
 label = label.split(', ')
 
 filename = glob.glob('../'+IDs[inp]+'/model/{4}_PSFi_{0}/result_{1}_*_gammafix{2}_subg{3}.pkl'.format(label[-1], label[0], label[1][-3:], label[2][-1],folder_1) )
+#filename = glob.glob('../5_SDSS0246/model/2nd_fit_PSFi_PSFrecons/result_PSF0_*_gammafix2.1_subg2.pkl')
+#filename = glob.glob('../5_SDSS0246/model/2nd_fit_PSFi_QSOmask/result_PSF0_QSOmask_gammafix2.1_subg2.pkl')
 readfile = filename[0]
 
 #%%
@@ -107,12 +109,18 @@ f, axes = plt.subplots(2, 3, figsize=(16, 8), sharex=False, sharey=False)
 modelPlot.data_plot(ax=axes[0,0])
 modelPlot.model_plot(ax=axes[0,1])
 modelPlot.normalized_residual_plot(ax=axes[0,2], v_min=-6, v_max=6)
-modelPlot.subtract_from_data_plot(ax=axes[1, 0], v_max=1, point_source_add=True,lens_light_add=True, source_add=False, text='Subtracted host')
+modelPlot.subtract_from_data_plot(ax=axes[1, 0], #v_max=1, 
+                                  point_source_add=True,lens_light_add=True, source_add=False, 
+                                  text='Residual of lensed arcs')
 modelPlot.decomposition_plot(ax=axes[1,1], text='Modelled source light', source_add=True)
-modelPlot.source_plot(ax=axes[1, 2], deltaPix_source=0.01, numPix=100,text='Reconstrucerd host, source plane')
+#modelPlot.decomposition_plot(ax=axes[1,2], text='Source light', source_add=True, unconvolved=True)
+#modelPlot.magnification_plot(ax=axes[1, 2])
+delta_list = [0.02, 0.1, 0.02, 0.05, 0.06, 0.02, 0.02, 0.02, 0.02]
+modelPlot.source_plot(ax=axes[1, 2], deltaPix_source=delta_list[inp], numPix=100, scale_size=0.5,
+                      text='Reconstrucerd host, source plane',with_caustics=True)
 #f.tight_layout()
 f.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0., hspace=0.05)
-#plt.savefig('{0}_best_inference.pdf'.format(ID))
+#plt.savefig('{0}_inference.png'.format(ID))
 plt.show()
 
 #f, axes = plt.subplots(2, 3, figsize=(16, 8), sharex=False, sharey=False)
