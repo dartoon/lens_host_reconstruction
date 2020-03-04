@@ -99,7 +99,7 @@
 
 % Title of the paper, and the short title which is used in the headers.
 % Keep the title short and informative.
-\title[Mass relations by lensed AGN hosts]{The Mass Relations between Supermassive Black Holes and Their Host Galaxies by Eight Strongly Lensed AGN Systems.}
+\title[Mass relations by lensed AGN hosts]{The Mass Relations between Supermassive Black Holes and Their Host Galaxies using Eight Strongly Lensed AGN Systems.}
 
 % The list of authors, and the short list which is used in the headers.
 % If you need two or more lines of authors, add an extra line using \newauthor
@@ -162,7 +162,8 @@ Structure:
 []This paper is organized as follows. Zeropoint are defined in the AB systems.
 
 \section{Sample Selection}
-We adopt the eight lens systems from our H0LiCOW collaboration including HE~0435$-$1223, RXJ~1131$-$1231, WFI~2033$-$4723, HE~1104$-$1805, SDSS~1206$+$4332, SDSS~0246$-$0825, HE~0047$-$1756 and HS~2209$+$1914. For conciseness, we abbreviate each lens name to four digits (e.g., RXJ~1131$-$1231 to RXJ1131). In \citet{Ding2017a}, the simulation exercise has been performed to understand the fidelity of the source reconstruction based on these eight systems and verified that the host inference is trustworthy when its magnitude are brighter than 20 magnitude, 2$-$4 magnitudes dimmer than the AGN. The detailed information for the information of these eight systems are given in Table~1 therein. Besides, half of the systems, including HE0435, RXJ1131, WFI2033 and HE1104 have \hst\ imaging data in multi-bands. To estimate the \mbh, we adopt the spectra information as inferred by \citet{Sluse2012, Peng2006, Shen2011}. We use a Table[] to summarize the data information. 
+We adopt the eight lens systems from our H0LiCOW collaboration including HE~0435$-$1223, RXJ~1131$-$1231, WFI~2033$-$4723, HE~1104$-$1805, SDSS~1206$+$4332, SDSS~0246$-$0825, HE~0047$-$1756 and HS~2209$+$1914. For conciseness, we abbreviate each lens name to four digits (e.g., RXJ~1131$-$1231 to RXJ1131). In \citet{Ding2017a}, the simulation exercise has been performed to understand the fidelity of the source reconstruction based on these eight systems and verified that the host inference is trustworthy when its magnitude are brighter than 20 magnitude, 2$-$4 magnitudes dimmer than the AGN. The detailed information of the observational conditions of our eight systems are given in Table~\ref{data_set}. Besides the adopted filter shown therein, some systems also observed by \hst\ by different bands. As will shown in Section~\ref{sec:mstar}, the multi-band information enables us to apply the stellar population, hence a more accurate \mstar\ estimation. 
+
 
 While we note that our sample size included eight systems, which is a limited sample to constrain the evolution of the scaling relation. In this particular work, we simply aim to plot the scaling relation of our sample and make comparison to the ones in the literature. %[]The comparison sample (32 QSO paper)
 We adopt the recent efforts by~\citet{Ding2020}, including 32 AGNs at redshift range $1.2<z<1.9$, 79 redshift QSO and 55 local measurements.
@@ -205,7 +206,7 @@ with a\{\Civ, \Mgii, \Hb\}=\{6.322, 6.623, 6.910\},
 b\{\Civ, \Mgii, \Hb\}=\{0.53, 0.47, 0.50\},
 $\lambda_{line}$\{\Civ, \Mgii, \Hb\}=\{1350, 3000, 5100\}.
 %
-Having achieved a consistent cross-calibration, we adopt the board line information from the literature to estimate the \mbh. The information are presented in Table~\ref{mbh}. The uncertainty of the \mbh\ are expected as $0.4$~dex.
+Having achieved a consistent cross-calibration, we adopt the board line information from the literature \citep{Sluse2012, Peng2006, Shen2011} to estimate the \mbh. The information are presented in Table~\ref{mbh}. The uncertainty of the \mbh\ are expected as $0.4$~dex.
 
 
 \begin{table}
@@ -259,7 +260,7 @@ All in all, for one lens system with a number of $N$ initial PSFs, we select in 
 In this subsection, we describe the details of the fitting for each systems and present our inference of the host galaxy photometry.
 
 \subsubsection{HE0435}
-The modeling is set up based on the descriptions in the last section. We select five isolated stars in this field initial PSFs to input to the fitting with in total of 60 fittings for this system. Based on the top-eight choices, we perform the weighting algorithm and measure the host-to-total flux ratio, host magnitude, effective radius and \sersic\ index. The inference results are shown in Table~\ref{tab:host_measure}, (2)$-$(5) columns.
+The modeling is set up based on the descriptions in the last section. We select 5 isolated stars in this field initial PSFs to input to the fitting with in total of 60 fittings for this system. Based on the top-eight choices, we perform the weighting algorithm and measure the host-to-total flux ratio, host magnitude, effective radius and \sersic\ index. The inference results are shown in Table~\ref{tab:host_measure}, (2)$-$(5) columns.
 
 The lens model inference based on the best-fit result for HE0435 is drawn in Figure~\ref{fig:image_inference}-(a). Not surprisingly, we note that the residual level reveals are appears to be larger than the ones as presented by Ken[] or Simon[]. This is due to the fact that the definition of the host galaxy in our models is a 2-D \sersic\ model which is relatively simple compare to the pixellated reconstruction technique by {\sc Glee} or the shapelet functions as adopted by \lenstronomy. The smooth feature of our model couldn't capture the clumps in the host of the star-forming regions, however, our model is more effective to derive the global host light as function of the \sersic\ which is consistent to measurements in the comparison sample. 
 
@@ -267,81 +268,74 @@ As a cross check, we compare our host magnitude to the measurement in Ding+2017[
 which is slightly fainter than our results, i.e. $mag = 21.33 \pm 0.2$. \ding{Some discussion of the origin of this offset?}
 Still, the center mismatch is only $0.15$~dex, which is a little of the total error budget.
 
-Besides the F160W band, HE0435 has also been observed by the \hst\ through F814W and F555W. We carry out the similar steps to modeling at the two band. The inferred host magnitudes are xxx and xxx, respectively. Nevertheless, given that the data quality and the host flux is less bright in these two bands, we only combining the modeling lensed arcs in the image plane to inference the color of the host galaxy and we use {\sc Gsf} code to fit the color and find a 1.5 Gyr stellar template with solar metallicity could well match this color. This stellar template would be adopted to infer the \mstar\ in the next section.
-
 \begin{figure*}
 \centering
 \begin{tabular}{c c}
-\subfloat[HE0435]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/HE0435_best_inference.pdf}}&
-\subfloat[RXJ1131]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/RXJ1131_best_inference.pdf}}\\
-\subfloat[WFI2033]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/WFI2033_best_inference.pdf}}&
-\subfloat[SDSS1206]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/SDSS1206_best_inference.pdf}}\\
-\subfloat[HE1104]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/HE1104_best_inference.pdf}}&
-\subfloat[SDSS0246]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/SDSS0246_best_inference.pdf}}\\
-\subfloat[HS2209]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/HS2209_best_inference.pdf}}&
-\subfloat[HE0047]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/HE0047_best_inference.pdf}}\\
+\subfloat[HE0435]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/HE0435_inference.png}}&
+\subfloat[RXJ1131]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/RXJ1131_inference.png}}\\
+\subfloat[WFI2033]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/WFI2033_inference.png}}&
+\subfloat[SDSS1206]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/SDSS1206_inference.png}}\\
+\subfloat[HE1104]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/HE1104_inference.png}}&
+\subfloat[SDSS0246]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/SDSS0246_inference.png}}\\
+\subfloat[HS2209]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/HS2209_inference.png}}&
+\subfloat[HE0047]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/HE0047_inference.png}}\\
 \end{tabular}
 \caption{\label{fig:image_inference} 
 Illustrations of the inference for each system. On the top: (left to right): . On the bottom: (left to right.) }
 \end{figure*} 
 
 \subsubsection{RXJ1131}
-The RXJ1131 has been well studied in many reference. The host galaxy of this system is lensed to a spacious arc with a boundary line between the dominated area of bulge and disk could be clearly seen. Thus, we set the host galaxy is composed of two \sersic\ with index value $n$ fixed to $1$ and $4$ to mimic the light distribution of the disk and bulge, respectively. Besides, same as suyu[], we consider the perturbations by the small object ($0\farcs{5}$ in the north) and fitting as the SIS and \sersic\ for its mass and light, respectively.
+The image of RXJ1131 observed with ACS/F814W has been well studied in many reference. The host galaxy of this system is lensed to a spacious arc with a boundary line between the dominated area of bulge and disk could be clearly seen. Thus, we set the host galaxy is composed of two \sersic\ with index value $n$ fixed to $1$ and $4$ to mimic the light distribution of the disk and bulge, respectively. Besides, same as suyu[], we consider the perturbations by the small object ($0\farcs{5}$ in the north) and fitting as the SIS and \sersic\ for its mass and light, respectively.
 
-The inference of the RXJ1131 based on three initial PSFs are summarized in Table~\ref{tab:host_measure}, with the best-fit result drawn in Figure~\ref{fig:image_inference}-~(b).
+The inference of the RXJ1131 is based on 4 initial PSFs which is summarized in Table~\ref{tab:host_measure}, with the best-fit result drawn in Figure~\ref{fig:image_inference}-(b).
 
 We also compare our measurement to the previous reconstructions in Ding. Based on the reconstructions by Suyu[], the inference of the host magnitude by Ding[] is $mag_{\rm disk} = 20.07\pm0.06$ and $mag_{\rm bulge} = 21.81 \pm 0.28$. Compared to our inference in Table~\ref{tab:host_measure}, our inferred bulge flux is consistent at $\sim0.25$ dex level, however, while the inferred disk light is much brighter by $\sim 0.7$ dex.
 
-Due to the fact that the arc is very extended in the image plane which is resolved to the AGNs, one could directly perform the SED fitting of the arc in the image plane. Combining the HST imaging data through F814W and F555W, Ding[] has inference the color and we adopt the stellar templates 3 Gyr and 1.5 Gyr with solar metallicity stellar to its disk and bulge, respectively.
-
 \subsubsection{WFI2033}
-WFI2033 is the last quads which has also been carefully studied recently in Ken[]. There is a satellite galaxy in the north. However, as noted by Ken[], it has a much smaller mass than the main deflector, thus we ignore its influence on the magnification but only fit its light using a \sersic\ model. There are in total of eight PSF stars are selected to modelling this system.
+WFI2033 is the last quads which has also been carefully studied recently in Ken[]. There is a satellite galaxy in the north. However, as noted by Ken[], it has a much smaller mass than the main deflector, thus we ignore its influence on the magnification but only fit its light using a \sersic\ model. There are in total of 8 PSF stars are selected to modelling this system.
 
-The final inference are presented in Table~\ref{tab:host_measure} and Figure~\ref{fig:image_inference}-~(c). We also compare the inference to the reconstructions by Ken. Fitting their reconstruction as a \sersic\ profile, we have inferred that $mag = 21.98 \pm 0.15$ which is slightly fainter than our inference by $\sim0.2$~dex.
-
-Besides the F160W filter, there are also four other filters by F125W, F140W, F555W and F814W was available in the HST. We perform the lens model inference for all the filter and infer the host color through five band in the image plane. We find a stellar template with 0.625 Gyr could well match their color.
+The final inference are presented in Table~\ref{tab:host_measure} and Figure~\ref{fig:image_inference}-(c). We also compare the inference to the reconstructions by Ken. Fitting their reconstruction as a \sersic\ profile, we have inferred that $mag = 21.98 \pm 0.15$ which is slightly fainter than our inference by $\sim0.2$~dex.
 
 \subsubsection{SDSS1206}
 SDSS1206 is a special system -- the AGN is a doubly images while most of the host is falls inside the inner caustic thus being quadruply imaged. We consider the galaxy triplet group at the north-west and use a single SIS model to denote their over all mass perturbations. Moreover, as noted by Simon[] (Figure 1 therein), a sub-clump is located in the north which is hardly visible. We model it as a SIS mass model and circular \sersic\ light model with joint centroids. Though we see the visible residuals in the fitted arcs using a single \sersic\ model, we find a double \sersic\ could help significantly improve the goodness of the fitting. Thus, we adopt the single \sersic\ model in our final inference. 
 
-The results are presented in Table~\ref{tab:host_measure} and Figure~\ref{fig:image_inference}-~(d).
+Due to limit of stars in the filed of view, there are only 2 stars available as initial PSF. To expand the volume of choice options, we also take the stack of the two bright stars as derived by Simon[] as a third initial PSF. Finally, the results are presented in Table~\ref{tab:host_measure} and Figure~\ref{fig:image_inference}-(d).
 \todo{Ask Simon for the reconstruction image to compare.}
 
-Beside F160W, there is no other \hst\ imaging data for this system and the color. For such case, we adopt the criteria by Ding2020[] to define the stellar template, i.e., the 1 Gyr and 0.625 Gyr stellar population would be adopted for systems as $z<1.44$ and $z>1.44$, respectively. Since the source redshfit of SDSS1206 is at 1.79, a 0.625 Gyr is selected.
 
 \subsubsection{HE1104}
+As a typical doubly lensed image, the lens model of HE1104 is modelled by us for the first time. We have selected in total of 5 initial PSFs to perform the fitting. The inference of the image is presented in Table~\ref{tab:host_measure} and Figure~\ref{fig:image_inference}-(e).  With the best-fitting model, the lensed arcs could be clearly seen from the bottom-left panel, indicating a strong evidence of the detection of the host.
 
 \subsubsection{SDSS0246}
-
-\subsubsection{HE0047}
+Imaged with WFC3-UVIS/F814W, the resolution of the data is much higher. However, the arc is much fainter compare to the IR band and the available pixels that could be used to fitting the arc is quite limited. With in total 3 initial PSF selected, the host is successfully reconstructed as shown in Figure~\ref{fig:image_inference}-(f) with inference list in Table~\ref{tab:host_measure}. A template of 0.625 Gyr stellar population would be adopt.
 
 \subsubsection{HS2209}
+The inference of this system is summarized in Figure~\ref{fig:image_inference}-(g). \ding{The host magnitude might be overestimated. The QSO is over bright with a positive background light. Xuheng is Re-fitting this image.}
 
-The comparison to the previous fitting.
-
-We summarized the inference for the eight systems in the table.
-name--Setts--BestFitChisq--Totalflux-- Host ratio --Reff--Sersicn--magnitude - Stellar mass
+\subsubsection{HE0047}
+HE0047 is the most challenging system in our sample. The results, based on three PSFs, are summarized in Figure~\ref{fig:image_inference}-(f) and Table~\ref{tab:host_measure}. From the subtracted-everything-except-arc image, the lensed host is only half-seen among the large residuals. Thus, the inference of the HE0047 should be taken with larger scatters, or as upper limit.
 
 \begin{table*}
-\renewcommand{\arraystretch}{1.5}
+\renewcommand{\arraystretch}{1.25}
 %\setlength{\tabcolsep}{20pt}
 \centering
   \begin{threeparttable}
 \caption{Summary of lensed AGN inference.}\label{tab:host_measure}    
 %\resizebox{12cm}{!}{
      \begin{tabular}{ccccccc}
-\hline
-Object ID & Magnitude & Host-Total Flux Ratio & Reff & \sersic\ $n$ & adopted AGE & $\log (M_{*}$)  \\
+\hline     
+(1) & (2) & (3) & (4) & (5) & (6) & (7) \\    
+Object ID & Magnitude & Flux Ratio (to Total) & \reff\ & \sersic\ $n$ & adopted AGE & $\log (M_{*}$)  \\
  & (AB system) & ($\%$) & (arcsec) & & (Gyr) & (M$_{\odot}$) \\ \hline
-HE0435 & $21.332\substack{+0.208\\-0.175}$ & $62.471\pm10.893$ & $0.298\pm0.027$ & $2.829\pm0.251$ & $1.500$ & $10.98\substack{+0.07\\-0.08}$ \\
-RXJ1131$_{\rm bulge}$ & $22.074\substack{+0.164\\-0.142}$ & $6.634\pm0.929$ & $0.106\pm0.007$ & fix to 4 & $3.000$ & $10.28\substack{+0.06\\-0.07}$ \\
-RXJ1131$_{\rm disk}$ & $19.305\substack{+0.154\\-0.135}$ & $84.939\pm11.241$ & $0.875\pm0.062$ & fix to 1 & $1.500$ & $11.09\substack{+0.05\\-0.06}$ \\
-WFI2033 & $21.404\substack{+0.167\\-0.145}$ & $35.723\pm5.093$ & $0.294\pm0.025$ & $0.528\pm0.011$ & $0.625$ & $10.66\substack{+0.06\\-0.07}$ \\
-SDSS1206 & $21.287\substack{+0.222\\-0.184}$ & $32.286\pm5.977$ & $0.110\pm0.020$ & $4.526\pm0.555$ & $0.625$ & $10.78\substack{+0.07\\-0.09}$ \\
-HE1104 & $21.274\substack{+0.188\\-0.160}$ & $14.142\pm2.250$ & $0.265\pm0.026$ & $1.033\pm0.034$ & $0.625$ & $11.04\substack{+0.06\\-0.08}$ \\
-SDSS0246 & $23.575\substack{+0.394\\-0.289}$ & $3.756\pm1.143$ & $0.381\pm0.098$ & $4.963\pm0.048$ & $0.626$ & $10.69\substack{+0.12\\-0.16}$ \\
-HS2209 & $20.385\substack{+0.262\\-0.211}$ & $19.454\pm4.165$ & $1.921\pm1.070$ & $2.953\pm0.438$ & $1.001$ & $11.18\substack{+0.08\\-0.10}$ \\
-HE0047 & $22.972\substack{+0.626\\-0.394}$ & $2.496\pm1.093$ & $0.282\pm0.176$ & $3.603\pm1.533$ & $0.625$ & $10.89\substack{+0.16\\-0.25}$ \\
+HE0435 & $21.492\substack{+0.402\\-0.293}$ & $35.981\pm11.127$ & $0.279\pm0.023$ & $2.710\pm0.204$ & $1.500$ & $10.91\substack{+0.12\\-0.16}$ \\
+RXJ1131$_{\rm bulge}$ & $22.092\substack{+0.221\\-0.183}$ & $6.658\pm1.225$ & $0.107\pm0.014$ & fix to 4 & $3.000$ & $10.27\substack{+0.07\\-0.09}$ \\
+RXJ1131$_{\rm disk}$ & $19.495\substack{+0.159\\-0.138}$ & $72.816\pm9.892$ & $0.845\pm0.049$ & fix to 1 & $1.500$ & $11.01\substack{+0.06\\-0.06}$ \\
+WFI2033 & $21.781\substack{+0.285\\-0.225}$ & $19.645\pm4.534$ & $0.280\pm0.017$ & $0.524\pm0.013$ & $0.625$ & $10.51\substack{+0.09\\-0.11}$ \\
+SDSS1206 & $21.310\substack{+0.232\\-0.191}$ & $33.302\pm6.413$ & $0.112\pm0.021$ & $4.568\pm0.530$ & $0.625$ & $10.77\substack{+0.08\\-0.09}$ \\
+HE1104 & $21.252\substack{+0.163\\-0.142}$ & $13.990\pm1.953$ & $0.270\pm0.023$ & $1.048\pm0.045$ & $0.625$ & $11.05\substack{+0.06\\-0.07}$ \\
+SDSS0246 & $23.437\substack{+0.279\\-0.222}$ & $3.978\pm0.901$ & $0.436\pm0.084$ & $4.964\pm0.081$ & $0.626$ & $10.75\substack{+0.09\\-0.11}$ \\
+HS2209 & $20.200\substack{+0.128\\-0.114}$ & $21.108\pm2.348$ & $3.116\pm1.834$ & $3.302\pm0.521$ & $1.001$ & $11.25\substack{+0.05\\-0.05}$ \\
+HE0047 & $22.923\substack{+0.485\\-0.334}$ & $2.347\pm0.845$ & $0.319\pm0.146$ & $4.176\pm0.750$ & $0.625$ & $10.91\substack{+0.13\\-0.19}$ \\
 \hline
 \end{tabular}
 %}
@@ -353,22 +347,26 @@ HE0047 & $22.972\substack{+0.626\\-0.394}$ & $2.496\pm1.093$ & $0.282\pm0.176$ &
 \end{table*}
 
 
-\section{Results}
-In this section, we present the inference of the stellar mass to derive the scaling relations. We compare our measurements to the ones by the  literature samples to study their evolution.
+\section{Results}\label{sec:result}
+In this section, we describe the approaches and assumptions to adopt the stellar population to our sample. We then derive their stellar mass of our sample and study the  the scaling relation by connecting them to their \mbh. We compare our measurements by our sample to the ones in the literature to study their evolution.
 
-\subsection{Stellar mass}
-[] Color inference for the first three cases to decide their stellar template. 
+\subsection{Population and stellar mass}\label{sec:mstar}
+%[] Color inference for the first three cases to decide their stellar template. 
+Besides the band we imaging data at the given band we studied in last section, some of the systems also have other band observations by the \hst, which provides the color information of the host galaxy. Given that the other band data has less exposure time with lower single to noise level, we highlight that we only study the color to find a decent stellar template. Then, it would be adopted to the host photometry obtained in last section to infer the final stellar mass.
 
-[] For the other systems, we follow Ding to assume their age based on their redshift.
+{\bf HE0435} ~ Besides WFC3/F160W, HE0435 has also been observed by the \hst\ through ACS/F814W and ACS/F555W (GO-xxxx; PI: xxxx). We adopted the same approaches to modeling the data separately at these two band. % The inferred host magnitudes are xxx and xxx, respectively.
+Considering that the lensed arcs is mainly inferred by the subtraction of the AGNs and deflectors light, it is less dependent on the lens model and thus can be obtained more accurately. Thus, we infer the color of the lensed arcs in the image plane. We use {\sc Gsf} code to fit the magnitude of the lensed host and find a 1.5 Gyr stellar template with solar metallicity could well match this color. More details of the information could be found in the Appendix~\ref{app:HE0435}.
 
-The uncertainty of the \mstar\ are considered as 0.2 dex, and as studied in~\citet{Ding2017a}, we expect that the uncertainty of the \mbh\ dominate the error budget.
+{\bf RXJ1131} ~ For this system, the lensed arc is very extended in the image plane which is resolved to the AGNs, one could directly perform the SED fitting of the arc in the image plane. Combining the \hst\ imaging data through F814W and F555W (GO-9744; PI: C. S. Kochanek), we inference the color and we adopt the stellar templates 3 Gyr and 1.5 Gyr with solar metallicity stellar to its disk and bulge, respectively (see Appendix~\ref{app:RXJ1131} for the inference).
 
-%\section{Black Hole mass estimates}
-%We use viral method to estimate the mass of the black hole. The board-line adopted. We aim to adopt the self-consistent to recalibrate the \mbh~of our sample. 
-%[] The recipes. [] The board lines and the resulting BH mass and listed in the table. []The summarizing table.
-Deriving the the inference of our sample, we over plot our measurements on top of the measurements by \citet{Ding2020}, shown in Figures. The result demonstrate an excellent consistency. and the result support the evolution. 
+{\bf WFI2033} ~ Besides the F160W filter, four filters including F125W, F140W, F555W and F814W has been employed to obtain the imaging data. We perform the lens model inference for all the filter and infer the host color through five band in the image plane. We find a stellar template with 0.625 Gyr could well match their color (Appendix~\ref{app:WFI2033}).
 
-\subsection{The \mbh-\mstar\ relation}
+{\bf HE1104 and other systems} ~ The HE1104 has been observed through F555W and F814W band. However, given the faint and the limited exposure time, the signal of the lensed arcs at the other band is not visible. There is no other band for the other systems. For these systems, we adopt the criteria by Ding2020[] to assign their stellar population, i.e., the 1 Gyr and 0.625 Gyr stellar population would be adopted for systems as $z<1.44$ and $z>1.44$, respectively.
+
+A summary of the adopted stellar populations is given in Table~\ref{tab:host_measure}, column~(7). Applying these templates to the filter magnitudes obtained in last section, we obtain the stellar mass of our system. The uncertainty of the \mstar\ are considered as 0.2 dex, and as studied in~\citet{Ding2017a}, we expect that the uncertainty of the \mbh\ dominate the error budget.
+
+\subsection{The \mbh-\mstar\ relation}\label{sec:relation}
+We combine the measured \mstar\ to their \mbh\ and plot their scaling relations among the recent measurements by \citet{Ding2020}, shown in Figures. The result demonstrate an excellent consistency. and the result support the evolution. 
 We combine the \mstar\ to their \mbh\ and compare to the ones in the literature.
 
 \section{Discussion and Conclusion}
@@ -410,12 +408,34 @@ Try to keep it short.
 
 \section{Color inference of the host}
 We took the other band data and get the only arc image. We adopt these image and do the SED fitting to get the color information.
-\subsection{HE0435}
+\subsection{HE0435}\label{app:HE0435}
 The HE0435 system has been modelled through three band. In the Figure, we demonstrate the host inference in the image plance for the three bands. 
 
-\subsection{WFI2033}
-The WFI2033 system has been modelled through five band.
+\begin{figure*}
+\centering
+\subfloat[HE0435 F555W]{\includegraphics[ width=0.8\textwidth]{fig/HE0435_f555w_inference.pdf}}\\
+\subfloat[HE0435 F814W]{\includegraphics[ width=0.8\textwidth]{fig/HE0435_f814w_inference.pdf}}
+\caption{\label{fig:app_HE0435} 
+Illustrations of the inference for each system. On the top: (left to right): . On the bottom: (left to right.) }
+\end{figure*} 
 
+
+\subsection{RXJ1131}\label{app:RXJ1131}
+We directly preform the SED fitting in the imaging plane. The inferred AGN information is obtain in the Figure.
+
+
+\subsection{WFI2033}\label{app:WFI2033}
+Similar to Section~\ref{app:HE0435}, the lensed color of WFI2033 has been modelled through five band which are illustrated in the Figure.
+
+\begin{figure*}
+\centering
+\subfloat[WFI2033 F125W]{\includegraphics[ width=0.8\textwidth]{fig/WFI2033_f125w_inference.pdf}}\\
+\subfloat[WFI2033 F140W]{\includegraphics[ width=0.8\textwidth]{fig/WFI2033_f140w_inference.pdf}}\\
+\subfloat[WFI2033 F555W]{\includegraphics[ width=0.8\textwidth]{fig/WFI2033_f555w_inference.pdf}}\\
+\subfloat[WFI2033 F814W]{\includegraphics[ width=0.8\textwidth]{fig/WFI2033_f814w_inference.pdf}}
+\caption{\label{fig:app_WFI2033} 
+Illustrations of the inference for each system. On the top: (left to right): . On the bottom: (left to right.) }
+\end{figure*} 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
