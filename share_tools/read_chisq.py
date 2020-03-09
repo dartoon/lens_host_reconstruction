@@ -14,8 +14,11 @@ import lenstronomy.Util.class_creator as class_creator
 sys.path.insert(0,'../py_tools')
 #from flux_profile import cr_mask
 
-def return_chisq(filename, lens_mask = None, fair_mask=True, fair_PSF =False, if_reduce=True):
-    result = pickle.load(open(filename,'rb'),encoding="latin1") 
+def return_chisq(filename, lens_mask = None, fair_mask=True, fair_PSF =False, if_reduce=True, py_version = 3):
+    if py_version ==3:
+        result = pickle.load(open(filename,'rb'),encoding="latin1") 
+    elif py_version ==2:
+        result = pickle.load(open(filename,'rb'))
     fit_result, trans_result, kwargs_material, model_lists  = result
 
     kwargs_data, kwargs_psf_updated, kwargs_numerics, kwargs_model, lens_mask_saved = kwargs_material

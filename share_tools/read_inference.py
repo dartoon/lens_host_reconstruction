@@ -26,6 +26,8 @@ def read_inf(ID, prop=0 , count_n=[4, 4], rod = 3):
     '''
     if ID == "SDSS1206" :
         filename = ID+'_singel_host_run_summary.pkl'
+    elif ID == 'HS2209' or ID == 'RXJ1131':
+        filename = ID+'_3rd_run_summary.pkl'
     else:
         filename = ID+'_2nd_run_summary.pkl'
     result = pickle.load(open('../share_tools/'+filename,'rb'),encoding="latin1")
@@ -55,9 +57,14 @@ def read_inf(ID, prop=0 , count_n=[4, 4], rod = 3):
             picks = [3]
         else:
             picks = [2]
-            
-#   print(ID, pick_names)
+    elif prop == 4 :  #Flux
+        if 'Disk' in pick_names[2]:
+            picks = [1,2]
+        else:
+            picks = [1]            
+#    print(ID, pick_names)
     result = []
+#    print(filename)
     for pick in picks:
         if isinstance(count_n, list) == False:
             fit_value_m = [fit_value_m_list[i][pick] for i in range(len(labels))]
@@ -98,7 +105,9 @@ def read_inf(ID, prop=0 , count_n=[4, 4], rod = 3):
             result.append([round(weighted_value,rod), round(rms_value,rod)])            
     return result
 #result = read_inf('HE0435', prop = 0)
-#print(read_inf('RXJ1131', prop = 0))
+#print(read_inf('RXJ1131', prop = 4, count_n=[4, 4]))
+#print(read_inf('HS2209', prop = 1, count_n=8))
+
 
 filter_dict = {'HE0435': 'F160W', 'RXJ1131': 'ACS_F814W', 'WFI2033': 'F160W', 'SDSS1206': 'F160W', 
                'HE1104': 'F160W', 'SDSS0246': 'F814W', 'HS2209': 'F814W', 'HE0047': 'F814W'}
