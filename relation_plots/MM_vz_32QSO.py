@@ -322,17 +322,17 @@ plt.errorbar(np.log10(1+cis11[:,0]),cis11[:,1]-(m_ml*cis11[:,2]+b_ml),yerr=(0.4*
 #    plt.errorbar(np.log10(1+Knud[:,0]),Knud[:,2]-(m_ml*Knud[:,4]+b_ml),yerr=0,fmt='o',color='blue',markersize=9) 
 
 
-plt.scatter(np.log10(1+zs),MBs-(m_ml*Mstar+b_ml),c='tomato',
+plt.scatter(np.log10(1+zs),MBs-(m_ml*Mstar+b_ml),c='lawngreen',
             s=280,marker="*",zorder=300, vmin=0.3, vmax=5, edgecolors='k')
 plt.errorbar(np.log10(1+zs),MBs-(m_ml*Mstar+b_ml),
              yerr= yerr_highz,
-             color='tomato',ecolor='orange', fmt='.',markersize=1)    
+             color='lawngreen',ecolor='olivedrab', fmt='.',markersize=1)    
 
-plt.scatter(np.log10(1+zs[9]),0,facecolors='none',
-            s=280,marker="o",zorder=900, edgecolors='blue', linewidth=6, alpha=0.5)    
-plt.scatter(np.log10(1+zs[9]),0+0.21,facecolors='none',
-            s=280,marker="o",zorder=900, edgecolors='blue', linewidth=6, alpha=0.5)    
-plt.arrow(np.log10(1+zs[9]),0, 0, +0.19, zorder=800, head_length=0.05,head_width=0.005,fc='k',ec='k')
+#plt.scatter(np.log10(1+zs[9]),0,facecolors='none',
+#            s=280,marker="o",zorder=900, edgecolors='blue', linewidth=6, alpha=0.5)    
+#plt.scatter(np.log10(1+zs[9]),0+0.21,facecolors='none',
+#            s=280,marker="o",zorder=900, edgecolors='blue', linewidth=6, alpha=0.5)    
+#plt.arrow(np.log10(1+zs[9]),0, 0, +0.19, zorder=800, head_length=0.05,head_width=0.005,fc='k',ec='k')
 
 #####fit the evolution##########
 ################################
@@ -426,13 +426,14 @@ from read_inference import read_mstar
 
 texts = []
 for ID in h0licow:
-    Mstar = mstar_dict[ID]
-    MBs = MBH_dic[ID]
+    read_Mstar = read_mstar(ID, count_n=[4, 4])
+    Mstar = np.log10(read_Mstar[0][0])
     if ID == 'RXJ1131':
-        Mstar = np.log10(read_mstar(ID, count_n=[4, 4])[0][0])
+        Mstar = np.log10(read_Mstar[0][0] + read_Mstar[1][0] )
+    MBs = MBH_dic[ID]
 #    plt.scatter(Mstar, MBs[0], c='blue',s=580,marker=".",zorder=100, edgecolors='k')
-    plt.scatter(np.log10(1+lens_redshift[ID]),MBs-(m_ml*Mstar+b_ml),c='blue',
-            s=280,marker="*",zorder=300, vmin=0.3, vmax=5, edgecolors='k')
+    plt.scatter(np.log10(1+lens_redshift[ID]),MBs-(m_ml*Mstar+b_ml),c='orangered',
+            s=580,marker=".",zorder=300, vmin=0.3, vmax=5, edgecolors='k')
     plt.text(np.log10(1+lens_redshift[ID]),MBs-(m_ml*Mstar+b_ml), ID, fontsize=15, zorder=200) 
 #adjust_text(texts, arrowprops=dict(arrowstyle='->', color='red')) 
   
@@ -445,7 +446,7 @@ for ID in h0licow:
 
 #%% Where loop ends
 plt.xlabel(r"log(1+z)",fontsize=45)
-new_sample = mlines.Line2D([], [], color='tomato', ls='', marker='*', markersize=20,markeredgecolor='k')
+ding_sample = mlines.Line2D([], [], color='lawngreen', ls='', marker='*', markersize=20,markeredgecolor='k')
 
 plt.xticks(np.arange(-0.1,1,0.1))
 xl=-0.01
@@ -471,7 +472,7 @@ plt.tick_params(labelsize=35)
 
 SS13 = mlines.Line2D([], [], color='darkseagreen', ls='', marker='^', markersize=8)
 
-plt.legend([Bkc, Hkc, SS13, new_sample],[
+plt.legend([Bkc, Hkc, SS13, ding_sample],[
 'Local by Bennert+11',\
 "Local by H&R",
 "Intermediate redshift AGNs",

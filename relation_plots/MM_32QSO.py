@@ -140,8 +140,7 @@ for i in range(100):
     m=np.percentile(samples,posi,axis=0)[0]
     b=samples[:,1][samples[:,0]==find_n(samples[:,0],m)][0]   #may find out many numbers
     plt.plot(xl, m*xl+b, color="lightgray", alpha=0.2,linewidth=7.0,zorder=-1000)
-
-plt.text(9.3, 6.24, r"log(M$_{\rm BH}/$10$^{7}$M$_{\odot}$)=%s+%slog(M$_*/$10$^{10}$M$_{\odot}$)"%(round(b_ml+m_ml*10-7,2),round(m_ml,2)),color='blue',fontsize=25)
+#plt.text(9.3, 6.24, r"log(M$_{\rm BH}/$10$^{7}$M$_{\odot}$)=%s+%slog(M$_*/$10$^{10}$M$_{\odot}$)"%(round(b_ml+m_ml*10-7,2),round(m_ml,2)),color='blue',fontsize=25)
 
 #%%
 inp_SS13 = 1
@@ -294,8 +293,8 @@ Mstar_err = np.array([[-0.15,  0.19], [-0.15,  0.19], [-0.14,  0.16], [-0.14,  0
                       [-0.12,  0.12], [-0.24,  0.48], [-0.17,  0.23], [-0.12,  0.12], 
                       [-0.14,  0.16], [-0.19,  0.28], [-0.25,  0.53], [-0.14,  0.16], 
                       [-0.18,  0.25], [-0.18,  0.24], [-0.15,  0.18], [-0.15,  0.18]])
-plt.scatter(Mstar,MBs,c='tomato',s=280,marker="*",zorder=100, edgecolors='k')
-plt.errorbar(Mstar,MBs, xerr=[np.abs(Mstar_err)[:,0], np.abs(Mstar_err)[:,1]], yerr=0.4, color='blue',ecolor='orange', fmt='.',zorder=-500,markersize=1)
+plt.scatter(Mstar,MBs,c='lawngreen',s=320,marker="*",zorder=100, edgecolors='k')
+#plt.errorbar(Mstar,MBs, xerr=[np.abs(Mstar_err)[:,0], np.abs(Mstar_err)[:,1]], yerr=0.4, color='blue',ecolor='orange', fmt='.',zorder=-500,markersize=1)
 
 #%%
 #folders = ['0_HE0435', '1_RXJ1131', '2_WFI2033', '3_SDSS1206', '4_HE1104', '5_SDSS0246', '6_HS2209', '7_HE0047']
@@ -310,9 +309,9 @@ texts = []
 for ID in h0licow:
     Mstar = np.log10(read_mstar(ID, count_n=[4, 4])[0][0])
     MBs = MBH_dic[ID]
-    plt.scatter(Mstar, MBs, c='blue',s=580,marker=".",zorder=100, edgecolors='k')
-    texts.append( plt.text(Mstar, MBs, ID, fontsize=15, zorder=200) )
-adjust_text(texts, arrowprops=dict(arrowstyle='->', color='red')) 
+    plt.scatter(Mstar, MBs, c='orangered',s=580,marker=".",zorder=100, edgecolors='k')
+    texts.append( plt.text(Mstar+0.1, MBs, ID, fontsize=15, zorder=200) )
+#adjust_text(texts, arrowprops=dict(arrowstyle='->', color='red')) 
     
 #%%    
 
@@ -331,9 +330,9 @@ plt.tick_params(labelsize=25)
 Bkc=mlines.Line2D([], [], color='gray', ls='', marker='.', markersize=15)
 Hkc=mlines.Line2D([], [], color='black', ls='', marker='.', markersize=15)
 SS13 = mlines.Line2D([], [], color='darkseagreen', ls='', marker='^', markersize=13)
-new_sample = mlines.Line2D([], [], color='tomato', ls='', marker='*', markersize=16,markeredgecolor='k')
+ding_sample = mlines.Line2D([], [], color='lawngreen', ls='', marker='*', markersize=16,markeredgecolor='k')
 
-plt.legend([Bkc,Hkc,SS13,new_sample],[
+plt.legend([Bkc,Hkc,SS13,ding_sample],[
 'Local by Bennert+11',\
 "Local by H&R",
 "intermediate redshift AGNs",
