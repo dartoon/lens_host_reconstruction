@@ -25,14 +25,17 @@ IDs = ['0_HE0435', '1_RXJ1131', '2_WFI2033', '3_SDSS1206', '4_HE1104', '5_SDSS02
 #for i in range(len(IDs)):
 #    print(i, ':', IDs[i])
 #inp = int(input("Which source:\n"))
-inp = 3
+inp = 1
 ID = IDs[inp][2:]
-if ID != 'SDSS1206':
-    folder_0 = '_2nd_run_summary.pkl'
-    folder_1 = '2nd_fit'
-elif ID == 'SDSS1206':
+if ID == 'SDSS1206':
     folder_0 = '_singel_host_run_summary.pkl'
     folder_1 = 'singel_fit'
+if ID == 'HS2209' or ID == 'RXJ1131':
+    folder_0 = '_3rd_run_summary.pkl'
+    folder_1 = '3rd_fit'    
+else:
+    folder_0 = '_2nd_run_summary.pkl'
+    folder_1 = '2nd_fit'
 filename = '../share_tools/'+ ID+ folder_0
 result = pickle.load(open(filename,'rb') ,encoding="latin1") 
 fit_values, chisq, labels, _ = result
@@ -44,8 +47,8 @@ label = label.split(', ')
 filename = glob.glob('../'+IDs[inp]+'/model/{4}_PSFi_{0}/result_{1}_*_gammafix{2}_subg{3}.pkl'.format(label[-1], label[0], label[1][-3:], label[2][-1],folder_1) )
 #filename = glob.glob('../5_SDSS0246/model/2nd_fit_PSFi_PSFrecons/result_PSF0_*_gammafix2.1_subg2.pkl')
 #filename = glob.glob('../5_SDSS0246/model/2nd_fit_PSFi_QSOmask/result_PSF0_QSOmask_gammafix2.1_subg2.pkl')
-readfile = filename[0]
-
+readfile = filename[0] #'../6_HS2209/model/3rd_fit_PSFi_QSOmask/result_PSF2_QSOmask_gammafix2.1_subg2.pkl'
+#readfile = '../2_WFI2033/model/2nd_fit_PSFi_PSFrecons/result_PSF1_PSFrecons_gammafix1.9_subg2.pkl'
 #%%
 ##
 result = pickle.load(open(readfile,'rb') ,encoding="latin1")

@@ -68,11 +68,12 @@ for ID in ['0_HE0435', '1_RXJ1131', '2_WFI2033', '3_SDSS1206', '4_HE1104', '5_SD
 
 #%%Table 3:    
 #Get the infernece from pickle: 
-print("Object ID & Magnitude & Host-Total Flux Ratio & Reff & \\sersic\\ $n$ & adopted AGE & $\\log (M_{*}$)  \\\\")
-print(" & (AB system) & ($\\%$) & (arcsec) & & (Gyr) & (M$_{\\odot}$) \\\\ \\hline")
+#print("Object ID & Magnitude & Host-Total Flux Ratio & Reff & \\sersic\\ $n$ & adopted AGE & $\\log (M_{*}$)  \\\\")
+#print(" & (AB system) & ($\\%$) & (arcsec) & & (Gyr) & (M$_{\\odot}$) \\\\ \\hline")
 for i in range(len(IDs)):
     ID = IDs[i][2:]
     host_flux_list = read_inf(IDs[i][2:],prop=0)
+    host_lensed_flux_list = read_inf(IDs[i][2:],prop=4, count_n=[4, 4])
     AGN_flux_list = read_inf(IDs[i][2:],prop=3)
     Reff_list  = read_inf(IDs[i][2:],prop=1)
     n_list  = read_inf(IDs[i][2:],prop=2)
@@ -92,20 +93,26 @@ for i in range(len(IDs)):
         age = 10**table[1][age_idx]
         
         host_flux_hml = [host_flux_list[idx][0]+ host_flux_list[idx][1], host_flux_list[idx][0], host_flux_list[idx][0] - host_flux_list[idx][1]]
+        mag = [-2.5* np.log10(flux) + zp for flux in host_flux_hml]
+        mag_mul = [(mag[1]), (mag[2]-mag[1]), (mag[0]-mag[1])]  #median, upper, lower
+        
         m_star_result = read_mstar(ID,  count_n=[4,4])[0]
         m_star_lmh = [ np.log10(m_star_result[0] - m_star_result[1]), np.log10(m_star_result[0]), np.log10(m_star_result[0] + m_star_result[1]) ]
         m_star_mul = [ m_star_lmh[1], (m_star_lmh[2] - m_star_lmh[1]), (m_star_lmh[1] - m_star_lmh[0])]
+
+        host_lensed_flux_hml = [host_lensed_flux_list[idx][0]+ host_lensed_flux_list[idx][1], host_lensed_flux_list[idx][0], host_lensed_flux_list[idx][0] - host_lensed_flux_list[idx][1]]
+        lensed_mag = [-2.5* np.log10(flux) + zp for flux in host_lensed_flux_hml]
+        lensed_mag_mul = [(lensed_mag[1]), (lensed_mag[2]-lensed_mag[1]), (lensed_mag[0]-lensed_mag[1])]  #median, upper, lower
         
-        mag = [-2.5* np.log10(flux) + zp for flux in host_flux_hml]
-        mag_mul = [(mag[1]), (mag[2]-mag[1]), (mag[0]-mag[1])]  #median, upper, lower
         flux_r_mD = [host_flux_list[idx][0]/(host_flux_list[idx][0]+AGN_flux_list[0][0])*100, host_flux_list[idx][1]/(host_flux_list[idx][0]+AGN_flux_list[0][0])*100]
         Reff_mD = [Reff_list[idx][0], Reff_list[idx][1]]
         n_mD = [n_list[idx][0], n_list[idx][1]]
-        print(ID, '&','${0:.3f}\substack[+{1:.3f}\\\\{2:.3f}]$'.format(mag_mul[0], mag_mul[1], mag_mul[2]), '&' ,
-                '${0:.3f}\pm{1:.3f}$'.format(flux_r_mD[0], flux_r_mD[1]), '&' ,
-                '${0:.3f}\pm{1:.3f}$'.format(Reff_mD[0], Reff_mD[1]), '&' ,
-                '${0:.3f}\pm{1:.3f}$'.format(n_mD[0], n_mD[1]), '&', 
-                '${0:.3f}$'.format(age),
+        print(ID, '&','${0:.2f}\substack[+{1:.2f}\\\\{2:.2f}]$'.format(mag_mul[0], mag_mul[1], mag_mul[2]), '&' ,
+                '${0:.2f}\substack[+{1:.2f}\\\\{2:.2f}]$'.format(lensed_mag_mul[0], lensed_mag_mul[1], lensed_mag_mul[2]), '&' ,
+                '${0:.1f}\pm{1:.1f}$'.format(flux_r_mD[0], flux_r_mD[1]), '&' ,
+                '${0:.2f}\pm{1:.2f}$'.format(Reff_mD[0], Reff_mD[1]), '&' ,
+                '${0:.2f}\pm{1:.2f}$'.format(n_mD[0], n_mD[1]), '&', 
+                '${0:.2f}$'.format(age),
                 '&','${0:.2f}\substack[+{1:.2f}\\\\-{2:.2f}]$'.format(m_star_mul[0], m_star_mul[1], m_star_mul[2]),
                 '\\\\')
     if ID == 'RXJ1131':
@@ -129,22 +136,27 @@ for i in range(len(IDs)):
             age = round(10**table[1][age_idx],3)
 
             host_flux_hml = [host_flux_list[idx][0]+ host_flux_list[idx][1], host_flux_list[idx][0], host_flux_list[idx][0] - host_flux_list[idx][1]]
+            mag = [-2.5* np.log10(flux) + zp for flux in host_flux_hml]
+            mag_mul = [(mag[1]), (mag[2]-mag[1]), (mag[0]-mag[1])]
             
             m_star_result = read_mstar(ID,  count_n=[4,4])[j]
             m_star_lmh = [ np.log10(m_star_result[0] - m_star_result[1]), np.log10(m_star_result[0]), np.log10(m_star_result[0] + m_star_result[1]) ]
             m_star_mul = [ m_star_lmh[1], (m_star_lmh[2] - m_star_lmh[1]), (m_star_lmh[1] - m_star_lmh[0])]
 
-            host_flux_hml = [host_flux_list[idx][0]+ host_flux_list[idx][1], host_flux_list[idx][0], host_flux_list[idx][0] - host_flux_list[idx][1]]
-            mag = [-2.5* np.log10(flux) + zp for flux in host_flux_hml]
-            mag_mul = [(mag[1]), (mag[2]-mag[1]), (mag[0]-mag[1])]
+            host_lensed_flux_hml = [host_lensed_flux_list[idx][0]+ host_lensed_flux_list[idx][1], host_lensed_flux_list[idx][0], host_lensed_flux_list[idx][0] - host_lensed_flux_list[idx][1]]
+            lensed_mag = [-2.5* np.log10(flux) + zp for flux in host_lensed_flux_hml]
+            lensed_mag_mul = [(lensed_mag[1]), (lensed_mag[2]-lensed_mag[1]), (lensed_mag[0]-lensed_mag[1])]  #median, upper, lower
+
+
             Reff_mD = [Reff_list[idx][0], Reff_list[idx][1]]
             flux_r_mD = [(host_flux_list[idx][0])/(host_flux_list[0][0]+host_flux_list[1][0]+AGN_flux_list[0][0])*100, 
                            (host_flux_list[idx][1])/(host_flux_list[0][0]+host_flux_list[1][0]+AGN_flux_list[0][0])*100]
             
-            print(ID_name[j], '&','${0:.3f}\substack[+{1:.3f}\\\\{2:.3f}]$'.format(mag_mul[0], mag_mul[1], mag_mul[2]), '&' ,
-                    '${0:.3f}\pm{1:.3f}$'.format(flux_r_mD[0], flux_r_mD[1]), '&' ,
-                    '${0:.3f}\pm{1:.3f}$'.format(Reff_mD[0], Reff_mD[1]), '&' ,
+            print(ID_name[j], '&','${0:.2f}\substack[+{1:.2f}\\\\{2:.2f}]$'.format(mag_mul[0], mag_mul[1], mag_mul[2]), '&' ,
+                  '${0:.2f}\substack[+{1:.2f}\\\\{2:.2f}]$'.format(lensed_mag_mul[0], lensed_mag_mul[1], lensed_mag_mul[2]), '&' ,
+                    '${0:.1f}\pm{1:.1f}$'.format(flux_r_mD[0], flux_r_mD[1]), '&' ,
+                    '${0:.2f}\pm{1:.2f}$'.format(Reff_mD[0], Reff_mD[1]), '&' ,
                     'fix to {0}'.format(n[j]), '&', 
-                    '${0:.3f}$'.format(age),
+                    '${0:.2f}$'.format(age),
                     '&','${0:.2f}\substack[+{1:.2f}\\\\-{2:.2f}]$'.format(m_star_mul[0], m_star_mul[1], m_star_mul[2]),
                     '\\\\')     
