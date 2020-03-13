@@ -57,7 +57,7 @@ def read_inf(ID, prop=0 , count_n=[4, 4], rod = 3):
             picks = [3]
         else:
             picks = [2]
-    elif prop == 4 :  #Flux
+    elif prop == 4 :  #Flux image plane
         if 'Disk' in pick_names[2]:
             picks = [1,2]
         else:
@@ -107,7 +107,7 @@ def read_inf(ID, prop=0 , count_n=[4, 4], rod = 3):
 #result = read_inf('HE0435', prop = 0)
 #print(read_inf('RXJ1131', prop = 4, count_n=[4, 4]))
 #print(read_inf('HS2209', prop = 1, count_n=8))
-
+#print(read_inf('HS2209',  count_n=8))    
 
 filter_dict = {'HE0435': 'F160W', 'RXJ1131': 'ACS_F814W', 'WFI2033': 'F160W', 'SDSS1206': 'F160W', 
                'HE1104': 'F160W', 'SDSS0246': 'F814W', 'HS2209': 'F814W', 'HE0047': 'F814W'}
@@ -137,6 +137,7 @@ def read_fnu(ID, count_n=[4, 4]):
     return result
 #result = read_fnu('HE0435',  count_n=[4, 4])
 #print(read_fnu('HE0435',  count_n=[4, 4]))
+
 
 
 def read_mstar(ID, count_n=[4, 4], rod = 5):

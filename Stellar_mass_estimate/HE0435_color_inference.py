@@ -64,6 +64,7 @@ for i in range(len(filter_list)):
 	zp = zeropoint_dict[filter_list[i]]
 	mag = -2.5*np.log10(weighted_value_list[i]) + zp
 	fnu = 10 ** ((mag-25)/(-2.5))
+#	print(filter_list[i], round(mag,3)) 
 	print(filter_list[i], round(fnu,3), '+-', round(fnu*uncer,3))
 	
 #%%After runing the fit:
