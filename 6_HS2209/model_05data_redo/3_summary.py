@@ -55,7 +55,7 @@ fit_value_l_list, fit_value_m_list, fit_value_h_list, = [], [], []
 chisq = []
 fixgamma_list = []
 
-folder_i = ['3rd_fit_PSFi_QSOmask', '3rd_fit_PSFi_PSFrecons']
+folder_i = ['fit_PSFi_QSOmask', 'fit_PSFi_PSFrecons']
 for folder in folder_i:
 #    if folder == 'fit_PSFi_QSOmask':
 #        filenames = glob.glob('{0}/result_PSF?_S*'.format(folder))
@@ -150,8 +150,9 @@ def plt_result(fixgamma, chisq=chisq, ID = ID):
     weighted_value = np.sum(np.array(fit_value_m)*weight) / np.sum(weight)
     rms_value = np.sqrt(np.sum((np.array(fit_value_m)-weighted_value)**2*weight) / np.sum(weight))
     print(weighted_value, rms_value)
-    plt.plot(xs, xs*0+(weighted_value - rms_value), xs, xs*0+weighted_value, xs, xs*0+(weighted_value + rms_value),color = 'red')
-    plt.fill_between(xs, weighted_value - rms_value, weighted_value + rms_value, facecolor='red', alpha = 0.1)    
+#    print weighted_value, rms_value
+#    plt.plot(xs, xs*0+(weighted_value - rms_value), xs, xs*0+weighted_value, xs, xs*0+(weighted_value + rms_value),color = 'red')
+#    plt.fill_between(xs, weighted_value - rms_value, weighted_value + rms_value, facecolor='red', alpha = 0.1)    
     
     ##If want to put horizontal line:
 #    fill_ref = True
