@@ -27,7 +27,7 @@ IDs = ['2_WFI2033']
 #0 = int(0ut("Which source:\n"))
 ID = IDs[0][2:]
 filters = ['f125w', 'f140w', 'f555w', 'f814w'] 
-file_info = '/{0}_model/fit_PSFi_PSFrecons/result_PSF0_*_gammafix1.9*.pkl'.format(filters[3])
+file_info = '/{0}_model/fit_PSFi_PSFrecons/result_PSF0_*_gammafix1.9*.pkl'.format(filters[1])
 #
 filename = glob.glob('../'+IDs[0]+file_info )
 #filename = glob.glob('../5_SDSS0246/model/2nd_fit_PSFi_PSFrecons/result_PSF0_*_gammafix2.1_subg2.pkl')
@@ -101,6 +101,7 @@ else:
 modelPlot.data_plot(ax=axes[0], no_arrow=no_arrow)
 modelPlot.model_plot(ax=axes[1], no_arrow=no_arrow)
 #modelPlot.normalized_residual_plot(ax=axes[0,2], v_min=-6, v_max=6)
+#Multe the arrow in: /Users/Dartoon/Astro/Packages/lenstronomy/lenstronomy/Plots/model_band_plot.py
 modelPlot.subtract_from_data_plot(ax=axes[2], point_source_add=True,lens_light_add=True, source_add=False, 
                                   text='Residual of lensed arcs')#, no_arrow=no_arrow)
 modelPlot.decomposition_plot(ax=axes[3], text='Modelled source light', source_add=True)#, no_arrow=no_arrow)

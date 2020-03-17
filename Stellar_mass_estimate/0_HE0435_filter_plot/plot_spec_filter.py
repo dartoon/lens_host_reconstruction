@@ -12,6 +12,9 @@ import matplotlib.pyplot as plt
 from specutils import Spectrum1D
 import glob
 
+import matplotlib as mat
+mat.rcParams['font.family'] = 'STIXGeneral'
+
 #%%To estimate the AB mag for a given stellar template
 #filename  = 'SED_files/summary_*_PA00.fits'
 #filename = glob.glob(filename)[0]
@@ -35,7 +38,7 @@ mel_idx = [i for i in range(len(name)) if 'Z_MW' in str(name[i])][0]
 mel = str(round(10**table[1][mel_idx],3)) # 'Mel:' Z*/Z_sun
 
 #%%
-spec1d = hdul_sum = pyfits.open("/Users/Dartoon/Astro/Packages/gsf/gsf/example/templates/gsf_spec_0435.fits")  
+spec1d = pyfits.open("/Users/Dartoon/Astro/Packages/gsf/gsf/example/templates/gsf_spec_0435.fits")  
 name_spec = spec1d[1].columns
 table_spec = spec1d[1].data
 array_spec = np.zeros((len(table_spec), 7))
@@ -74,10 +77,10 @@ xmin, xmax, ymin, ymax = plt.axis()
 plt.text( (xmax-xmin)*0.7, (ymax-ymin)*0.6, 'stellar population with:', fontsize=17)
 plt.text( (xmax-xmin)*0.8, (ymax-ymin)*0.53, 'z={0}'.format(z), fontsize=17)
 plt.text( (xmax-xmin)*0.8, (ymax-ymin)*0.45, 'age={0:.1f} Gyr'.format(float(age)), fontsize=17)
-plt.text( (xmax-xmin)*0.8, (ymax-ymin)*0.37, 'Z*/Z_sun={0} '.format(mel), fontsize=17)
+plt.text( (xmax-xmin)*0.8, (ymax-ymin)*0.37, 'Z$_*$/Z$_\odot$={0}'.format(mel), fontsize=17)
 plt.legend(prop={'size':15})
 plt.tick_params(labelsize=15)
 plt.xlabel("um",fontsize=27)
-plt.ylabel(r"f$_\lambda$ $10^{-17}$ erg/s/cm$^2$/A",fontsize=27)
+plt.ylabel(r"f$_\lambda$ 10$^{\rm -17}$ erg/s/cm$^2$/$\AA$",fontsize=27)
 #plt.yticks([])
 plt.savefig('HE0435_host_color.pdf')
