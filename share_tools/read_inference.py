@@ -30,7 +30,7 @@ def read_inf(ID, prop=0 , count_n=[4, 4], rod = 3):
         filename = ID+'_3rd_run_summary.pkl'
     else:
         filename = ID+'_2nd_run_summary.pkl'
-    result = pickle.load(open('../share_tools/'+filename,'rb'),encoding="latin1")
+    result = pickle.load(open('/Users/Dartoon/Astro/Projects/lens_host_reconstruction/share_tools/'+filename,'rb'),encoding="latin1")
     fit_values, chisq, labels, pick_names = result
     sort_label_type=['subg_2, PSFrecons', ', subg_2, QSOmask', 'subg_3, PSFrecons',', subg_3, QSOmask']
     fit_value_l_list, fit_value_m_list, fit_value_h_list = fit_values

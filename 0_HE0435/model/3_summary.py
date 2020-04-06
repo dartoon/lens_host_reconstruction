@@ -126,21 +126,25 @@ if label0 != label1 or bars!= label0:
     raise ValueError("The labels is wrong for some reason")
 color = ['green', 'orange']
 
-count_n = 8 #len(labels) * 20 /100
-chisq = [float(chisq[i]) for i in range(len(chisq))]
-sort_chisq = np.argsort(np.asarray(chisq))    
-Chisq_best = chisq[sort_chisq[0]]
-#Chisq_last= chisq[sort_chisq[-1]]
-Chisq_last= chisq[sort_chisq[count_n-1]]
-weight = np.zeros(len(chisq))
-inf_alp = (Chisq_last-Chisq_best) / (2*2.* Chisq_best)
-for i in sort_chisq[:count_n]:
-#for i in range(len(sort_chisq)):
-#    weight[i] = np.exp(-1/2. * (chisq[i]-Chisq_best)/(Chisq_best))
-    weight[i] = np.exp(-1/2. * (chisq[i]-Chisq_best)/(Chisq_best* inf_alp))
-weighted_value = np.sum(np.array(fit_value_m)*weight) / np.sum(weight)
-rms_value = np.sqrt(np.sum((np.array(fit_value_m)-weighted_value)**2*weight) / np.sum(weight))
-print("weighted_value, rms_value:", weighted_value, rms_value, 'used sets:', count_n)
+#count_n = 8 #len(labels) * 20 /100
+#chisq = [float(chisq[i]) for i in range(len(chisq))]
+#sort_chisq = np.argsort(np.asarray(chisq))    
+#Chisq_best = chisq[sort_chisq[0]]
+##Chisq_last= chisq[sort_chisq[-1]]
+#Chisq_last= chisq[sort_chisq[count_n-1]]
+#weight = np.zeros(len(chisq))
+#inf_alp = (Chisq_last-Chisq_best) / (2*2.* Chisq_best)
+#for i in sort_chisq[:count_n]:
+##for i in range(len(sort_chisq)):
+##    weight[i] = np.exp(-1/2. * (chisq[i]-Chisq_best)/(Chisq_best))
+#    weight[i] = np.exp(-1/2. * (chisq[i]-Chisq_best)/(Chisq_best* inf_alp))
+#weighted_value = np.sum(np.array(fit_value_m)*weight) / np.sum(weight)
+#rms_value = np.sqrt(np.sum((np.array(fit_value_m)-weighted_value)**2*weight) / np.sum(weight))
+#print("weighted_value, rms_value:", weighted_value, rms_value, 'used sets:', count_n)
+
+from read_inference import read_inf
+
+weighted_value, rms_value = read_inf('HE0435', prop = 0, count_n=[4, 4])[0]
 
 def plt_result(fixgamma, chisq=chisq):
     #Plot it out    
@@ -170,8 +174,8 @@ def plt_result(fixgamma, chisq=chisq):
     ys_l = xs*0 + weighted_value-rms_value
     ys_m = xs*0 + weighted_value
     ys_h = xs*0 + weighted_value+rms_value
-    plt.plot(xs,ys_l, xs, ys_m, xs,ys_h,color = 'red')
-    plt.fill_between(xs, ys_l, ys_h, facecolor='red', alpha = 0.06)
+#    plt.plot(xs,ys_l, xs, ys_m, xs,ys_h,color = 'red')
+#    plt.fill_between(xs, ys_l, ys_h, facecolor='red', alpha = 0.06)
 
     ##If want to put horizontal line:
     fill_ref = False
