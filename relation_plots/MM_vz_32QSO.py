@@ -316,17 +316,16 @@ yerr_highz = [((m_ml*Mstar_err[:,0])**2+0.4**2)**0.5, ((m_ml*Mstar_err[:,1])**2+
 # if style ==1:
 plt.errorbar(np.log10(1+ss[:,0]),ss[:,2]-(m_ml*ss[:,1]+b_ml),yerr=(0.4**2+(m_ml*0.2)**2)**0.5,fmt='^',color='darkseagreen',markersize=9)
 plt.errorbar(np.log10(1+b11[:,0]),b11[:,2]-(m_ml*b11[:,1]+b_ml),yerr=(0.4**2+(m_ml*0.2)**2)**0.5,fmt='^',color='darkseagreen',markersize=9)  
-
 plt.errorbar(np.log10(1+cis11[:,0]),cis11[:,1]-(m_ml*cis11[:,2]+b_ml),yerr=(0.4**2+(m_ml*0.35)**2)**0.5,fmt='^',color='darkseagreen',markersize=9) 
 
 #    plt.errorbar(np.log10(1+Knud[:,0]),Knud[:,2]-(m_ml*Knud[:,4]+b_ml),yerr=0,fmt='o',color='blue',markersize=9) 
 
 
-plt.scatter(np.log10(1+zs),MBs-(m_ml*Mstar+b_ml),c='lawngreen',
-            s=280,marker="*",zorder=300, vmin=0.3, vmax=5, edgecolors='k')
+plt.scatter(np.log10(1+zs),MBs-(m_ml*Mstar+b_ml),c='lightsalmon',
+            s=420,marker=".",zorder=300, vmin=0.3, vmax=5, edgecolors='k', alpha = 0.8)
 plt.errorbar(np.log10(1+zs),MBs-(m_ml*Mstar+b_ml),
              yerr= yerr_highz,
-             color='lawngreen',ecolor='olivedrab', fmt='.',markersize=1)    
+             color='lightsalmon', fmt='.',markersize=1)    
 
 #plt.scatter(np.log10(1+zs[9]),0,facecolors='none',
 #            s=280,marker="o",zorder=900, edgecolors='blue', linewidth=6, alpha=0.5)    
@@ -415,7 +414,7 @@ value,sig=round(b_ml_offset,2),round((np.percentile(samples,84,axis=0)[0]-np.per
 
 #%%
 #folders = ['0_HE0435', '1_RXJ1131', '2_WFI2033', '3_SDSS1206', '4_HE1104', '5_SDSS0246', '6_HS2209', '7_HE0047']
-h0licow = ['HE0435', 'RXJ1131', 'WFI2033', 'SDSS1206', 'HE1104', 'SDSS0246', 'HE0047']#, 'HS2209']
+h0licow = ['HE0435', 'RXJ1131', 'WFI2033', 'SDSS1206', 'HE1104', 'SDSS0246', 'HE0047', 'HS2209']
 sys.path.insert(0,'../Stellar_mass_estimate')
 from mstar_inference import mstar_dict
 sys.path.insert(0,'../MBH_estimator')
@@ -424,8 +423,10 @@ sys.path.insert(0,'../share_tools')
 from lens_information import lens_redshift
 from read_inference import read_mstar
 
+ma = ['o','d','p','<','>','^','v','P','X' ]
 texts = []
-for ID in h0licow:
+for i in range(len(h0licow)):
+    ID = h0licow[i]
     read_Mstar = read_mstar(ID, count_n=[4, 4])
     Mstar = np.log10(read_Mstar[0][0])
     if ID == 'RXJ1131':
@@ -433,8 +434,17 @@ for ID in h0licow:
     MBs = MBH_dic[ID]
 #    plt.scatter(Mstar, MBs[0], c='blue',s=580,marker=".",zorder=100, edgecolors='k')
     plt.scatter(np.log10(1+lens_redshift[ID]),MBs-(m_ml*Mstar+b_ml),c='orangered',
-            s=580,marker=".",zorder=300, vmin=0.3, vmax=5, edgecolors='k')
-    plt.text(np.log10(1+lens_redshift[ID]),MBs-(m_ml*Mstar+b_ml), ID, fontsize=15, zorder=200) 
+            s=280,marker=ma[i],zorder=300, vmin=0.3, vmax=5, edgecolors='k', label = ID)
+    plt.errorbar(np.log10(1+lens_redshift[ID]),MBs-(m_ml*Mstar+b_ml),yerr= (0.4**2+0.2**2)**0.5,
+            color='orangered',ecolor='orange', fmt='.',markersize=1) 
+    # plt.text(np.log10(1+lens_redshift[ID]),MBs-(m_ml*Mstar+b_ml), ID, fontsize=15, zorder=200, label = ID)
+
+first_legend = plt.legend(loc=2,prop={'size':22,'family': 'Arial'},ncol=4) 
+_ = plt.gca().add_artist(first_legend)    
+#Mstar_HS2209,MBH_HS2209 = np.log10(read_mstar('HS2209', count_n=[4, 4])[0][0]), 8.72,
+#plt.scatter(np.log10(1+lens_redshift['HS2209']),MBH_HS2209-(m_ml*Mstar_HS2209+b_ml),c='orangered',
+#        s=580,marker=".",zorder=300, vmin=0.3, vmax=5, edgecolors='k')
+#plt.text(np.log10(1+lens_redshift['HS2209']),MBH_HS2209-(m_ml*Mstar_HS2209+b_ml), 'HS2209', fontsize=15, zorder=200) 
 #adjust_text(texts, arrowprops=dict(arrowstyle='->', color='red')) 
   
 
@@ -446,7 +456,7 @@ for ID in h0licow:
 
 #%% Where loop ends
 plt.xlabel(r"log(1+z)",fontsize=45)
-ding_sample = mlines.Line2D([], [], color='lawngreen', ls='', marker='*', markersize=20,markeredgecolor='k')
+ding_sample = mlines.Line2D([], [], color='lightsalmon', ls='', marker='.', markersize=20,markeredgecolor='k')
 
 plt.xticks(np.arange(-0.1,1,0.1))
 xl=-0.01
@@ -470,13 +480,13 @@ ax2.set_xticklabels([0,0.5,1,1.5,2,2.5])  # 0 actuall is corresponds to 10**-0.0
 ax2.set_xlabel('z',fontsize=45)
 plt.tick_params(labelsize=35)
 
-SS13 = mlines.Line2D([], [], color='darkseagreen', ls='', marker='^', markersize=8)
+SS13 = mlines.Line2D([], [], color='darkseagreen', ls='', marker='^', markersize=13)
 
 plt.legend([Bkc, Hkc, SS13, ding_sample],[
 'Local by Bennert+11',\
 "Local by H&R",
 "Intermediate redshift AGNs",
-"Ding+2020 32 QSO"
-],scatterpoints=1,numpoints=1,loc=2,prop={'size':28},ncol=2,handletextpad=0)
+"$1.2<z<1.7$ AGNs by D20"
+],scatterpoints=1,numpoints=1,loc=3,prop={'size':22,'family': 'Arial'},ncol=2,handletextpad=0)
 plt.savefig("MBH-Mstar_vz.pdf")
 plt.show()

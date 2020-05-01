@@ -51,7 +51,7 @@ sys.path.insert(0,'../MBH_estimator/')
 from est_MBH import BL_info, cal_MBH
 print("Object ID & Line(s) used & FWHM & log($L_\\lambda$) & $\\log$\\mbh \\\\")
 print("& & (\\kms) & ($[\\rm erg~s^[-1]]$) & (M$_{\\odot}$) \\\\ \\hline")
-for ID in ['0_HE0435', '1_RXJ1131', '2_WFI2033', '3_SDSS1206', '4_HE1104', '5_SDSS0246', '7_HE0047']:
+for ID in ['0_HE0435', '1_RXJ1131', '2_WFI2033', '3_SDSS1206', '4_HE1104', '5_SDSS0246', '6_HS2209', '7_HE0047']:
     ID = ID[2:]
     line_infor = BL_info[ID]
 #   for key in BL_info[ID].keys():

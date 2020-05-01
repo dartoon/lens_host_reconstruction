@@ -239,9 +239,9 @@ if inp_Cis ==1:
 # if inp_Knud ==1:
 #     plt.scatter(Knud[:,4], Knud[:,2],c='blue',marker="o",s=180,zorder=101, edgecolors='white')
 
-tx, ty = 11.85, 7.
-plt.text(tx, ty, "intermediate\n  sample\nuncertainties",  fontsize=20)
-plt.errorbar(tx+0.2,ty-0.08, xerr=0.2, yerr=0.4, color='darkseagreen',ecolor='black', fmt='^',zorder=-500,markersize=10)
+tx, ty = 11.8, 7.3
+plt.text(tx, ty, " non-local\n sample\n uncertainty\n level:",  fontsize=20)
+plt.errorbar(tx+0.4,ty-0.4, xerr=0.2, yerr=0.4, color='darkseagreen',ecolor='black', fmt='^',zorder=-500,markersize=0.1)
 #%%
 #==============================================================================
 # My new inference
@@ -293,26 +293,32 @@ Mstar_err = np.array([[-0.15,  0.19], [-0.15,  0.19], [-0.14,  0.16], [-0.14,  0
                       [-0.12,  0.12], [-0.24,  0.48], [-0.17,  0.23], [-0.12,  0.12], 
                       [-0.14,  0.16], [-0.19,  0.28], [-0.25,  0.53], [-0.14,  0.16], 
                       [-0.18,  0.25], [-0.18,  0.24], [-0.15,  0.18], [-0.15,  0.18]])
-plt.scatter(Mstar,MBs,c='lawngreen',s=320,marker="*",zorder=100, edgecolors='k')
-#plt.errorbar(Mstar,MBs, xerr=[np.abs(Mstar_err)[:,0], np.abs(Mstar_err)[:,1]], yerr=0.4, color='blue',ecolor='orange', fmt='.',zorder=-500,markersize=1)
+plt.scatter(Mstar,MBs,c='lightsalmon',s=420,marker=".",zorder=100, edgecolors='k', alpha = 0.8)
+# plt.errorbar(Mstar,MBs, xerr=[np.abs(Mstar_err)[:,0], np.abs(Mstar_err)[:,1]], yerr=0.4, color='blue',ecolor='orange', fmt='.',zorder=-500,markersize=1, alpha = 0.4)
 
 #%%
 #folders = ['0_HE0435', '1_RXJ1131', '2_WFI2033', '3_SDSS1206', '4_HE1104', '5_SDSS0246', '6_HS2209', '7_HE0047']
-h0licow = ['HE0435', 'RXJ1131', 'WFI2033', 'SDSS1206', 'HE1104', 'SDSS0246', 'HE0047']#, 'HS2209']
+h0licow = ['HE0435', 'RXJ1131', 'WFI2033', 'SDSS1206', 'HE1104', 'SDSS0246', 'HE0047', 'HS2209']
 sys.path.insert(0,'../Stellar_mass_estimate')
+ma = ['o','d','p','<','>','^','v','P','X' ]
 #from mstar_inference import mstar_dict
 sys.path.insert(0,'../share_tools')
 from read_inference import read_mstar
 sys.path.insert(0,'../MBH_estimator')
 from est_MBH import MBH_dic
 texts = []
-for ID in h0licow:
+for i in range(len(h0licow)):
+    ID = h0licow[i]
     Mstar = np.log10(read_mstar(ID, count_n=[4, 4])[0][0])
     MBs = MBH_dic[ID]
-    plt.scatter(Mstar, MBs, c='orangered',s=580,marker=".",zorder=100, edgecolors='k')
-    texts.append( plt.text(Mstar+0.1, MBs, ID, fontsize=15, zorder=200) )
+    plt.scatter(Mstar, MBs, c='orangered',s=280,marker=ma[i],zorder=100, edgecolors='k', label = ID)
+    # texts.append( plt.text(Mstar+0.1, MBs, ID, fontsize=15, zorder=200) )
+first_legend = plt.legend(loc=2,prop={'size':17,'family': 'Arial'},ncol=4) 
+ax = plt.gca().add_artist(first_legend)
+
+#plt.scatter(np.log10(read_mstar('HS2209', count_n=[4, 4])[0][0]), 8.72, c='orangered',s=580,marker=".",zorder=100, edgecolors='k')    
+#texts.append( plt.text(np.log10(read_mstar('HS2209', count_n=[4, 4])[0][0])+0.1, 8.72, 'HS2209', fontsize=15, zorder=200) )
 #adjust_text(texts, arrowprops=dict(arrowstyle='->', color='red')) 
-    
 #%%    
 
 #==============================================================================
@@ -323,20 +329,19 @@ plt.title(r"M$_{\rm BH}-$M$_*$ relation",fontsize=35)
 plt.xlabel(r"log(M$_*$/M$_{\odot})$",fontsize=35)
 plt.ylabel(r'log(M$_{\rm BH}$/M$_{\odot}$)',fontsize=35)
 plt.xlim(9,12.5)
-plt.ylim(6.0,10)
+plt.ylim(6.0,10.3)
 plt.grid(linestyle='--')
 plt.tick_params(labelsize=25)
 
 Bkc=mlines.Line2D([], [], color='gray', ls='', marker='.', markersize=15)
 Hkc=mlines.Line2D([], [], color='black', ls='', marker='.', markersize=15)
 SS13 = mlines.Line2D([], [], color='darkseagreen', ls='', marker='^', markersize=13)
-ding_sample = mlines.Line2D([], [], color='lawngreen', ls='', marker='*', markersize=16,markeredgecolor='k')
-
+ding_sample = mlines.Line2D([], [], color='lightsalmon', ls='', marker='.', markersize=20,markeredgecolor='k')
 plt.legend([Bkc,Hkc,SS13,ding_sample],[
 'Local by Bennert+11',\
 "Local by H&R",
 "intermediate redshift AGNs",
-"Ding+2020 32 QSO"\
-],scatterpoints=1,numpoints=1,loc=2,prop={'size':20},ncol=2)
+"$1.2<z<1.7$ AGNs by D20"\
+],scatterpoints=1,numpoints=1,loc=3,prop={'size':20,'family': 'Arial'},ncol=2)
 plt.savefig("MBH-Mstar.pdf")
 plt.show()

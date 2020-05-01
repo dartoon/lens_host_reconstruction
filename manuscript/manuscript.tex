@@ -98,7 +98,7 @@
 
 % Title of the paper, and the short title which is used in the headers.
 % Keep the title short and informative.
-\title[Mass relations by lensed AGN hosts]{The Mass Relations between Supermassive Black Holes and Their Host Galaxies using Eight Strongly Lensed AGN Systems.}
+\title[Mass relations by lensed AGN hosts]{Testing the evolution of the correlations between Supermassive Black Holes and Their Host Galaxies using Eight Strongly Lensed AGNs.}
 
 % The list of authors, and the short list which is used in the headers.
 % If you need two or more lines of authors, add an extra line using \newauthor
@@ -125,6 +125,7 @@ $^{7}$Max-Planck-Institut f{\"u}r Astrophysik, Karl-Schwarzschild-Str.~1, 85748 
 $^{8}$Physik-Department, Technische Universit\"at M\"unchen, James-Franck-Stra\ss{}e~1, 85748 Garching, Germany\\
 $^{9}$Academia Sinica Institute of Astronomy and Astrophysics (ASIAA), 11F of ASMAB, No.1, Section 4, Roosevelt Road, Taipei 10617, Taiwan\\
 $^{10}$Space Telescope Science Institute, 3700 San Martin Drive, Baltimore, MD 21218, USA
+$^{11}$TBC
 }
 
 % These dates will be filled out by the publisher
@@ -141,7 +142,6 @@ $^{10}$Space Telescope Science Institute, 3700 San Martin Drive, Baltimore, MD 2
 
 % Abstract of the paper
 \begin{abstract}
-\todo{Needs to be rewritten.}
 Strong lensed active galactic nuclei (AGN) has been considered as a unique tool to exam the correlations between the mass of the supermassive Black Hole and its host galaxies. In this work, we have adopted eight strongly lensed system from our collaboration. The deep {\it Hubble Space Telescope}(\hst) data and adopt the \lenstronomy\ to reconstruct the image of the source. Using the reconstructed brightness of the host galaxy, we infer the host galaxy stellar mass based on the assumed stellar population. 
 The \mbh\ are estimated using the board emission line. We compare our inference to the ones in the literature and find a consistent result. The consistent scaling resolutions derived from our sample confirm the evolution conclusion and confirm the the power of using strong lensed AGNs. The number of the detection of the lensed AGNs are supposed to increase rapidly leave this topic with a bright future...
 \end{abstract}
@@ -156,9 +156,10 @@ galaxies: evolution -- galaxies: active -- gravitational lensing: strong
 
 %%%%%%%%%%%%%%%%% BODY OF PAPER %%%%%%%%%%%%%%%%%%
 \section{Introduction}
-The tight correlations between the masses (\mbh) of supermassive black holes (BHs) and their host galaxies properties including stellar mass (\mstar), stellar velocity dispersion ($\sigma_*$) and luminosity (\lhost), known as scaling relations, are usually considered as a result of their co-evolution ~\citep[e.g.,][]{Mag++98, F+M00, Geb++01b, M+H03, Gul++09,Beifi2012, H+R04, Gra++2011}, whose origin is till unclear so far. In theory, cosmological simulations of structure formation are able to reproduce the local tight relation based on physical mechanism by invoking active galactic nucleus (AGN) feedback as the physical connection~\citep{Springel2005, Hopkins2008, Matteo2008, DeG++15} or having them share a common gas supply~\citep{Cen2015, Menci2016}. On the other hand, without any physical coupling, the pure statistical convergence by galaxy mergers alone could also reproduce the observed correlations at local universe~\citep{Peng2007, Jahnke2011, Hirschmann2010}. 
+The tight correlations between the masses (\mbh) of supermassive black holes (BHs) and their host galaxies properties including stellar mass (\mstar), stellar velocity dispersion ($\sigma_*$) and luminosity (\lhost), known as scaling relations, are usually considered as a result of their co-evolution ~\citep[e.g.,][]{Mag++98, F+M00, Geb++01b, M+H03, Gul++09,Beifi2012, H+R04, Gra++2011}. Cosmological simulations of structure formation are able to reproduce the local tight relation based on physical mechanism by invoking active galactic nucleus (AGN) feedback as the physical connection~\citep{Springel2005, Hopkins2008, Matteo2008, DeG++15} or having them share a common gas supply~\citep{Cen2015, Menci2016}. However, it has also been suggested that the correlations arise statistically, without any physical coupling, as a result of stochastic megers~\citep{Peng2007, Jahnke2011, Hirschmann2010}. 
 
-It is crucial to extend the correlation studies to higher redshift to study them as a function of redshift, determining how and when they emerge and evolve over cosmic time~\citep[e.g.,][]{TMB04,Sal++06,Woo++06, Jah++09,SS13,Sun2015, Park15}. Recently, based on a sample of 32 X-ray-selected type-1 AGNs in deep survey fields, \citet{Ding2020a} (hereafter, D20) measured the scaling relations at redshift range up to $1.2<z<1.7$ using \hst\ imaging with WFC3. Combining with the published samples in both local and intermediate redshift range, they confirm the evolution scenario that the growth of BHs evolution predates than the bulge component of the host galaxy. In a following up work, \citep{Ding2020b} compared their measurements to the predictions by the numerical simulations including the hydrodynamic simulation MassiveBlackII~\citep{Khandai2015} and a semi-analytic model~\citep{Menci2014}. The tightness of the observed scaling relations at high-$z$ supports the hypothesis that AGN feedback as a promising driver for the scaling correlations. Apparently, a larger sample at the higher redshift range would be useful to increase the resolution of the evolution and confirm these hypothesises.
+A powerful way to understand the origin of the correlations is to study them as a function of redshift, determining how and when they emerge and evolve over cosmic time~\citep[e.g.,][]{TMB04,Sal++06,Woo++06, Jah++09,SS13,Sun2015, Park15}. Recently, based on a sample of 32 X-ray-selected type-1 AGNs in deep survey fields, \citet{Ding2020a} (hereafter, D20) measured the scaling relations in the redshift range $1.2<z<1.7$ using multi-color Wide Field Camera 3 (WFC3) \hst\ imaging. Combining the new sample with published samples in both local and intermediate redshift range, they strengthen the support for an evolution scenario in which the growth of BHs evolution predates that of  the bulge component of the host galaxy. With the goal of testing theoretial ideas, \citet{Ding2020b} compared the D20 measurements to the predictions by the numerical simulations including the hydrodynamic simulation MassiveBlackII~\citep{Khandai2015} and a semi-analytic model~\citep{Menci2014}. The observed tightness of the  scaling relations at high-$z$ is consistent with the hypothesis that AGN feedback drives the scaling correlations, and disfavors the hypothesis of the correlations being purely stochastic in nature. 
+%, a larger sample at the higher redshift range would be useful to increase the resolution of the evolution and confirm these hypothesises.
 
 Benefiting from the gravitational lensing magnification and stretching effect, strong lensed AGNs have been used as unique tool to make progress in study the scaling relations at the distance universe~\citep{Peng2006}, provided that the lens modelling could be accurately derived. Aiming at verifying the fidelity of the modern lens modelling technique, \citet{Ding2017a} has carried out extensive and realistic simulations tests based on the deep \hst\ observations for a sample of eight lens systems in the \hc\ Lenses in COSMOGRAIL's Wellspring (H0LiCOW, PI: Suyu) collaboration. This work confirms that the reconstruction of the lensed host galaxy properties can be recovered with better precision and accuracy than the typical \mbh\ uncertainty. With a following up effort, \citet{Ding2017b} applied the advanced techniques to two strongly lensed systems analyzed by the H0LiCOW collaboration~\citep{Suyu2013, Wong2017} to study their \mbh-\lhost\ relations and obtained consistent scaling relations compared with the samples from the literature.
 
@@ -232,14 +233,14 @@ WFI2033 & \Mgii & 3960 & 45.19 & 8.38 \\
 SDSS1206 & \Mgii & 5632 & 45.61$^a$ & 8.88 \\
 HE1104 & \Civ & 6004 & 46.18 & 9.03 \\
 SDSS0246 & \Mgii & 3700 & 45.19 & 8.32 \\
-HS2209 & xxx & xxx & xxx &  xxx  \\
+HS2209 & \Mgii & 3245 & 45.71 & 8.75 \\
 HE0047 & \Mgii & 4145 & 45.59 & 8.60 \\
         \hline
      \end{tabular}
     }
 \begin{tablenotes}
 \small
-\item Note: $-$ The reference for the board line information. \\
+\item Note: $-$ The reference for the board line information. For HS2209, its board line is estimated in this work using the same approach as~\citet{Sluse2012}.\\
 $^a$: For SDSS1206, we follow~\citet{Birrer2019} and correct the AGN continuum luminosity $\log(L_\lambda$) by taking account the magnification effect.
 \end{tablenotes}  
 %\end{threeparttable}
@@ -416,8 +417,7 @@ The apparent consistency in the samples verify the fidelity of our measurement. 
 \end{tabular}
 \caption{\label{fig:scaling_relation} 
 (left): BH masses vs. stellar mass relations (\mbh-\mstar). The black line and the gray shaded region indicate the best-fit and 1$\sigma$ confidence interval based on the Equation~\ref{eq:MMlocal}.
-(right): offset of $\log(\mathcal M_{\rm BH})$ (vs. \mstar) as a function of redshift based on the D20 data using Equation~\ref{eq:offset}. We then plot our new measurement on top of the figure to make direct comparison. 
-\todo{HS2209 need to be added. Error bars need to be remarked.}}
+(right): offset of $\log(\mathcal M_{\rm BH})$ (vs. \mstar) as a function of redshift based on the D20 data using Equation~\ref{eq:offset}. We then plot our new measurement on top of the figure to make direct comparison. }
 \end{figure*} 
 
 \section{Systematic Errors}\label{sec:diss}
@@ -493,8 +493,8 @@ Illustrations of the inference of HE0435 using the data at the other two bands. 
 WFI2033 is also observed by other four band data including WFC3/F125W (GO-12874; PI: D. Floyd), WFC3/F140W (GO-13732; PI: A. Nierenberg), ACS/F555W+F814W  (GO-9744; PI: C. S. Kochanek). Similar to Section~\ref{app:HE0435}, the inference of the lensed arcs of WFI2033 have been fitted through five band. The lensed models are presented in the Figure~\ref{fig:app_WFI2033}-(a)$-$(d). Note that, limited by its exposure time, the data quality by F125W is not ideal and the host information could not be well extracted. Thus, we does not take the inference by F125W into account in the color inference. Finally, we find the stellar population with 0.625 Gyr age could well matched the color, i.e., Figure~\ref{fig:app_WFI2033}-(e).
 \begin{figure*}
 \centering
-\subfloat[WFI2033 F125W]{\includegraphics[ width=0.8\textwidth]{fig/WFI2033_f125w_inference.pdf}}\\
-\subfloat[WFI2033 F140W]{\includegraphics[ width=0.8\textwidth]{fig/WFI2033_f140w_inference.pdf}}\\
+\subfloat[WFI2033 F125W \todo{remove arrows}]{\includegraphics[ width=0.8\textwidth]{fig/WFI2033_f125w_inference.pdf}}\\
+\subfloat[WFI2033 F140W \todo{remove arrows}]{\includegraphics[ width=0.8\textwidth]{fig/WFI2033_f140w_inference.pdf}}\\
 \subfloat[WFI2033 F555W]{\includegraphics[ width=0.8\textwidth]{fig/WFI2033_f555w_inference.pdf}}\\
 \subfloat[WFI2033 F814W]{\includegraphics[ width=0.8\textwidth]{fig/WFI2033_f814w_inference.pdf}}\\
 \subfloat[Host galaxy stellar template inference]{\includegraphics[ width=0.5\textwidth]{fig/WFI2033_host_color.pdf}}
