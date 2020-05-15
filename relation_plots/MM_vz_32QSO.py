@@ -320,7 +320,7 @@ plt.errorbar(np.log10(1+cis11[:,0]),cis11[:,1]-(m_ml*cis11[:,2]+b_ml),yerr=(0.4*
 
 #    plt.errorbar(np.log10(1+Knud[:,0]),Knud[:,2]-(m_ml*Knud[:,4]+b_ml),yerr=0,fmt='o',color='blue',markersize=9) 
 
-
+ding20_sample = np.log10(1+zs),MBs-(m_ml*Mstar+b_ml)
 plt.scatter(np.log10(1+zs),MBs-(m_ml*Mstar+b_ml),c='lightsalmon',
             s=420,marker=".",zorder=300, vmin=0.3, vmax=5, edgecolors='k', alpha = 0.8)
 plt.errorbar(np.log10(1+zs),MBs-(m_ml*Mstar+b_ml),
@@ -333,8 +333,8 @@ plt.errorbar(np.log10(1+zs),MBs-(m_ml*Mstar+b_ml),
 #            s=280,marker="o",zorder=900, edgecolors='blue', linewidth=6, alpha=0.5)    
 #plt.arrow(np.log10(1+zs[9]),0, 0, +0.19, zorder=800, head_length=0.05,head_width=0.005,fc='k',ec='k')
 
-#####fit the evolution##########
-################################
+# #####fit the evolution##########
+# ################################
 z_ss, y_ss = ss[:,0], ss[:,2]-(m_ml*ss[:,1]+b_ml)
 
 z_b11, y_b11 = b11[:,0], b11[:,2]-(m_ml*b11[:,1]+b_ml)
@@ -344,11 +344,11 @@ z_cis, y_cis = cis11[:,0], cis11[:,1]-(m_ml*cis11[:,2]+b_ml)
 z_cosmos, y_cosmos = zs, MBs-(m_ml*Mstar+b_ml)
 yerr_hz = (yerr_highz[0]+ yerr_highz[1])/2
                               
-z=np.concatenate((z_ss, z_b11, z_cis, z_cosmos),axis=0)
-y=np.concatenate((y_ss, y_b11, y_cis, y_cosmos),axis=0)
-yerr_imd= np.zeros(len(z_ss)+len(z_b11))+(0.4**2+(m_ml*0.2)**2)**0.5   # the error for the fitting
-yerr_cis = np.zeros(len(z_cis)) + (0.4**2+(m_ml*0.35)**2)**0.5 
-yerr = np.concatenate((yerr_imd,yerr_cis, yerr_hz),axis=0)
+# z=np.concatenate((z_ss, z_b11, z_cis, z_cosmos),axis=0)
+# y=np.concatenate((y_ss, y_b11, y_cis, y_cosmos),axis=0)
+# yerr_imd= np.zeros(len(z_ss)+len(z_b11))+(0.4**2+(m_ml*0.2)**2)**0.5   # the error for the fitting
+# yerr_cis = np.zeros(len(z_cis)) + (0.4**2+(m_ml*0.35)**2)**0.5 
+# yerr = np.concatenate((yerr_imd,yerr_cis, yerr_hz),axis=0)
 
 #if consider 32 AGN only:
 z=z_cosmos
@@ -407,11 +407,11 @@ for i in range(100):
     posi=np.random.uniform(16,84)
     b=np.percentile(samples,posi,axis=0)[0]    
     #print b
-    plt.plot(xl, xl*0+xl*b, color="lightgray", alpha=0.2,linewidth=7.0,zorder=-1)
-value=round(b_ml_offset,2)
+    plt.plot(xl, xl*0+xl*b, color="pink", alpha=0.05,linewidth=7.0,zorder=-1)
+# value=round(b_ml_offset,2)
 #####################
 value,sig=round(b_ml_offset,2),round((np.percentile(samples,84,axis=0)[0]-np.percentile(samples,16,axis=0)[0])/2,2)
-
+print(value,sig)
 #%%
 #folders = ['0_HE0435', '1_RXJ1131', '2_WFI2033', '3_SDSS1206', '4_HE1104', '5_SDSS0246', '6_HS2209', '7_HE0047']
 h0licow = ['HE0435', 'RXJ1131', 'WFI2033', 'SDSS1206', 'HE1104', 'SDSS0246', 'HE0047', 'HS2209']
@@ -425,6 +425,7 @@ from read_inference import read_mstar
 
 ma = ['o','d','p','<','>','^','v','P','X' ]
 texts = []
+lens_sample = []
 for i in range(len(h0licow)):
     ID = h0licow[i]
     read_Mstar = read_mstar(ID, count_n=[4, 4])
@@ -433,11 +434,34 @@ for i in range(len(h0licow)):
         Mstar = np.log10(read_Mstar[0][0] + read_Mstar[1][0] )
     MBs = MBH_dic[ID]
 #    plt.scatter(Mstar, MBs[0], c='blue',s=580,marker=".",zorder=100, edgecolors='k')
-    plt.scatter(np.log10(1+lens_redshift[ID]),MBs-(m_ml*Mstar+b_ml),c='orangered',
+    plt.scatter(np.log10(1+lens_redshift[ID]),MBs-(m_ml*Mstar+b_ml),c='cornflowerblue',
             s=280,marker=ma[i],zorder=300, vmin=0.3, vmax=5, edgecolors='k', label = ID)
+    lens_sample.append([np.log10(1+lens_redshift[ID]),MBs-(m_ml*Mstar+b_ml)])
     plt.errorbar(np.log10(1+lens_redshift[ID]),MBs-(m_ml*Mstar+b_ml),yerr= (0.4**2+0.2**2)**0.5,
-            color='orangered',ecolor='orange', fmt='.',markersize=1) 
+            color='cornflowerblue',ecolor='cornflowerblue', fmt='.',markersize=1) 
     # plt.text(np.log10(1+lens_redshift[ID]),MBs-(m_ml*Mstar+b_ml), ID, fontsize=15, zorder=200, label = ID)
+lens_sample = np.array(lens_sample).T
+x = lens_sample[0]
+y = lens_sample[1]
+yerr = lens_sample[1]*0 + (0.4**2+0.2**2)**0.5
+
+sampler = emcee.EnsembleSampler(nwalkers, ndim, lnprob, args=(x, y, yerr))
+sampler.run_mcmc(pos, 500)
+samples = sampler.chain[:, 50:, :].reshape((-1, ndim))
+b_ml_offset, _ =np.percentile(samples, 50,axis=0)
+#print "lnlike=",lnlike(theta=[b_ml_offset, sint_mid],x=x, y=y, yerr=yerr)
+xl = np.linspace(0, 5, 100)
+plt.plot(xl, xl*0+xl*b_ml_offset, color="blue", linewidth=4.0,zorder=0)
+b=np.percentile(samples,50,axis=0)[0]
+#print samples[:,1][samples[:,0]==find_n(samples[:,0],m)]
+for i in range(100):
+    posi=np.random.uniform(16,84)
+    b=np.percentile(samples,posi,axis=0)[0]    
+    #print b
+    plt.plot(xl, xl*0+xl*b, color="cornflowerblue", alpha=0.05,linewidth=7.0,zorder=-1)
+#####################
+value,sig=round(b_ml_offset,2),round((np.percentile(samples,84,axis=0)[0]-np.percentile(samples,16,axis=0)[0])/2,2)
+print(value,sig)
 
 first_legend = plt.legend(loc=2,prop={'size':22,'family': 'Arial'},ncol=4) 
 _ = plt.gca().add_artist(first_legend)    
@@ -488,5 +512,33 @@ plt.legend([Bkc, Hkc, SS13, ding_sample],[
 "Intermediate redshift AGNs",
 "$1.2<z<1.7$ AGNs by D20"
 ],scatterpoints=1,numpoints=1,loc=3,prop={'size':22,'family': 'Arial'},ncol=2,handletextpad=0)
-plt.savefig("MBH-Mstar_vz.pdf")
+# plt.savefig("MBH-Mstar_vz.pdf")
 plt.show()
+
+# #%% KS test on the distributions:
+# lens_offset = lens_sample[1]-lens_sample[0]*b_ml_offset
+# ding20_offset = ding20_sample[1]-ding20_sample[0]*b_ml_offset
+# from scipy import stats
+# print(stats.ks_2samp(lens_offset,ding20_offset).pvalue)
+
+# plt.figure(figsize=(8,6))
+# high0, x0, _ = plt.hist(lens_offset,normed=True, histtype=u'step',
+#          label=('eight H0LiCOW lenses'), linewidth = 2, color='orange')
+# high1, x1, _ = plt.hist(ding20_offset,normed=True, histtype=u'step',
+#          label=('D20 sample'), linewidth = 2, color='green')
+# # x0_m = np.median(lens_offset)
+# # high_m0 = high0[np.where(abs(x0_m-x0) == abs(x0_m-x0).min())[0][0]-1]
+# # x1_m = np.median(ding20_offset)
+# # high_m1 = high1[np.where(abs(x1_m-x1) == abs(x1_m-x1).min())[0][0]-1]
+# # plt.plot(np.linspace(0,high_m0)*0+np.median(x0_m) , np.linspace(0,high_m0), linewidth = 4,color='orange',linestyle=('dashed'))
+# # plt.plot(np.linspace(0,high_m1)*0+np.median(x1_m) , np.linspace(0,high_m1), linewidth = 4, color='green')
+# # plt.text(np.median(x0_m)-0.2, high_m0*1.05, '{0}%'.format(round(np.median(x0_m),1)), color='orange',fontsize=25)
+# # plt.text(np.median(x1_m)-0.2, high_m1*1.05, '{0}%'.format(round(np.median(x1_m),1)), color='green',fontsize=25)
+
+# plt.xlabel("offset to the RED line",fontsize=27)
+# plt.ylabel("Density",fontsize=27)
+# plt.tick_params(labelsize=20)
+# plt.legend(prop={'size':20})
+# plt.yticks([])
+# #plt.legend(scatterpoints=1,numpoints=1,loc=2,prop={'size':28},ncol=2,handletextpad=0)
+# plt.show()

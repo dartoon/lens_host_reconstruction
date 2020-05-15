@@ -311,7 +311,7 @@ for i in range(len(h0licow)):
     ID = h0licow[i]
     Mstar = np.log10(read_mstar(ID, count_n=[4, 4])[0][0])
     MBs = MBH_dic[ID]
-    plt.scatter(Mstar, MBs, c='orangered',s=280,marker=ma[i],zorder=100, edgecolors='k', label = ID)
+    plt.scatter(Mstar, MBs, c='cornflowerblue',s=280,marker=ma[i],zorder=100, edgecolors='k', label = ID)
     # texts.append( plt.text(Mstar+0.1, MBs, ID, fontsize=15, zorder=200) )
 first_legend = plt.legend(loc=2,prop={'size':17,'family': 'Arial'},ncol=4) 
 ax = plt.gca().add_artist(first_legend)
