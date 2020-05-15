@@ -149,7 +149,7 @@ elif style ==1:
     ty=xl*0
     ty1=xl*0+np.std(y-(m_ml*x+b_ml))
     ty2=xl*0-np.std(y-(m_ml*x+b_ml))
-    plt.fill_between(xl,ty1,ty2,color='linen',zorder=-50)
+    plt.fill_between(xl,ty1,ty2,color='lightgray',zorder=-50, alpha = 0.5)
 
 Bkc=mlines.Line2D([], [], color='gray', ls='', marker='.', markersize=15)
 Hkc=mlines.Line2D([], [], color='black', ls='', marker='.', markersize=15)
@@ -512,7 +512,7 @@ plt.legend([Bkc, Hkc, SS13, ding_sample],[
 "Intermediate redshift AGNs",
 "$1.2<z<1.7$ AGNs by D20"
 ],scatterpoints=1,numpoints=1,loc=3,prop={'size':22,'family': 'Arial'},ncol=2,handletextpad=0)
-# plt.savefig("MBH-Mstar_vz.pdf")
+plt.savefig("MBH-Mstar_vz.pdf")
 plt.show()
 
 # #%% KS test on the distributions:
