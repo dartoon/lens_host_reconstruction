@@ -433,11 +433,11 @@ for i in range(len(h0licow)):
     if ID == 'RXJ1131':
         Mstar = np.log10(read_Mstar[0][0] + read_Mstar[1][0] )
     
-    #Extinction effect based on the Edi's Email:
-    if filter_dict[ID] == 'F814W':
-        Mstar = Mstar + 0.25 * 0.4
-    elif filter_dict[ID] == 'F160W':
-        Mstar = Mstar + 0.1 * 0.4
+    # #Extinction effect based on the Edi's Email, but not used.
+    # if filter_dict[ID] == 'F814W':
+    #     Mstar = Mstar + 0.25 * 0.4
+    # elif filter_dict[ID] == 'F160W':
+    #     Mstar = Mstar + 0.1 * 0.4
         
     MBs = MBH_dic[ID]
 #    plt.scatter(Mstar, MBs[0], c='blue',s=580,marker=".",zorder=100, edgecolors='k')
@@ -465,7 +465,7 @@ for i in range(100):
     posi=np.random.uniform(16,84)
     b=np.percentile(samples,posi,axis=0)[0]    
     #print b
-    plt.plot(xl, xl*0+xl*b, color="cornflowerblue", alpha=0.15,linewidth=7.0,zorder=-1+np.random.normal(0,0.02))
+    plt.plot(xl, xl*0+xl*b, color="cornflowerblue", alpha=0.2,linewidth=7.0,zorder=-1+np.random.normal(0,0.02))
 #####################
 value,sig=round(b_ml_offset,2),round((np.percentile(samples,84,axis=0)[0]-np.percentile(samples,16,axis=0)[0])/2,2)
 print(value,sig)
@@ -519,7 +519,7 @@ plt.legend([Bkc, Hkc, SS13, ding_sample],[
 "Intermediate redshift AGNs",
 "$1.2<z<1.7$ AGNs by D20"
 ],scatterpoints=1,numpoints=1,loc=3,prop={'size':22,'family': 'Arial'},ncol=2,handletextpad=0)
-# plt.savefig("MBH-Mstar_vz.pdf")
+plt.savefig("MBH-Mstar_vz.pdf")
 plt.show()
 
 # #%% KS test on the distributions:

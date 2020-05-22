@@ -115,9 +115,7 @@ Sherry H. Suyu,$^{8,9,10}$
 Takahiro Morishita,$^{11}$
 \pink{
 Cristian E. Rusu,$^{12,13,14}$
-Aymeric Galan,$^{15}$}\newauthor
-and et al.
-\\
+Aymeric Galan,$^{15}$}
 \\
 \\
 % List of institutions
@@ -137,8 +135,7 @@ $^{13}$Subaru Telescope, National Astronomical Observatory of Japan, 650 N Aohok
 $^{14}$Department of Physics, University of California, Davis, 1 Shields Avenue, Davis, CA 95616, USA\\
 $^{15}$Institute of Physics, Laboratory of Astrophysics, Ecole Polytechnique 
 F\'ed\'erale de Lausanne (EPFL), Observatoire de Sauverny, 1290 Versoix, 
-Switzerland\\
-$^{13}$TBC
+Switzerland
 }
 
 % These dates will be filled out by the publisher
@@ -278,7 +275,7 @@ brightness profile. For the 4/8 systems already studied by the H0LiCOW
 project, we will make a comparison to characterize systematic
 uncertainties related to the modelling techniques.
 
-\subsection{Data Preparation and Modelling Setup}
+\subsection{Data Preparation and Modelling Setup}\label{sec:Modelling}
 
 We follow the standard procedure as described by D20 to prepare the fitting ingredients including the lensing imaging data, noise level map and the PSF information. The imaging data are first drizzled to a higher resolution with a Gaussian kernel; the adopted resolutions are listed in Table~\ref{data_set}. We then adopt the {\sc Photutils}~\citep{photutils} Python package to model the global background light in 2-D, based on the \texttt{SExtractor} algorithm. We remove the background light and cut the clear image data into postage stamp at a suitable size. We draw the image mask for each system to define the region in which the pixels will be used to calculate the likelihood; see the top-\pink{middle} panel in each subplot in Figure~\ref{fig:image_inference}.
 
@@ -330,7 +327,7 @@ A lens model of RXJ1131 based on ACS/F814W data has been presented by~\citet{Suy
 
 The photometry of the RXJ1131 host galaxy is fitted with a set of 4 initial PSFs. The results are summarized in Table~\ref{tab:host_measure}, with the best-fit result shown in Figure~\ref{fig:image_inference}-(b).
 
-We also compare our measurement to the previous reconstructions by \citet{Ding2017b}. Based on the reconstructions by~\citet{Suyu2013}, the inference of the host magnitudes by~\citet{Ding2017b} are $mag_{\rm bulge} = 21.81 \pm 0.28$ and $mag_{\rm disk} = 20.07\pm0.06$. The results are in excellent agreement with our inferred bulge magnitude ($21.80\pm0.21$)   shown in Table~\ref{tab:host_measure}. However, our inferred disk magnitude ($19.33\pm0.16$) is brighter than that reported by \citet{Ding2017b}. This difference is not surprising because our reconstruction of the host galaxy is based on a much more extended region to collect the disk light, compared with~\citet{Suyu2013} who performed the lens modelling using a smaller lens mask (see Figure~4 therein). \pink{Despite that \citet{Ding2017b} used a \sersic\ to model the reconstructions by~\citet{Suyu2013}, their inferred host surface brightness is computed by collecting the \sersic\ light within a aperture where host was reconstructed; the aperture size is decided by the mask region in the image plane.} The difference between the \citet{Suyu2013} reconstruction and the one presented here makes sense in terms of the different goals of the two studies. While our primary aim is to reconstruct the host galaxy photometry, for \citet{Suyu2013} it was only a byproduct on the way to time-delay cosmography.
+We also compare our measurement to the previous reconstructions by \citet{Ding2017b}. Based on the reconstructions by~\citet{Suyu2013}, the inference of the host magnitudes by~\citet{Ding2017b} are $mag_{\rm bulge} = 21.81 \pm 0.28$ and $mag_{\rm disk} = 20.07\pm0.06$. The results are in excellent agreement with our inferred bulge magnitude ($21.80\pm0.21$)   shown in Table~\ref{tab:host_measure}. However, our inferred disk magnitude ($19.33\pm0.16$) is brighter than that reported by \citet{Ding2017b}. This difference is not surprising because our reconstruction of the host galaxy is based on a much more extended region to collect the disk light, compared with~\citet{Suyu2013} who performed the lens modelling using a smaller lens mask (see Figure~4 therein). \pink{Note that \citet{Ding2017b} used a \sersic\ to model the reconstructions by~\citet{Suyu2013}, and then the inferred host surface brightness is computed by collecting the \sersic\ light within the aperture where host was reconstructed. This aperture in the source plane is decided by the mask region in the image plane, thus a smaller mask region could lead the inference of the host brightness fainter. For a consistency check, we find that our inferred effective radius is very consistent, $0\farcs{}90 \pm 0\farcs{}06$ (here) and $0\farcs{}84 \pm 0\farcs09$~\citep{Ding2017b}.} The difference between the \citet{Suyu2013} reconstruction and the one presented here makes sense in terms of the different goals of the two studies. While our primary aim is to reconstruct the host galaxy photometry, for \citet{Suyu2013} it was only a byproduct on the way to time-delay cosmography.
 
 \subsubsection{WFI2033}
 WFI2033 is the last quadruply lensed system in our sample whose lens model has been previously investigated \citep{Rusu2019}. There is a satellite galaxy in the north. However, as noted by~\citet{Rusu2019}, the satellite galaxy has much smaller mass than the main deflector, thus we ignore its influence on the magnification but only fit its light using a \sersic\ model. We select a total of 8 initial PSF stars to model this system.
@@ -459,11 +456,16 @@ The lensed AGN systems analyzed in this work were selected for time-delay cosmog
 
 We considered a set of modelling choices to perform the fitting and the final inference is based on a weighting of top ranked choices. In particular, we treat the two different modelling approaches, i.e., {\it noise boost} and {\it PSF iteration} equally, to derive the averaged results. Of course, the results are somewhat dependent on the weighting scheme, for example, the dispersion of the results by the top ranked choices. However, the dependency is smaller than other sources of uncertainty. Thus, using different weighting schemes would only change the results marginally ($<0.1$~dex).
 
+\pink{In this work, we used a range of mass slope values (i.e., 1.9, 2.0, 2.1) to perform the lens modelling. Then, we used our weighting algorithm introduced in Section~\ref{sec:Modelling} to estimate the systematic uncertainty of our inference and assumed it covers the truth. We apply this method to the entire systems to allow the self-consistency within our sample, despite that four systems (HE0435, RXJ1131, WFI2033, and SDSS1206) have been analyzed by H0LiCOW collaboration with slope value provided. For a sanity check, we calculate the weighted slope value and make a direct comparison to the H0LiCOW's inference. The results are the following (here {\it V.S.} H0LiCOW): HE0435~($2.032\pm 0.07$ {\it V.S.} $1.93\pm0.02$), RXJ1131~($2.02\pm 0.06$ {\it V.S.}$1.95\pm0.045$), WFI2033~($1.94\pm 0.07$ {\it V.S.} $1.95\pm0.02$), SDSS1206~($1.98\pm 0.06$ {\it V.S.} $\sim1.95$). These consistent results demonstrate the efficiency of the systematic uncertainty estimates in this work.}
+
 \pink{To estimate the host stellar mass, we use \sersic\ model to measure the total brightness of the host galaxy. The \sersic\ profile is relatively simple and smooth, which could not capture the clumps in the host galaxy, which lead to the high residuals as appeared in the fittings in Figure~\ref{fig:image_inference}. However, as mention in Section~\ref{subsec:HE0435}, our goal to derive a self-consistent one-step inference of the host properties to make comparison with the measurements of the non-lensed AGN samples, which are measured using the same manner. Note that the total flux of a galaxy would be relatively settled, once a surface brightness profile is chosen. Thus, the inferred host light is considered to be reliable.
 }
 
 In addition, we adopt simple stellar populations to derive the stellar mass. For 5/8 systems in our sample we did not have color information, and we used instead a fixed age depending on redshift. The lack of color information by necessity increases the error budget in the inferred \mstar. \pink{Once again, the same approach is adopted in D20, and thus our stellar masses are consistent with the D20's 32 high redshift AGN regarding this point.}
-\pink{We do not expect foreground extinction to be significant, because the deflectors are all massive elliptical galaxies. As a sanity check, \citet{1999ApJ...523..617F} and \citet{2008A&A...485..403O} report estimates for HE0435, WFI2033 and HE1104. For HE1104 the estimated extinction is negative, while for HE0435 and WFI2033 the authors do not report an extinction value because standard extinction laws did not fit the data. We interpret this as due to the small effect by dust being overshadowed by chromatic microlensing or variability.}
+
+\pink{We do not expect foreground extinction to be significant, because the deflectors are all massive elliptical galaxies. As a sanity check, \citet{1999ApJ...523..617F} and \citet{2008A&A...485..403O} report estimates for HE0435, WFI2033 and HE1104 through filter F160W. For HE1104 the estimated extinction is negative, while for HE0435 and WFI2033 the authors do not report an extinction value because standard extinction laws did not fit the data.
+If we focus on the 13 ellipticals from~\citet{1999ApJ...523..617F}, the total median extinction is -0.03, which justifies our point.
+We interpret this as due to the small effect by dust being overshadowed by chromatic microlensing or variability.}
 
 \pink{Most importantly, the uncertainty of the \mstar\ is smaller than the estimated uncertainty in the black hole mass (0.4~dex), which dominates the overall error budget.}
 
@@ -476,7 +478,7 @@ We directly compare our sample to the recent measurements by~\citet[][D20]{Ding2
 
 Our work based on highly magnified AGN showcases the power of strong lensing to effectively increase the resolution of a telescope and shows that uncertainties related to lens modelling are subdominant with respect to other sources of uncertainty like black hole mass. Furthermore, our work provides a powerful verification of the fidelity of the host galaxy reconstruction in non-lensed AGN. 
 
-\pink{The strong lensing can help to extend the measurements of the AGN host to even higher redshift. It is worth noting that the lensed AGN adopted by this study are adopted from the H0LiCOW project which only focuses on the moment of the peak of the AGN luminosity function. In fact, the observation of \hst\ could even unveil the lensed AGN host of  BRI0952$-$0115 at $z=4.5$.}
+\pink{The strong lensing can even help to extend the measurements of the AGN host to higher redshift. It is worth noting that the lensed AGN adopted by this study are adopted from the H0LiCOW project which only focuses on the moment of the peak of the AGN luminosity function. In fact, the observation of \hst\ could even unveil the lensed AGN host of  BRI0952$-$0115 at $z=4.5$.}
 
 In conclusion, lensed AGNs have great potential to extend to study of the \mbh-\mstar\ correlation at even higher redshifts than those considered here.  So far, this kind of work has been limited by sample size. However, given the pace of discovery of lensed quasars in imaging and spectroscopic surveys ~\citep[e.g.,][]{Oguri2010, Agn++15,Mor++16,Sch++16,Ost++17,Tre++18, Ang++18, Lem++20}, the samples of lensed AGNs with hosts that can be recovered with high fidelity is likely to continue to grow in wide field imaging and spectroscopic surveys. The forthcoming launch of the {\it James Webb Space Telescope} and the first light of adaptive optics-assisted extremely large telescopes may provide high-quality imaging data of AGNs at higher redshift (up to $z\sim7$).
 
