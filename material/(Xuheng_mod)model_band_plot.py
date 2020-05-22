@@ -327,7 +327,7 @@ class ModelBandPlot(object):
         if 'no_arrow' not in kwargs or not kwargs['no_arrow']:
             plot_util.coordinate_arrows(ax, self._frame_size, self._coords, color='w',
                               arrow_size=self._arrow_size, font_size=font_size)
-            plot_util.text_description_2(ax, d_s, text=text, color="w", backgroundcolor='k',
+            plot_util.text_description(ax, d_s, text=text, color="w", backgroundcolor='k',
                          flipped=False, font_size=font_size)
         if point_source_position is True:
             ra_source, dec_source = self.bandmodel.PointSource.source_position(self._kwargs_ps_partial, self._kwargs_lens_partial)

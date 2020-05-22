@@ -217,9 +217,9 @@ def plt_result(fixgamma, chisq=chisq):
     image  = image.reshape(fig.canvas.get_width_height()[::-1] + (3,))
     return image
 
-import imageio
-kwargs_write = {'fps':1.0, 'quantizer':'nq'}
-imageio.mimsave('fig_result_{0}_PSF.gif'.format(pick_names[pick]), [plt_result(fix_gamma) for fix_gamma in  ['1.9', '2.0', '2.1']], fps=1)
+# import imageio
+# kwargs_write = {'fps':1.0, 'quantizer':'nq'}
+# imageio.mimsave('fig_result_{0}_PSF.gif'.format(pick_names[pick]), [plt_result(fix_gamma) for fix_gamma in  ['1.9', '2.0', '2.1']], fps=1)
 
 #
 

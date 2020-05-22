@@ -5,7 +5,7 @@ Created on Fri Feb 21 11:50:31 2020
 
 @author: Dartoon
 """
-
+#!!! For the Lenstronomy version 1.5.0
 
 import numpy as np
 import astropy.io.fits as pyfits
@@ -18,6 +18,17 @@ sys.path.insert(0,'/Users/Dartoon/Astro/Projects/my_code/py_tools/')
 from flux_profile import cr_mask
 import glob
 
+
+# # =============================================================================
+# # To reproduce
+# # =============================================================================
+# In lenstronomy version 1.3.0
+# 1.Replae model_band_plot
+# to change label size:
+# 2.in plot._util.py
+# change text_description()   
+
+
 #%% Find the one with lowest Chisq
 IDs = ['0_HE0435', '1_RXJ1131', '2_WFI2033', '3_SDSS1206', '4_HE1104', '5_SDSS0246', '6_HS2209', '7_HE0047']
 
@@ -25,12 +36,12 @@ IDs = ['0_HE0435', '1_RXJ1131', '2_WFI2033', '3_SDSS1206', '4_HE1104', '5_SDSS02
 #for i in range(len(IDs)):
 #    print(i, ':', IDs[i])
 #inp = int(input("Which source:\n"))
-inp = 1
+inp = 6
 ID = IDs[inp][2:]
 if ID == 'SDSS1206':
     folder_0 = '_singel_host_run_summary.pkl'
     folder_1 = 'singel_fit'
-if ID == 'HS2209' or ID == 'RXJ1131':
+elif ID == 'HS2209' or ID == 'RXJ1131':
     folder_0 = '_3rd_run_summary.pkl'
     folder_1 = '3rd_fit'    
 else:
@@ -75,7 +86,6 @@ from lenstronomy.ImSim.image_linear_solve import ImageLinearFit
 from lenstronomy.Plots import chain_plot
 import lenstronomy.Plots.chain_plot as out_plot
 #%%
-#!!! For the Lenstronomy version 1.3.0
 kwargs_result, chain_list = fit_result
 if 'e1' in kwargs_result['kwargs_lens'][1].keys():
     g1 = kwargs_result['kwargs_lens'][1]['e1']
@@ -114,51 +124,17 @@ modelPlot.model_plot(ax=axes[0,1])
 modelPlot.normalized_residual_plot(ax=axes[0,2], v_min=-6, v_max=6)
 modelPlot.subtract_from_data_plot(ax=axes[1, 0], #v_max=1, 
                                   point_source_add=True,lens_light_add=True, source_add=False, 
-                                  text='Residual of lensed arcs')
-modelPlot.decomposition_plot(ax=axes[1,1], text='Modelled source light', source_add=True)
+                                  text='Residual of arcs')
+modelPlot.decomposition_plot(ax=axes[1,1], text='Source light model', source_add=True)
 #modelPlot.decomposition_plot(ax=axes[1,2], text='Source light', source_add=True, unconvolved=True)
 #modelPlot.magnification_plot(ax=axes[1, 2])
 delta_list = [0.02, 0.1, 0.02, 0.05, 0.06, 0.02, 0.02, 0.02, 0.02]
 modelPlot.source_plot(ax=axes[1, 2], deltaPix_source=delta_list[inp], numPix=100, scale_size=0.5,
-                      text='Reconstrucerd host, source plane',with_caustics=True)
+                      text='Reconstrucerd host, \nsource plane',with_caustics=True)
 #f.tight_layout()
 f.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0., hspace=0.05)
-#plt.savefig('{0}_inference.png'.format(ID))
+plt.savefig('{0}_inference.png'.format(ID))
 plt.show()
 
-#f, axes = plt.subplots(2, 3, figsize=(16, 8), sharex=False, sharey=False)
-#modelPlot.decomposition_plot(ax=axes[0,0], text='Lens light', lens_light_add=True, unconvolved=True)
-#modelPlot.decomposition_plot(ax=axes[1,0], text='Lens light convolved', lens_light_add=True)
-#modelPlot.decomposition_plot(ax=axes[0,1], text='Source light', source_add=True, unconvolved=True)
-#modelPlot.decomposition_plot(ax=axes[1,1], text='Source light convolved', source_add=True)
-#modelPlot.decomposition_plot(ax=axes[0,2], text='All components', source_add=True, lens_light_add=True, unconvolved=True)
-#modelPlot.decomposition_plot(ax=axes[1,2], text='All components convolved', source_add=True, lens_light_add=True, point_source_add=True)
-#f.tight_layout()
-#f.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0., hspace=0.05)
-#plt.show()
 
-#imageModel = ImageModel(data_class, psf_class, lens_model_class, source_model_class,
-#                                lens_light_model_class,
-#                                point_source_class, kwargs_numerics=kwargs_numerics)
-#ImageLinearFit
-#imageLinearFit = ImageLinearFit(data_class=data_class, psf_class=psf_class, lens_model_class = lens_model_class,
-#                                source_model_class = source_model_class,  point_source_class= point_source_class,
-#                                kwargs_numerics=kwargs_numerics) 
-#image_host_source0_plane = imageModel.source_surface_brightness(source_result, lens_result, de_lensed=True,unconvolved=False)
-#host_flux0_total = image_host_source0_plane.sum()
-##print "host flux, source plane:", host_flux0_total
-#
-#if 'kernel_point_source_init' in kwargs_psf.keys():
-#    f, axes = out_plot.psf_iteration_compare(kwargs_psf_updated); f.show()
-#    plt.show()
-#
-#
-##%%
-#import lenstronomy.Util.class_creator as class_creator
-#imageModel = class_creator.create_im_sim(multi_band_list = multi_band_list, multi_band_type='multi-linear', kwargs_model = kwargs_model,
-#                                           bands_compute = [True] * len(multi_band_list),
-#                                           likelihood_mask_list=[lens_mask],
-#                                           band_index=0)
-#logL = imageModel.likelihood_data_given_model(source_marg=False, linear_prior=None, **kwargs_result)
-#n_data = imageModel.num_data_evaluate    
-#reduced_x2 = - logL * 2 / n_data
+

@@ -105,7 +105,7 @@ def read_inf(ID, prop=0 , count_n=[4, 4], rod = 3):
             result.append([round(weighted_value,rod), round(rms_value,rod)])            
     return result
 #result = read_inf('HE0435', prop = 0)
-#print(read_inf('RXJ1131', prop = 4, count_n=[4, 4]))
+# print(read_inf('RXJ1131', prop = 4, count_n=[4, 4]))
 #print(read_inf('HS2209', prop = 1, count_n=8))
 #print(read_inf('HS2209',  count_n=8))    
 
@@ -140,7 +140,7 @@ def read_fnu(ID, count_n=[4, 4]):
 
 
 
-def read_mstar(ID, count_n=[4, 4], rod = 5):
+def read_mstar(ID, count_n=[4, 4]):
     result = []
     org_fnu = {'HE0435' :  [29.32598834079476],
         'RXJ1131' :  [14.808995717960412, 189.5940277253136],
@@ -179,5 +179,50 @@ def read_mstar(ID, count_n=[4, 4], rod = 5):
             m_star = [m_star_org/ org_fnu[ID][j] * new_fnw[j][0], m_star_org/ org_fnu[ID][j] * new_fnw[j][0] * (new_fnw[j][1]/new_fnw[j][0])]
             result.append(m_star)
     return result
-#result = read_mstar('HE0435',  count_n=8)
-#result = read_mstar('RXJ1131',  count_n=8)
+
+def read_slope(ID, prop=0 , count_n=[4, 4], rod = 3):
+    '''
+    Return the slope of the fitting.
+    Parameter
+    --------
+        count_n: if a singel number, combine QSO_mask and PSF_recon. If list, combining them separately.
+    Return
+    --------
+        A sth sth
+    '''
+    if ID == "SDSS1206" :
+        filename = ID+'_singel_host_run_summary.pkl'
+    elif ID == 'HS2209' or ID == 'RXJ1131':
+        filename = ID+'_3rd_run_summary.pkl'
+    else:
+        filename = ID+'_2nd_run_summary.pkl'
+    result = pickle.load(open('/Users/Dartoon/Astro/Projects/lens_host_reconstruction/share_tools/'+filename,'rb'),encoding="latin1")
+    fit_values, chisq, labels, pick_names = result
+    sort_label_type=['subg_2, PSFrecons', ', subg_2, QSOmask', 'subg_3, PSFrecons',', subg_3, QSOmask']
+    fit_value_l_list, fit_value_m_list, fit_value_h_list = fit_values
+    for i in range(len(labels)):
+        if labels[i][-17:] != sort_label_type[i%4]:
+            raise ValueError("The labels is wrong for some reason")
+    result = []
+    if isinstance(count_n, list):
+        _key = ['QSOmask', 'PSFrecons']
+        weight = np.zeros(len(labels))
+        for ii in range(2):
+            count = count_n[ii]
+            fit_value_m = [float(labels[i].split('gamma_')[1][:3]) for i in range(len(labels))]
+            chisq_ig = [float(chisq[i]) for i in range(len(chisq))]
+            for i in range(len(chisq)):
+                if _key[ii] in labels[i]:
+                    chisq_ig[i] = 10**4
+            sort_chisq = np.argsort(np.asarray(chisq_ig))    
+            Chisq_best = chisq_ig[sort_chisq[0]]
+            Chisq_last= chisq_ig[sort_chisq[count-1]]
+            inf_alp = (Chisq_last-Chisq_best) / (2*2.* Chisq_best)
+            for i in sort_chisq[:count]:
+                weight[i] = np.exp(-1/2. * (chisq_ig[i]-Chisq_best)/(Chisq_best* inf_alp))
+#            print(weight)
+        weighted_value = np.sum(np.array(fit_value_m)*weight) / np.sum(weight)
+        rms_value = np.sqrt(np.sum((np.array(fit_value_m)-weighted_value)**2*weight) / np.sum(weight))
+        result.append([round(weighted_value,rod), round(rms_value,rod)])            
+    return result
+print(read_slope('HE0435', count_n=[4, 4]))
