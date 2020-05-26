@@ -32,15 +32,15 @@ def cal_MBH(line, L, FWHM):
         b = 0.5
         logM=a + b*(L-44.) +2 * np.log10(FWHM/1000.)
     if line == 'Mgii':
-        #Dominique recipe. (note L - 5.15.) for his calbration:
-        a, b = 7.13, 0.5 # 1.51 * FWHM_term
-        logM=a + b*(L-44.) + 1.51 * np.log10(FWHM/1000.)
+        # #Dominique recipe. (note L - 5.15.) for his calbration:
+        # a, b = 7.13, 0.5 # 1.51 * FWHM_term
+        # logM=a + b*(L-44.) + 1.51 * np.log10(FWHM/1000.)
 #        #Shen 2011 recipe. L - 5.15 for correction.:
 #        a, b = 6.74, 0.62
 #        logM=a + b*(L-44.) + 2.0 * np.log10(FWHM/1000.)
 #        
-#        a, b = 6.623, 0.47  #Final adopted receipe
-#        logM=a + b*(L-44.) +2 * np.log10(FWHM/1000.)
+        a, b = 6.623, 0.47  #Final adopted receipe
+        logM=a + b*(L-44.) +2 * np.log10(FWHM/1000.)
 #        a, b = 7.13, 0.5 #Dominique;s paper
 #        logM=a + b*(L-44.) + 1.51 * np.log10(FWHM/1000.)
 #        a, b = 0.74, 0.62 #Shen 2011 recipe

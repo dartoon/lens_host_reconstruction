@@ -14,7 +14,7 @@ import pickle
 from matplotlib.colors import LogNorm
 import copy
 import sys
-sys.path.insert(0,'/Users/Dartoon/Astro/my_code/py_tools/')
+sys.path.insert(0,'/Users/Dartoon/Astro/Projects/my_code/py_tools/')
 from flux_profile import cr_mask
 
 

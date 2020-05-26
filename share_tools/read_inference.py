@@ -52,16 +52,18 @@ def read_inf(ID, prop=0 , count_n=[4, 4], rod = 3):
             picks = []
         else:
             picks = [4]
-    elif prop == 3: #AGN flux
+    elif prop == 3: #AGN flux source
         if 'Disk' in pick_names[2]:
             picks = [3]
         else:
             picks = [2]
-    elif prop == 4 :  #Flux image plane
+    elif prop == 4 :  #Host Flux image plane
         if 'Disk' in pick_names[2]:
             picks = [1,2]
         else:
             picks = [1]            
+    elif prop == 5: #AGN flux image
+            picks = [0]            
 #    print(ID, pick_names)
     result = []
 #    print(filename)
@@ -104,7 +106,7 @@ def read_inf(ID, prop=0 , count_n=[4, 4], rod = 3):
             rms_value = np.sqrt(np.sum((np.array(fit_value_m)-weighted_value)**2*weight) / np.sum(weight))
             result.append([round(weighted_value,rod), round(rms_value,rod)])            
     return result
-#result = read_inf('HE0435', prop = 0)
+# result = read_inf('HE0435', prop = 0)
 # print(read_inf('RXJ1131', prop = 4, count_n=[4, 4]))
 #print(read_inf('HS2209', prop = 1, count_n=8))
 #print(read_inf('HS2209',  count_n=8))    
@@ -225,4 +227,4 @@ def read_slope(ID, prop=0 , count_n=[4, 4], rod = 3):
         rms_value = np.sqrt(np.sum((np.array(fit_value_m)-weighted_value)**2*weight) / np.sum(weight))
         result.append([round(weighted_value,rod), round(rms_value,rod)])            
     return result
-print(read_slope('HE0435', count_n=[4, 4]))
+# print(read_slope('HE0435', count_n=[4, 4]))

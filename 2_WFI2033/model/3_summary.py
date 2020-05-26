@@ -119,8 +119,6 @@ if label0 != label1 or bars!= label0:
     raise ValueError("The labels is wrong for some reason")
 color = ['green', 'orange']
 
-color = ['green', 'orange']
-
 #count_n =len(labels) * 10 /100
 chisq = [float(chisq[i]) for i in range(len(chisq))]
 sort_chisq = np.argsort(np.asarray(chisq))    

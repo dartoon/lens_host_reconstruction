@@ -458,14 +458,14 @@ samples = sampler.chain[:, 50:, :].reshape((-1, ndim))
 b_ml_offset, _ =np.percentile(samples, 50,axis=0)
 #print "lnlike=",lnlike(theta=[b_ml_offset, sint_mid],x=x, y=y, yerr=yerr)
 xl = np.linspace(0, 5, 100)
-plt.plot(xl, xl*0+xl*b_ml_offset, color="blue", linewidth=4.0,zorder=0)
+plt.plot(xl, xl*0+xl*b_ml_offset, color="blue", linewidth=3.0,zorder=0)
 b=np.percentile(samples,50,axis=0)[0]
 #print samples[:,1][samples[:,0]==find_n(samples[:,0],m)]
 for i in range(100):
     posi=np.random.uniform(16,84)
     b=np.percentile(samples,posi,axis=0)[0]    
     #print b
-    plt.plot(xl, xl*0+xl*b, color="cornflowerblue", alpha=0.2,linewidth=7.0,zorder=-1+np.random.normal(0,0.02))
+    plt.plot(xl, xl*0+xl*b, color="cornflowerblue", alpha=0.2,linewidth=7.0,zorder=-3+np.random.normal(0,0.02))
 #####################
 value,sig=round(b_ml_offset,2),round((np.percentile(samples,84,axis=0)[0]-np.percentile(samples,16,axis=0)[0])/2,2)
 print(value,sig)
