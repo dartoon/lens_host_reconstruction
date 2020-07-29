@@ -31,3 +31,4 @@ manuscript/manuscript.pdf
 *.pdf
 material/*png
 *.zip
+*/version_control/*
