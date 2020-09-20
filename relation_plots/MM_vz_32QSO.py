@@ -450,7 +450,7 @@ for i in range(len(h0licow)):
 lens_sample = np.array(lens_sample).T
 x = lens_sample[0]
 y = lens_sample[1]
-yerr = lens_sample[1]*0 + (0.4**2+0.2**2)**0.5
+yerr = lens_sample[1]*0 + (0.4**2+0.2**2)**0.5   #Tested to change 0.2 to 0.3 and 0.4
 
 sampler = emcee.EnsembleSampler(nwalkers, ndim, lnprob, args=(x, y, yerr))
 sampler.run_mcmc(pos, 500)
@@ -519,7 +519,7 @@ plt.legend([Bkc, Hkc, SS13, ding_sample],[
 "Intermediate redshift AGNs",
 "$1.2<z<1.7$ AGNs by D20"
 ],scatterpoints=1,numpoints=1,loc=3,prop={'size':22,'family': 'Arial'},ncol=2,handletextpad=0)
-plt.savefig("MBH-Mstar_vz.pdf")
+# plt.savefig("MBH-Mstar_vz.pdf")
 plt.show()
 
 # #%% KS test on the distributions:
