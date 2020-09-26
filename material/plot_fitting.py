@@ -36,7 +36,7 @@ IDs = ['0_HE0435', '1_RXJ1131', '2_WFI2033', '3_SDSS1206', '4_HE1104', '5_SDSS02
 #for i in range(len(IDs)):
 #    print(i, ':', IDs[i])
 #inp = int(input("Which source:\n"))
-inp = 6
+inp = 7
 ID = IDs[inp][2:]
 if ID == 'SDSS1206':
     folder_0 = '_singel_host_run_summary.pkl'
@@ -119,18 +119,18 @@ modelPlot = ModelPlot(multi_band_list, kwargs_model, kwargs_result,
                       arrow_size=0.02, cmap_string="gist_heat", likelihood_mask_list=[lens_mask])
 
 f, axes = plt.subplots(2, 3, figsize=(16, 8), sharex=False, sharey=False)
-modelPlot.data_plot(ax=axes[0,0])
-modelPlot.model_plot(ax=axes[0,1])
-modelPlot.normalized_residual_plot(ax=axes[0,2], v_min=-6, v_max=6)
+modelPlot.data_plot(ax=axes[0,0], font_size=23)
+modelPlot.model_plot(ax=axes[0,1], font_size=23)
+modelPlot.normalized_residual_plot(ax=axes[0,2], v_min=-6, v_max=6, font_size=22)
 modelPlot.subtract_from_data_plot(ax=axes[1, 0], #v_max=1, 
                                   point_source_add=True,lens_light_add=True, source_add=False, 
-                                  text='Residual of arcs')
-modelPlot.decomposition_plot(ax=axes[1,1], text='Source light model', source_add=True)
+                                  text='Residual of arcs', font_size=23)
+modelPlot.decomposition_plot(ax=axes[1,1], text='Source light model', source_add=True, font_size=23)
 #modelPlot.decomposition_plot(ax=axes[1,2], text='Source light', source_add=True, unconvolved=True)
 #modelPlot.magnification_plot(ax=axes[1, 2])
 delta_list = [0.02, 0.1, 0.02, 0.05, 0.06, 0.02, 0.02, 0.02, 0.02]
 modelPlot.source_plot(ax=axes[1, 2], deltaPix_source=delta_list[inp], numPix=100, scale_size=0.5,
-                      text='Reconstrucerd host, \nsource plane',with_caustics=True)
+                      text='Reconstrucerd host, \nsource plane',with_caustics=True, font_size=21)
 #f.tight_layout()
 f.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0., hspace=0.05)
 plt.savefig('{0}_inference.png'.format(ID))

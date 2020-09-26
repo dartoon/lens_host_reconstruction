@@ -100,6 +100,7 @@ class ModelBandPlot(object):
         cax = divider.append_axes("right", size="5%", pad=0.05)
         cb = plt.colorbar(im, cax=cax, orientation='vertical')
         cb.set_label(colorbar_label, fontsize=font_size)
+        cb.ax.tick_params(labelsize=18)
         return ax
 
     def model_plot(self, ax, v_min=None, v_max=None, image_names=False,
@@ -133,7 +134,7 @@ class ModelBandPlot(object):
         cax = divider.append_axes("right", size="5%", pad=0.05)
         cb = plt.colorbar(im, cax=cax)
         cb.set_label(colorbar_label, fontsize=font_size)
-
+        cb.ax.tick_params(labelsize=18)
         #plot_line_set(ax, self._coords, self._ra_caustic_list, self._dec_caustic_list, color='b')
         #plot_line_set(ax, self._coords, self._ra_crit_list, self._dec_crit_list, color='r')
         if image_names is True:
@@ -206,6 +207,7 @@ class ModelBandPlot(object):
         cb = plt.colorbar(im, cax=cax)
         cb.set_label(colorbar_label,
                      fontsize=font_size)
+        cb.ax.tick_params(labelsize=18)
         return ax
 
     def absolute_residual_plot(self, ax, v_min=-1, v_max=1, font_size=15,
@@ -315,7 +317,7 @@ class ModelBandPlot(object):
         cax = divider.append_axes("right", size="5%", pad=0.05)
         cb = plt.colorbar(im, cax=cax)
         cb.set_label(colorbar_label, fontsize=font_size)
-
+        cb.ax.tick_params(labelsize=18)
         if with_caustics is True:
             ra_caustic_list, dec_caustic_list = self._caustics()
             plot_util.plot_line_set(ax, coords_source, ra_caustic_list,
@@ -327,7 +329,7 @@ class ModelBandPlot(object):
         if 'no_arrow' not in kwargs or not kwargs['no_arrow']:
             plot_util.coordinate_arrows(ax, self._frame_size, self._coords, color='w',
                               arrow_size=self._arrow_size, font_size=font_size)
-            plot_util.text_description_2(ax, d_s, text=text, color="w", backgroundcolor='k',
+            plot_util.text_description_2(ax, d_s, text=text, color="w",
                          flipped=False, font_size=font_size)
         if point_source_position is True:
             ra_source, dec_source = self.bandmodel.PointSource.source_position(self._kwargs_ps_partial, self._kwargs_lens_partial)
@@ -479,13 +481,14 @@ class ModelBandPlot(object):
         ax.get_yaxis().set_visible(False)
         ax.autoscale(False)
         plot_util.scale_bar(ax, self._frame_size, dist=1, text='1"', font_size=font_size)
-        plot_util.text_description(ax, self._frame_size, text=text, color="w", backgroundcolor='k')
+        plot_util.text_description(ax, self._frame_size, text=text, color="w", backgroundcolor='k', font_size=font_size)
         plot_util.coordinate_arrows(ax, self._frame_size, self._coords,
                           arrow_size=self._arrow_size, font_size=font_size)
         divider = make_axes_locatable(ax)
         cax = divider.append_axes("right", size="5%", pad=0.05)
         cb = plt.colorbar(im, cax=cax)
         cb.set_label(r'log$_{10}$ flux', fontsize=font_size)
+        cb.ax.tick_params(labelsize=18)
         return ax
 
     def subtract_from_data_plot(self, ax, text='Subtracted', v_min=None,
@@ -519,6 +522,7 @@ class ModelBandPlot(object):
         cax = divider.append_axes("right", size="5%", pad=0.05)
         cb = plt.colorbar(im, cax=cax)
         cb.set_label(r'log$_{10}$ flux', fontsize=font_size)
+        cb.ax.tick_params(labelsize=18)
         return ax
 
     def plot_main(self, with_caustics=False):

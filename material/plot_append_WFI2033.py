@@ -27,7 +27,7 @@ IDs = ['2_WFI2033']
 #0 = int(0ut("Which source:\n"))
 ID = IDs[0][2:]
 filters = ['f125w', 'f140w', 'f555w', 'f814w'] 
-file_info = '/{0}_model/fit_PSFi_PSFrecons/result_PSF0_*_gammafix1.9*.pkl'.format(filters[1])
+file_info = '/{0}_model/fit_PSFi_PSFrecons/result_PSF0_*_gammafix1.9*.pkl'.format(filters[0])
 #
 filename = glob.glob('../'+IDs[0]+file_info )
 #filename = glob.glob('../5_SDSS0246/model/2nd_fit_PSFi_PSFrecons/result_PSF0_*_gammafix2.1_subg2.pkl')
@@ -94,17 +94,17 @@ modelPlot = ModelPlot(multi_band_list, kwargs_model, kwargs_result,
                       arrow_size=0.02, cmap_string="gist_heat", likelihood_mask_list=[lens_mask])
 
 f, axes = plt.subplots(1, 4, figsize=(21, 4), sharex=False, sharey=False)
-if filters[0] == 'f125w':
-    no_arrow=True
+if (readfile.split('_model')[0])[-5:] == 'f125w' or (readfile.split('_model')[0])[-5:] == 'f140w':
+    modelPlot.data_plot(ax=axes[0], no_arrow=True, font_size=23)
+    modelPlot.model_plot(ax=axes[1], no_arrow=True, font_size=23)
 else:
-    no_arror = False
-modelPlot.data_plot(ax=axes[0], no_arrow=no_arrow)
-modelPlot.model_plot(ax=axes[1], no_arrow=no_arrow)
-#modelPlot.normalized_residual_plot(ax=axes[0,2], v_min=-6, v_max=6)
+    modelPlot.data_plot(ax=axes[0], font_size=23)
+    modelPlot.model_plot(ax=axes[1], font_size=23)
+    #modelPlot.normalized_residual_plot(ax=axes[0,2], v_min=-6, v_max=6)
 #Multe the arrow in: /Users/Dartoon/Astro/Packages/lenstronomy/lenstronomy/Plots/model_band_plot.py
 modelPlot.subtract_from_data_plot(ax=axes[2], point_source_add=True,lens_light_add=True, source_add=False, 
-                                  text='Residual of lensed arcs')#, no_arrow=no_arrow)
-modelPlot.decomposition_plot(ax=axes[3], text='Modelled source light', source_add=True)#, no_arrow=no_arrow)
+                                  text='Residual of lensed arcs', font_size=22)#, no_arrow=no_arrow)
+modelPlot.decomposition_plot(ax=axes[3], text='Modelled source light', source_add=True, font_size=22)#, no_arrow=no_arrow)
 #f.tight_layout()
 f.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0., hspace=0.05)
 #

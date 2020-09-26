@@ -95,13 +95,13 @@ modelPlot = ModelPlot(multi_band_list, kwargs_model, kwargs_result,
                       arrow_size=0.02, cmap_string="gist_heat", likelihood_mask_list=[lens_mask])
 
 f, axes = plt.subplots(1, 4, figsize=(21, 4), sharex=False, sharey=False)
-modelPlot.data_plot(ax=axes[0])
-modelPlot.model_plot(ax=axes[1])
+modelPlot.data_plot(ax=axes[0], font_size=23)
+modelPlot.model_plot(ax=axes[1], font_size=23)
 #modelPlot.normalized_residual_plot(ax=axes[0,2], v_min=-6, v_max=6)
 modelPlot.subtract_from_data_plot(ax=axes[2], point_source_add=True,lens_light_add=True, source_add=False, 
-                                  text='Residual of lensed arcs')
-modelPlot.decomposition_plot(ax=axes[3], text='Modelled source light', source_add=True)
-#f.tight_layout()
+                                  text='Residual of lensed arcs', font_size=22)
+modelPlot.decomposition_plot(ax=axes[3], text='Modelled source light', source_add=True, font_size=22)
+f.tight_layout()
 f.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0., hspace=0.05)
 #
 plt.savefig('{0}_{1}_inference.pdf'.format(ID, (readfile.split('_model')[0])[-5:]))

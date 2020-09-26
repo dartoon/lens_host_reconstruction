@@ -122,7 +122,7 @@ $^{1}$Department of Physics and Astronomy, University of California, Los Angeles
 $^{2}$Kavli Institute for Particle Astrophysics and Cosmology and Department of Physics, Stanford University, Stanford, CA 94305, USA\\
 $^{3}$European Southern Observatory, Karl-Schwarzschild-Strasse 2, 85748 Garching, Germany\\
 $^{4}$STAR Institute, Quartier Agora - All\'ee du six Ao\^ut, 19c B-4000 Li\`ege, Belgium\\
-$^{5}$Department of Physics {\bf and Astronomy}, University of California, Davis, CA 95616, USA\\
+$^{5}$Department of Physics and Astronomy, University of California, Davis, CA 95616, USA\\
 $^{6}$Institute of Astronomy, University of Cambridge, Madingley Road, Cambridge CB3 0HA, UK\\
 $^{7}$Kavli IPMU (WPI), UTIAS, The University of Tokyo, Kashiwa, Chiba 277-8583, Japan\\
 $^{8}$Max-Planck-Institut f{\"u}r Astrophysik, Karl-Schwarzschild-Str.~1, 85748 Garching, Germany\\
@@ -360,9 +360,9 @@ In addition to WFC3/F160W, HE0435 has been observed through bands ACS/F814W and 
 
 \begin{figure*}
 \centering
-\subfloat[HE0435 F555W]{\includegraphics[ width=0.8\textwidth]{fig/HE0435_f555w_inference.pdf}}\\
-\subfloat[HE0435 F814W]{\includegraphics[ width=0.8\textwidth]{fig/HE0435_f814w_inference.pdf}}\\
-\subfloat[Host galaxy stellar template inference]{\includegraphics[ width=0.5\textwidth]{fig/HE0435_host_color.pdf}}\\
+\subfloat[HE0435 F555W]{\includegraphics[trim = 15mm 0mm 15mm 5mm, clip, width=0.9\textwidth]{fig/HE0435_f555w_inference.pdf}}\\
+\subfloat[HE0435 F814W]{\includegraphics[trim = 15mm 5mm 15mm 0mm, clip, width=0.9\textwidth]{fig/HE0435_f814w_inference.pdf}}\\
+\subfloat[Host galaxy stellar template inference]{\includegraphics[trim = 10mm 0mm 20mm 15mm, clip, width=0.6\textwidth]{fig/HE0435_host_color.pdf}}\\
 \caption{\label{fig:app_HE0435} 
 Illustrations of the inference of HE0435 using the multi-band data. Top two panels: best-fit model of the lensed arcs shown as Figure~\ref{fig:image_inference}. Bottom panel: SED inference. The red points with error bars represent the inferred image plane host flux in the three bands.}
 \end{figure*} 
@@ -374,11 +374,11 @@ Illustrations of the inference of HE0435 using the multi-band data. Top two pane
 In addition to WFC3/F160W, WFI2033 has been observed by \hst\ in  four bands, i.e., WFC3/F125W (GO-12874; PI: D. Floyd), WFC3/F140W (GO-13732; PI: A. Nierenberg), ACS/F555W+F814W  (GO-9744; PI: C. S. Kochanek). Similar to HE0435, the lens modelling and the host photometry of WFI2033 have been inferred through these four bands. The results are presented in Figure~\ref{fig:app_WFI2033}-(a)$-$(d). Unfortunately, the  F125W data are too shallow to robustly detect the host.  Thus, we do not use the F125W band for the SED fitting. Using four-band photometry, we find a stellar population of 0.625 Gyr age provides a good match to the colors, as shown in Figure~\ref{fig:app_WFI2033}-(e).
 \begin{figure*}
 \centering
-\subfloat[WFI2033 F125W]{\includegraphics[ width=0.8\textwidth]{fig/WFI2033_f125w_inference.pdf}}\\
-\subfloat[WFI2033 F140W]{\includegraphics[ width=0.8\textwidth]{fig/WFI2033_f140w_inference.pdf}}\\
-\subfloat[WFI2033 F555W]{\includegraphics[ width=0.8\textwidth]{fig/WFI2033_f555w_inference.pdf}}\\
-\subfloat[WFI2033 F814W]{\includegraphics[ width=0.8\textwidth]{fig/WFI2033_f814w_inference.pdf}}\\
-\subfloat[Host galaxy stellar template inference]{\includegraphics[ width=0.5\textwidth]{fig/WFI2033_host_color.pdf}}
+\subfloat[WFI2033 F125W]{\includegraphics[trim = 75mm 12mm 45mm 12mm, clip, width=0.9\textwidth]{fig/WFI2033_f125w_inference.pdf}}\\
+\subfloat[WFI2033 F140W]{\includegraphics[trim = 75mm 12mm 45mm 12mm, clip, width=0.9\textwidth]{fig/WFI2033_f140w_inference.pdf}}\\
+\subfloat[WFI2033 F555W]{\includegraphics[trim = 75mm 12mm 45mm 12mm, clip, width=0.9\textwidth]{fig/WFI2033_f555w_inference.pdf}}\\
+\subfloat[WFI2033 F814W]{\includegraphics[trim = 75mm 12mm 45mm 12mm, clip, width=0.9\textwidth]{fig/WFI2033_f814w_inference.pdf}}\\
+\subfloat[Host galaxy stellar template inference]{\includegraphics[trim = 10mm 0mm 20mm 15mm, clip, width=0.6\textwidth]{fig/WFI2033_host_color.pdf}}
 \caption{\label{fig:app_WFI2033} 
 Same as Figure~\ref{fig:app_WFI2033} but for WFI2033. The F125W dare are too shallow to detect the host and are thus omitted in the fit.}
 \end{figure*} 
@@ -401,9 +401,7 @@ with  $\alpha = 0.27$, $\beta = 0.98$ based on the local sample of 55 objects me
 \label{eq:offset}
 \Delta \log \mathcal M_{\rm BH}= \gamma \log (1 + z),
 \end{eqnarray} 
-where $\Delta \log \mathcal M_{\rm BH}$ is the offset of \mbh\ with respect to the local baseline at fixed \mstar. To make a direct comparison, we reproduce the plot shown in Figure~8 of D20. Then, we add our new lensed AGN measurements and show the result in Figure~\ref{fig:scaling_relation}-(right). We find that the offset from the local relationship is similar for the two samples. Based on Equation~\eqref{eq:offset}, we fit the evolution of the eight lensed systems and obtain $\gamma=1.05\pm0.44$, which agrees with the results of D20 ($\gamma=1.03\pm0.25$ using 32 AGN) within $1-\sigma$ level. The consistency between the two measurements provides an important verification of the accuracy of the results and strengthens the conclusions drawn by D20 that the {\it observed} value of \mbh\ at a fixed \mstar\ tends to be larger at higher redshift than the ones in the local universe. {\bf %It is possible that the uncertainty of the \mstar\ could be higher than our estimation (i.e., 0.2~dex), given that the star formation histories could vary widely at high redshift ($z\sim$2). However, even when our stellar mass uncertainty is boosted, the evolution inferred using the eight lensed systems is still robust --- $\gamma=1.05\pm0.48$ assuming  $\Delta$\mstar = 0.3~dex, and $\gamma=1.03\pm0.53$ assuming $\Delta$\mstar = 0.4~dex.
-It is possible that the uncertainty of the \mstar\ could be higher than our assumed 0.2 dex, given that the star formation histories could vary widely at high redshift ($z\sim$2). However, increasing the uncertainty on the stellar mass does not change significantly our conclusions, since the error budget is dominated by the uncertainty in black hole mass. For example, increasing the stellar mass uncertainty to $0.3$ ($0.4$)~dex, we find $\gamma = 1.05\pm0.48$ $(1.03\pm0.53)$.
-}
+where $\Delta \log \mathcal M_{\rm BH}$ is the offset of \mbh\ with respect to the local baseline at fixed \mstar. To make a direct comparison, we reproduce the plot shown in Figure~8 of D20. Then, we add our new lensed AGN measurements and show the result in Figure~\ref{fig:scaling_relation}-(right). We find that the offset from the local relationship is similar for the two samples. Based on Equation~\eqref{eq:offset}, we fit the evolution of the eight lensed systems and obtain $\gamma=1.05\pm0.44$, which agrees with the results of D20 ($\gamma=1.03\pm0.25$ using 32 AGN) within $1-\sigma$ level. The consistency between the two measurements provides an important verification of the accuracy of the results and strengthens the conclusions drawn by D20 that the {\it observed} value of \mbh\ at a fixed \mstar\ tends to be larger at higher redshift than the ones in the local universe. It is possible that the uncertainty of the \mstar\ could be higher than our assumed 0.2 dex, given that the star formation histories could vary widely at high redshift ($z\sim$2). However, increasing the uncertainty on the stellar mass does not change significantly our conclusions, since the error budget is dominated by the uncertainty in black hole mass. For example, increasing the stellar mass uncertainty to $0.3$ ($0.4$)~dex, we find $\gamma = 1.05\pm0.48$ $(1.03\pm0.53)$.
 
 
 Note that this apparent evolution is obtained directly using the observed sample, before considering selection effects~\citep{Tre++07,Schulze2011,Bennert++2011, Schulze2014,Park15}. For instance, adopting the framework introduced in~\citet{Schulze2015}, D20 estimated that accounting for selection biases would yield a more modest evolution $\gamma=0.50\pm0.25$. The lensed AGN systems considered in this work were selected for time-delay cosmography, based on the availability of a time delay and the known detectability of the host galaxy. This is a complex selection function, different than the one used by D20. Although it is encouraging that the two samples present the same apparent evolution, inferring the true underlying evolution requires modelling the selection function, as studied by D20. A full modelling of the complex selection function is not warranted given the small size of the lensed quasars sample. Thus, at this stage, the lensed quasars should be considered as a check on possible systematic measurement error in the D20 analysis rather than a stand-alone measurement.
@@ -440,7 +438,7 @@ The authors thank the anonymous referee for helpful suggestions and comments whi
 We are grateful to Frederic Courbin, Leon Koopmans for useful comments
 and suggestions that improved this manuscript. We thank John Silverman and Vardha Bennert for many conversations on the topic of galaxy and black hole co-evolution.
 
-This work is based in part on observations made with the NASA/ESA Hubble Space Telescope, obtained at the Space Telescope Science Institute, which is operated by the Association of Universities for Research in Astronomy, Inc., under NASA contract NAS 5-26555. X.D., S.B., and T.T. acknowledge support by the Packard Foundation through a Packard Research fellowship to T.T. {\bf This project is received support by the NSF through grant 1907208.} This work is supported by JSPS KAKENHI Grant Number JP18H01251 and the World Premier International Research Center Initiative (WPI), MEXT, Japan. This project has received funding from the European Research Council (ERC) under the European Union's Horizon 2020 research and innovation programme (grant agreement No 787886).
+This work is based in part on observations made with the NASA/ESA Hubble Space Telescope, obtained at the Space Telescope Science Institute, which is operated by the Association of Universities for Research in Astronomy, Inc., under NASA contract NAS 5-26555. X.D., S.B., and T.T. acknowledge support by the Packard Foundation through a Packard Research fellowship to T.T. This project is received support by the NSF through grant 1907208. This work is supported by JSPS KAKENHI Grant Number JP18H01251 and the World Premier International Research Center Initiative (WPI), MEXT, Japan. This project has received funding from the European Research Council (ERC) under the European Union's Horizon 2020 research and innovation programme (grant agreement No 787886).
 C.D.F. acknowledge support for this work from the National Science Foundation under Grant Numbers AST-1312329 and AST-1907396.
 SHS thanks the Max Planck Society for support through the Max Planck Research Group.
 
@@ -525,14 +523,14 @@ HE0047 is the most challenging system in our sample with the lowest SNR of the l
 \begin{figure*}
 \centering
 \begin{tabular}{c c}
-\subfloat[HE0435]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/HE0435_inference.png}}&
-\subfloat[RXJ1131]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/RXJ1131_inference.png}}\\
-\subfloat[WFI2033]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/WFI2033_inference.png}}&
-\subfloat[SDSS1206]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/SDSS1206_inference.png}}\\
-\subfloat[HE1104]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/HE1104_inference.png}}&
-\subfloat[SDSS0246]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/SDSS0246_inference.png}}\\
-\subfloat[HS2209]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/HS2209_inference.png}}&
-\subfloat[HE0047]{\includegraphics[trim = 40mm 25mm 40mm 25mm, clip, width=0.5\textwidth]{fig/HE0047_inference.png}}\\
+\subfloat[HE0435]{\includegraphics[trim = 60mm 25mm 20mm 25mm, clip, width=0.5\textwidth]{fig/HE0435_inference.png}}&
+\subfloat[RXJ1131]{\includegraphics[trim = 60mm 25mm 20mm 25mm, clip, width=0.5\textwidth]{fig/RXJ1131_inference.png}}\\
+\subfloat[WFI2033]{\includegraphics[trim = 60mm 25mm 20mm 25mm, clip, width=0.5\textwidth]{fig/WFI2033_inference.png}}&
+\subfloat[SDSS1206]{\includegraphics[trim = 60mm 25mm 20mm 25mm, clip, width=0.5\textwidth]{fig/SDSS1206_inference.png}}\\
+\subfloat[HE1104]{\includegraphics[trim = 60mm 25mm 20mm 25mm, clip, width=0.5\textwidth]{fig/HE1104_inference.png}}&
+\subfloat[SDSS0246]{\includegraphics[trim = 60mm 25mm 20mm 25mm, clip, width=0.5\textwidth]{fig/SDSS0246_inference.png}}\\
+\subfloat[HS2209]{\includegraphics[trim = 60mm 25mm 20mm 25mm, clip, width=0.5\textwidth]{fig/HS2209_inference.png}}&
+\subfloat[HE0047]{\includegraphics[trim = 60mm 25mm 20mm 25mm, clip, width=0.5\textwidth]{fig/HE0047_inference.png}}\\
 \end{tabular}
 \caption{\label{fig:image_inference} 
 Illustrations of the inference using the best-fit lens model for each system using the AGN center noise level boosted approach. For each figure, the panels from left to right are the follows: Top row: (left to right): (1) observed data, (2) best-fit model (3) residuals divided by the uncertainty level. Some of the residual looks clumpy; however, they do not affect the host property measurements, for more details see Section~\ref{sec:diss} ; Bottom row: (left to right): (4) data minus the model PSF and deflector  (i.e., pure lensed arc image), (5) the model of the lensed arc, (6) reconstructed host galaxy in the source plane with caustic line drawn as yellow line. Across all the systems, the lensed arc feature can be clearly seen in the fourth panel, indicating strong evidence of a detection. In panel (3) and (4), we use white regions to indicate the area where the noise level is boosted. 
